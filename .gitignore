@@ -1,0 +1,10 @@
+uploads
+node_modules
+upgrade
+upgrade-temp-backup
+ai1wm-backups
+themes/twentytwentyfour
+.DS_Store
+/index.php
+/themes/index.php
+/plugins/index.php

@@ -1,0 +1,148 @@
+.btn {
+  --transition: all 0.4s ease-in-out;
+
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+
+  padding: 12px 24px;
+  
+  color: #0F0D0D;
+  font-size: 1.19rem;
+  font-weight: 400;
+  text-decoration: none;
+  
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  
+  cursor: pointer;
+  outline: none;
+
+  transition: var(--transition);
+
+  &::after {
+    content: "";
+    position: absolute;
+    display: block;
+
+    visibility: hidden;
+
+    z-index: -1;
+
+    background-color: #fff;
+
+    transition: var(--transition);
+  }
+
+  &:hover::after {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    
+    transition: var(--transition);
+  }
+
+  &--small {
+    font-size: 0.88rem;
+    padding: 7px 13px;
+    border: none;
+  }
+
+  &--with-photo {
+    padding-left: 40px;
+    position: relative;
+  }
+
+  &--primary {
+    background-color: $primary-color;
+    color: #fff;
+    border-color: $primary-color;
+
+    &:hover {
+      background-color: #fff;
+      color: $primary-color;
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary-color;
+    color: #fff;
+    border-color: $secondary-color;
+
+    &:hover {
+      background-color: #fff;
+      color: $secondary-color;
+    }
+  }
+
+  &--gray {
+    background-color: #222;
+  }
+
+  &--white {
+    background-color: #fff;
+    color: #173f58;
+  }
+
+  &--white:hover {
+    background-color: #ddd;
+  }
+
+  &--large {
+    font-size: 1.3rem;
+    padding: 16px 34px;
+    border-radius: 7px;
+    @include atSmall {
+      font-size: 1.9rem;
+    }
+  }
+
+  &--inactive {
+    background-color: transparent;
+    cursor: default;
+    color: #333;
+  }
+
+  &--with-photo {
+    margin-right: 0;
+  }
+
+  &--slide-from-top::after {
+    visibility: visible;
+
+    left: 0;
+    right: 0;
+    top: -100%;
+    bottom: 100%;
+  }
+
+  &--slide-from-bottom::after {
+    visibility: visible;
+
+    left: 0;
+    right: 0;
+    top: 100%;
+    bottom: -100%;
+  }
+
+  &--slide-from-left::after {
+    visibility: visible;
+
+    top: 0;
+    bottom: 0;
+    left: -100%;
+    right: 100%;
+  }
+
+  &--slide-from-right::after {
+    visibility: visible;
+
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    right: -100%;
+  }
+}

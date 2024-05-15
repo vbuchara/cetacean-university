@@ -1,0 +1,89 @@
+.event-summary {
+  position: relative;
+  padding-left: 107px;
+  min-height: 77px;
+  padding-bottom: 1px;
+  margin-bottom: 20px;
+
+  &__title a {
+    color: $primary-color;
+  }
+
+  &__date {
+    --transition: color 0.3s ease-in-out, scale 0.3s ease-in-out;
+
+    display: block;
+    position: absolute;
+    overflow: hidden;
+    
+    top: 0;
+    left: 0;
+    z-index: 0;
+
+    padding: 14px 0 11px 0;
+
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: $primary-color;
+    
+    background-color: $primary-color;
+    width: 80px;
+    
+    color: #FFF;
+    line-height: 1;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .22);
+
+    transition: var(--transition);
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: block;
+
+      border-radius: 50%;
+  
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: -1;
+  
+      background-color: #fff;
+  
+      transition: var(--transition);
+      scale: 0 0;
+    }
+
+    &:hover {
+      color: $primary-color;
+
+      &::after {
+        scale: 1 1;
+      }
+    }
+  }
+
+  &__date--alt {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+
+    &:hover {
+      color: $secondary-color;
+    }
+  }
+
+  &__month {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+
+  &__day {
+    display: block;
+    font-size: 2.02rem;
+    font-weight: 700;
+  }
+}
