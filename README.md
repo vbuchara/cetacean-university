@@ -4,6 +4,17 @@ The main content of a website I built in a Wordpress learning course, made for a
 
 The site is live and can be viewed on https://cetacean-university.buchara.site/
 
+## 👩‍💻 Technologies
+
+This project was developed using **Wordpress**, along with **Javascript**, **jQuery** and **Sass** related to styling and front-end code. 
+
+| Front-end | Back-end |
+|--|--|
+|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg" width="18"/> Wordpress|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-plain.svg" width="18"/> Wordpress|
+|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="18"/> Javascript||
+|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jquery/jquery-original.svg" width="18"/> jQuery||
+|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sass/sass-original.svg" width="18"/> Sass||
+
 ## ⭐ Features
 
 - A theme created by me called **"Cetacean University Theme"**.
