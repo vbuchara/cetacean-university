@@ -6,7 +6,7 @@
         style="--bg-image: url(<?= get_theme_file_uri("/images/library-hero.jpg") ?>)"
     ></div>
     <div class="page-banner__content container t-center c-white">
-        <h1 class="headline headline--large">Welcome!</h1>
+        <h1 class="headline headline--large">Welcome!!!</h1>
         <h2 class="headline headline--medium">We think you&rsquo;ll like it here.</h2>
         <h3 class="headline headline--small">Check out our majors and enroll today!</h3>
         <a 
