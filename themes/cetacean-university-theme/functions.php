@@ -43,7 +43,7 @@ function university_scripts() {
     );
     wp_enqueue_script(
         "google_map_js",
-        '//maps.googleapis.com/maps/api/js?key=AIzaSyBjGkLfLPSkYVrRgaxneX46y5OzLDVMI-Y',
+        "//maps.googleapis.com/maps/api/js?key=" . GOOGLE_MAPS_API_KEY,
         [],
         "1.0",
         true
@@ -225,7 +225,7 @@ function cetacean_university_nav_classes(
 }    
 
 function cetacean_university_map_key($api){
-    $api['key'] = "AIzaSyBjGkLfLPSkYVrRgaxneX46y5OzLDVMI-Y";
+    $api['key'] = GOOGLE_MAPS_API_KEY;
     
     return $api;
 }
