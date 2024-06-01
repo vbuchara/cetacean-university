@@ -1,0 +1,22 @@
+.word-filter__words-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    row-gap: 1rem;
+}
+
+.word-filter__words-form .button {
+    justify-self: flex-start;
+    padding-inline: 1rem;
+    padding-block: 0.2rem;
+}
+
+.word-filter__flex-container {
+    display: flex;
+}
+
+.word-filter__flex-container textarea{
+    height: 200px;
+    flex: 1;
+}
+
