@@ -165,6 +165,9 @@ function university_no_subscriber_admin_bar(){
 // Head of the site
 add_action("wp_head", "university_css_properties");
 
+// Head of the admin part of the site
+add_action("admin_head", "university_css_properties");
+
 // Head of the login/register page
 add_action("login_head", "university_css_properties");
 
