@@ -1,0 +1,25 @@
+{
+  "name": "cetacean-university-plugin",
+  "version": "1.0.0",
+  "main": "js/build/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "wp-scripts build src/index src/frontend",
+    "start": "wp-scripts start src/index src/frontend",
+    "plugin-zip": "wp-scripts plugin-zip"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.8",
+    "@types/wordpress__block-editor": "^11.5.14",
+    "@types/wordpress__blocks": "^12.5.14",
+    "@types/wordpress__editor": "^13.6.8",
+    "@wordpress/scripts": "^27.9.0"
+  },
+  "dependencies": {
+    "@wordpress/data": "^10.0.0",
+    "@wordpress/editor": "^14.0.0",
+    "polished": "^4.3.1",
+    "react-use": "^17.5.0",
+    "uuid": "^9.0.1"
+  }
+}
