@@ -92,11 +92,6 @@ msgstr ""
 msgid "second(s)"
 msgstr ""
 
-#: build/CupFeaturedProfessorBlock/frontend.js:401
-#: build/CupFeaturedProfessorBlock/index.js:401
-msgid "Select the professor to be featured"
-msgstr ""
-
 #: classes/cetacean-university-word-filter.php:137
 msgid "Sorry, you do not have permission to do that"
 msgstr ""

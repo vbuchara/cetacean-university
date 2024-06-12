@@ -6,10 +6,10 @@ import {
     ForwardedRef
 } from 'react';
 
-import { ReactComponent as Check } from '../../assets/check.svg';
-import { ReactComponent as Cross } from '../../assets/cross.svg';
+import { ReactComponent as Check } from '@assets/check.svg';
+import { ReactComponent as Cross } from '@assets/cross.svg';
 
-import { type CupQuizAnswer } from "../blocks/CupQuizBlock";
+import { type CupQuizAnswer } from "@blocks/CupQuizBlock";
 
 export type QuizSaveAnswerProps = {
     question: string,

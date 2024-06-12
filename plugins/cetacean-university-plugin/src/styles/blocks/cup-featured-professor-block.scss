@@ -1,0 +1,185 @@
+@use "sass:color";
+@use "../abstract/variables" as *;
+@use "../abstract/mixins" as *;
+@use "../abstract/breakpoints" as *;
+
+@use "../base/animations";
+
+@use "../components/cup-block-container";
+
+.cup-featured-professor-block-loading {
+    @extend .cup-block-container;
+
+    text-align: center;
+
+    &::after{
+        content: "";
+        animation-name: loading-dots;
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-delay: 500ms;
+    }
+}
+
+.cup-featured-professor-edit-block {
+    @extend .cup-block-container;
+
+    $parent-selector: &;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 1rem;
+
+    &__select {
+        $blank-color: color.scale($black, $lightness: 50%);
+
+        &:is(*, #priority){
+            max-width: none;
+            color: inherit;
+        }
+
+        &--blank:is(*, #priority){
+            color: $blank-color;
+        }
+
+        option {
+            color: $black;
+        }
+
+        :is(&-blank, #priority){
+            color: $blank-color;
+        }
+
+        @include supportsHasSelector {
+            &:is(*, #priority):has(&-blank:checked){
+                color: $blank-color;
+            }
+        }
+    }
+
+    .cup-featured-professor-block-display {
+        --background-color: #{$white};
+        --border-color: #{color.scale($white, $lightness: -25%)};
+
+        border-width: 2px;
+        border-style: solid;
+        border-color: var(--border-color);
+        background-color: var(--background-color);
+    }
+}
+
+.cup-featured-professor-save-block-root, 
+.cup-featured-professor-save-block-root pre {
+    display: none;
+    visibility: hidden;
+}
+
+.cup-featured-professor-save-block {
+    @extend .cup-block-container;
+    
+    $parent-selector: &;
+
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 15px;
+
+    border-radius: 5px;
+    overflow: hidden;
+
+    pre {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+.cup-featured-professor-block-display {
+    display: grid;
+    grid-template-columns: 35fr 65fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: 
+        "image title"
+        "image description"
+        "image programs"
+        "image link"
+    ;
+    column-gap: 1rem;
+    row-gap: 1rem;
+
+    @include withPriority {
+        font-family: "Roboto Condensed", sans-serif;
+    }
+
+    @include atMedium {
+        grid-template-columns: auto 65fr;     
+    }
+
+    &__image {
+        grid-area: image;
+
+        @include withPriority {
+            height: 100%;
+            width: 100%;
+            max-width: 250px;
+            aspect-ratio: 48 / 65;
+            object-fit: cover;
+            object-position: center; 
+
+            @include atMedium {
+                max-width: none;
+                width: auto;
+                max-height: 300px;
+            }
+        }
+    }
+
+    &__title {
+        grid-area: title;
+
+        @include withPriority {
+            font-size: 1.5rem;
+            font-weight: 600;
+
+            margin: 0;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+    }
+
+    &__description {
+        grid-area: description;
+
+        @include withPriority {
+            margin: 0;
+            margin-right: 10px;
+        }
+    }
+
+    &__programs {
+        grid-area: programs;
+
+        @include withPriority {
+            font-size: 1rem;
+
+            margin: 0;
+            margin-right: 10px;
+        }
+    }
+
+    &__link {
+        grid-area: link;
+        justify-self: start;
+
+        font-weight: 600;
+
+        @include withPriority {
+            margin: 0;
+            margin-right: 10px;
+            margin-bottom: 20px;
+        }
+
+        &::after {
+            content: " >>";
+        }
+    }
+}

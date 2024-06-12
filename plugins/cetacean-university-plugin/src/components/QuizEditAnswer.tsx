@@ -14,7 +14,7 @@ import {
 import type { 
     CupQuizAnswer, 
     CupQuizEditBlockProps 
-} from "../blocks/CupQuizBlock";
+} from "@blocks/CupQuizBlock";
 
 export interface QuizEditAnswerProps extends CupQuizEditBlockProps {
     answer: CupQuizAnswer;

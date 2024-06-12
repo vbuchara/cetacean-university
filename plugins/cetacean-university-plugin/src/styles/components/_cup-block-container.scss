@@ -1,0 +1,22 @@
+@use "sass:color";
+@use "../abstract/variables" as *;
+
+.cup-block-container {
+    --background-color: #{$dolphin};
+    --border-color: #{color.scale($dolphin, $lightness: -25%)};
+
+    padding-inline: 10px;
+    padding-block: 20px;
+
+    color: $black;
+    background-color: var(--background-color);
+    
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--border-color);
+
+    pre {
+        display: none;
+        visibility: hidden;
+    }
+}

@@ -14,11 +14,11 @@ class Cetacean_University_Quiz {
     function block_assets(){
         wp_register_style(
             'CupQuizBlock',
-            CUP_PLUGIN_DIR_URL . 'build/index.css',
+            CUP_PLUGIN_DIR_URL . 'build/CupQuizBlock/index.css',
         );
         wp_register_script(
             'CupQuizBlock',
-            CUP_PLUGIN_DIR_URL . 'build/index.js',
+            CUP_PLUGIN_DIR_URL . 'build/CupQuizBlock/index.js',
             [
                 'wp-blocks', 
                 'wp-element',
@@ -47,14 +47,14 @@ class Cetacean_University_Quiz {
         if(!is_admin()){
             wp_enqueue_script(
                 "CupQuizBlockFrontend", 
-                CUP_PLUGIN_DIR_URL . 'build/frontend.js',
+                CUP_PLUGIN_DIR_URL . 'build/CupQuizBlock/frontend.js',
                 ['wp-element'],
                 null,
                 true
             );
             wp_enqueue_style(
                 "CupQuizBlock", 
-                CUP_PLUGIN_DIR_URL . 'build/index.css'
+                CUP_PLUGIN_DIR_URL . 'build/CupQuizBlock/index.css'
             );
         }
 

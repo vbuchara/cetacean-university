@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Cetacean University Plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-05-29 22:26+0000\n"
-"PO-Revision-Date: 2024-05-31 18:09+0000\n"
+"PO-Revision-Date: 2024-06-11 04:50+0000\n"
 "Last-Translator: Vinicius Buchara\n"
 "Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
@@ -19,11 +19,15 @@ msgstr ""
 msgid "A custom plugin developed for the Cetacean University website"
 msgstr ""
 
-#: classes/cetacean-university-word-count.php:213
+#: classes/cetacean-university-word-count.php:204
 msgid "and"
 msgstr "e"
 
-#: classes/cetacean-university-word-count.php:256
+#: classes/cetacean-university-word-filter.php:112
+msgid "awful, things, here"
+msgstr ""
+
+#: classes/cetacean-university-word-count.php:247
 msgid "Beginning of post"
 msgstr "Começo do post"
 
@@ -31,31 +35,39 @@ msgstr "Começo do post"
 msgid "Cetacean University Plugin"
 msgstr ""
 
-#: classes/cetacean-university-word-count.php:201
+#: classes/cetacean-university-word-count.php:192
 msgid "characters"
 msgstr "caracteres"
 
-#: classes/cetacean-university-word-count.php:109
+#: classes/cetacean-university-word-filter.php:104
+msgid "comma-separated"
+msgstr ""
+
+#: classes/cetacean-university-word-count.php:100
 msgid "Display Character Count"
 msgstr "Mostrar Contador de Caracteres"
 
-#: classes/cetacean-university-word-count.php:60
+#: classes/cetacean-university-word-count.php:51
 msgid "Display Location"
 msgstr "Localização no Post"
 
-#: classes/cetacean-university-word-count.php:126
+#: classes/cetacean-university-word-count.php:117
 msgid "Display Read Time"
 msgstr "Mostrar Tempo de Leitura"
 
-#: classes/cetacean-university-word-count.php:92
+#: classes/cetacean-university-word-count.php:83
 msgid "Display Word Count"
 msgstr "Mostrar Contagem de Palavras"
 
-#: classes/cetacean-university-word-count.php:260
+#: classes/cetacean-university-word-count.php:251
 msgid "End of post"
 msgstr "Fim do post"
 
-#: classes/cetacean-university-word-count.php:76
+#: classes/cetacean-university-word-filter.php:103
+msgid "Enter a"
+msgstr ""
+
+#: classes/cetacean-university-word-count.php:67
 msgid "Headline Text"
 msgstr "Texto do Titulo"
 
@@ -63,24 +75,41 @@ msgstr "Texto do Titulo"
 msgid "https://cetacean-university.buchara.site"
 msgstr ""
 
-#: classes/cetacean-university-word-count.php:209
+#: classes/cetacean-university-word-count.php:200
 msgid "minute(s)"
 msgstr "minuto(s)"
 
-#: classes/cetacean-university-word-count.php:217
+#: classes/cetacean-university-word-filter.php:38
+msgid "Options"
+msgstr ""
+
+#: classes/cetacean-university-word-filter.php:121
+msgid "Save Changes"
+msgstr ""
+
+#: classes/cetacean-university-word-count.php:208
 msgid "second(s)"
 msgstr "segundo(s)"
 
-#: classes/cetacean-university-word-count.php:192
-#: classes/cetacean-university-word-count.php:199
+#: build/CupFeaturedProfessorBlock/frontend.js:401
+#: build/CupFeaturedProfessorBlock/index.js:401
+msgid "Select the professor to be featured"
+msgstr "Selecione o professor a ser destacado"
+
+#: classes/cetacean-university-word-filter.php:137
+msgid "Sorry, you do not have permission to do that"
+msgstr ""
+
+#: classes/cetacean-university-word-count.php:183
+#: classes/cetacean-university-word-count.php:190
 msgid "This post has"
 msgstr "Este post contém"
 
-#: classes/cetacean-university-word-count.php:206
+#: classes/cetacean-university-word-count.php:197
 msgid "This post is estimated to take"
 msgstr "Este post é estimado levar"
 
-#: classes/cetacean-university-word-count.php:220
+#: classes/cetacean-university-word-count.php:211
 msgid "to read"
 msgstr "para ser lido"
 
@@ -88,18 +117,37 @@ msgstr "para ser lido"
 msgid "Vinicius Vieira Buchara"
 msgstr ""
 
-#: classes/cetacean-university-word-count.php:43
+#: classes/cetacean-university-word-count.php:34
 msgid "Word Count"
 msgstr "Contador de Palavras"
 
-#: classes/cetacean-university-word-count.php:237
+#: classes/cetacean-university-word-count.php:228
 msgid "Word Count Settings"
 msgstr "Configurações do Contador de Palavras"
 
-#: classes/cetacean-university-word-filter.php:17
+#: classes/cetacean-university-word-filter.php:19
+#: classes/cetacean-university-word-filter.php:20
 msgid "Word Filter"
 msgstr "Filtro de Palavras"
 
-#: classes/cetacean-university-word-count.php:194
+#: classes/cetacean-university-word-filter.php:37
+#: classes/cetacean-university-word-filter.php:159
+msgid "Word Filter Options"
+msgstr ""
+
+#: classes/cetacean-university-word-count.php:185
 msgid "words"
+msgstr ""
+
+#: classes/cetacean-university-word-filter.php:29
+#: classes/cetacean-university-word-filter.php:30
+msgid "Words List"
+msgstr ""
+
+#: classes/cetacean-university-word-filter.php:94
+msgid "Words to Filter"
+msgstr ""
+
+#: classes/cetacean-university-word-filter.php:150
+msgid "Your filter words were saved"
 msgstr ""

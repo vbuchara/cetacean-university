@@ -1,0 +1,17 @@
+
+@function getPriorityId(
+    $priority: 1
+){
+    $priorityIds: "";
+
+    @for $index from 1 through $priority {
+        @if ($index == 1) {
+            $priorityIds: "#priority#{$index}";
+        } @else {
+            $priorityIds: $priorityIds + ", #priority#{$index}";
+        }
+
+    }
+
+    @return $priorityIds;
+}

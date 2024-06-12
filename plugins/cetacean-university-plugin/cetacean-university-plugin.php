@@ -19,18 +19,20 @@ require_once CUP_PLUGIN_DIR_PATH . 'helpers.php';
 require_once CUP_PLUGIN_DIR_PATH . 'classes/cetacean-university-word-count.php';
 require_once CUP_PLUGIN_DIR_PATH . 'classes/cetacean-university-word-filter.php';
 require_once CUP_PLUGIN_DIR_PATH . 'classes/cetacean-university-quiz.php';
+require_once CUP_PLUGIN_DIR_PATH . 'classes/cetacean-university-featured-professor.php';
 
 class Cetacean_University_Plugin {
     public Cetacean_University_Word_Count $cetacean_university_word_count;
     public Cetacean_University_Word_Filter $cetacean_university_word_filter;
     public Cetacean_University_Quiz $cetacean_university_quiz;
-
+    public Cetacean_University_Featured_Professor $cetacean_university_featured_professor;
 
     function __construct(){
         add_action('init', [$this, 'plugin_language']);
         $this->cetacean_university_word_count = new Cetacean_University_Word_Count();
         $this->cetacean_university_word_filter = new Cetacean_University_Word_Filter();
         $this->cetacean_university_quiz = new Cetacean_University_Quiz();
+        $this->cetacean_university_featured_professor = new Cetacean_University_Featured_Professor();
     }
 
     function plugin_language() {

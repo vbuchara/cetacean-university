@@ -10,7 +10,7 @@ import {
 
 import type { 
     CupQuizBlockAttributes 
-} from "../blocks/CupQuizBlock";
+} from "@blocks/CupQuizBlock";
 
 export type QuizBlockPanelProps = {
    attributes: CupQuizBlockAttributes,

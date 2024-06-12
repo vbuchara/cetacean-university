@@ -1,0 +1,16 @@
+@use "functions" as *;
+
+@mixin withPriority(
+    $priority: 1
+){
+    &:is(*, #{getPriorityId($priority)}){
+        @content;
+    }
+}
+
+// Support Mixins
+@mixin supportsHasSelector(){
+    @supports(selector(*:has(*))){
+        @content;
+    }
+}

@@ -4,22 +4,29 @@
   "main": "js/build/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "wp-scripts build src/index src/frontend",
-    "start": "wp-scripts start src/index src/frontend",
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
     "plugin-zip": "wp-scripts plugin-zip"
   },
   "devDependencies": {
     "@types/uuid": "^9.0.8",
+    "@types/voca": "^1.4.5",
     "@types/wordpress__block-editor": "^11.5.14",
     "@types/wordpress__blocks": "^12.5.14",
     "@types/wordpress__editor": "^13.6.8",
     "@wordpress/scripts": "^27.9.0"
   },
   "dependencies": {
+    "@wordpress/core-data": "^7.0.0",
     "@wordpress/data": "^10.0.0",
     "@wordpress/editor": "^14.0.0",
+    "@wordpress/react-i18n": "^4.0.0",
+    "fp-ts": "^2.16.6",
+    "glob": "^10.4.1",
     "polished": "^4.3.1",
     "react-use": "^17.5.0",
-    "uuid": "^9.0.1"
+    "string-strip-html": "^13.4.8",
+    "uuid": "^9.0.1",
+    "voca": "^1.4.1"
   }
 }

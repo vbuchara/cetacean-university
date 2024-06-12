@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cetacean University Plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-11 04:49+0000\n"
+"POT-Creation-Date: 2024-06-11 04:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -90,11 +90,6 @@ msgstr ""
 
 #: classes/cetacean-university-word-count.php:208
 msgid "second(s)"
-msgstr ""
-
-#: build/CupFeaturedProfessorBlock/frontend.js:401
-#: build/CupFeaturedProfessorBlock/index.js:401
-msgid "Select the professor to be featured"
 msgstr ""
 
 #: classes/cetacean-university-word-filter.php:137
