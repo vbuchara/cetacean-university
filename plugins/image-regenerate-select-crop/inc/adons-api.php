@@ -25,7 +25,7 @@ class SIRSC_Adons_API {
 	 *
 	 * @return object
 	 */
-	public static function get_instance() { //phpcs:ignore
+	public static function get_instance() { // phpcs:ignore
 		if ( ! self::$instance ) {
 			self::$instance = new SIRSC_Adons_API();
 		}
@@ -34,8 +34,6 @@ class SIRSC_Adons_API {
 
 	/**
 	 * Class constructor
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		self::init();
@@ -43,8 +41,6 @@ class SIRSC_Adons_API {
 
 	/**
 	 * The class init.
-	 *
-	 * @return void
 	 */
 	public static function init() {
 		add_filter( 'http_request_args', [ get_called_class(), 'bypass_curl_args_local' ], 10, 2 );
@@ -57,7 +53,7 @@ class SIRSC_Adons_API {
 	 * @param  string $url Url.
 	 * @return array
 	 */
-	public static function bypass_curl_args_local( $r, $url ) { //phpcs:ignore
+	public static function bypass_curl_args_local( $r, $url ) { // phpcs:ignore
 		if ( substr_count( $url, self::PLUGIN_API_URL ) ) {
 			$r['sslverify'] = false;
 		}
@@ -71,7 +67,7 @@ class SIRSC_Adons_API {
 	 * @param  array  $args   Call arguments.
 	 * @return boolean|object
 	 */
-	public static function do_api_call( $action, $args = [] ) { //phpcs:ignore
+	public static function do_api_call( $action, $args = [] ) { // phpcs:ignore
 		$result  = false;
 		$default = [
 			'action'     => $action,
@@ -101,11 +97,10 @@ class SIRSC_Adons_API {
 	/**
 	 * Deal with errors.
 	 *
-	 * @param  string $slug   The extension slug.
-	 * @param  mixed  $errors Maybe errors.
-	 * @return void
+	 * @param string $slug   The extension slug.
+	 * @param mixed  $errors Maybe errors.
 	 */
-	public static function deal_with_errors( $slug, $errors ) { //phpcs:ignore
+	public static function deal_with_errors( $slug, $errors ) { // phpcs:ignore
 		$error = '';
 		if ( ! empty( $errors ) ) {
 			$error  = 'ERROR: ';
@@ -125,12 +120,11 @@ class SIRSC_Adons_API {
 	/**
 	 * Activate a license key.
 	 *
-	 * @param  string $slug The extension slug.
-	 * @param  string $sku  The extension SKU.
-	 * @param  string $key  The extension license_key.
-	 * @return void
+	 * @param string $slug The extension slug.
+	 * @param string $sku  The extension SKU.
+	 * @param string $key  The extension license_key.
 	 */
-	public static function activate_license_key( $slug, $sku, $key ) { //phpcs:ignore
+	public static function activate_license_key( $slug, $sku, $key ) { // phpcs:ignore
 		self::update_adon_property( $slug, 'license_key', $key );
 		$rez = self::do_api_call(
 			'license_key_activate',
@@ -162,13 +156,12 @@ class SIRSC_Adons_API {
 	/**
 	 * Validate a license key.
 	 *
-	 * @param  string $slug The extension slug.
-	 * @param  string $sku  The extension SKU.
-	 * @param  string $key  The extension license_key.
-	 * @param  string $id   The activation ID.
-	 * @return void
+	 * @param string $slug The extension slug.
+	 * @param string $sku  The extension SKU.
+	 * @param string $key  The extension license_key.
+	 * @param string $id   The activation ID.
 	 */
-	public static function validate_license_key( $slug, $sku, $key, $id ) { //phpcs:ignore
+	public static function validate_license_key( $slug, $sku, $key, $id ) { // phpcs:ignore
 		if ( ! empty( $id ) ) {
 			$rez = self::do_api_call(
 				'license_key_validate',
@@ -194,13 +187,12 @@ class SIRSC_Adons_API {
 	/**
 	 * Deactivate a license key.
 	 *
-	 * @param  string $slug The extension slug.
-	 * @param  string $sku  The extension SKU.
-	 * @param  string $key  The extension license_key.
-	 * @param  string $id   The activation ID.
-	 * @return void
+	 * @param string $slug The extension slug.
+	 * @param string $sku  The extension SKU.
+	 * @param string $key  The extension license_key.
+	 * @param string $id   The activation ID.
 	 */
-	public static function deactivate_license_key( $slug, $sku, $key, $id ) { //phpcs:ignore
+	public static function deactivate_license_key( $slug, $sku, $key, $id ) { // phpcs:ignore
 		$rez = self::do_api_call(
 			'license_key_deactivate',
 			[
@@ -214,12 +206,11 @@ class SIRSC_Adons_API {
 	/**
 	 * Update adon property.
 	 *
-	 * @param  string $slug  The extension slug.
-	 * @param  string $prop  The extension property.
-	 * @param  string $value The extension property value.
-	 * @return void
+	 * @param string $slug  The extension slug.
+	 * @param string $prop  The extension property.
+	 * @param string $value The extension property value.
 	 */
-	public static function update_adon_property( $slug, $prop, $value ) { //phpcs:ignore
+	public static function update_adon_property( $slug, $prop, $value ) { // phpcs:ignore
 		$all = SIRSC_Adons::$adons;
 		if ( ! empty( $all[ $slug ] ) ) {
 			$all[ $slug ][ $prop ] = $value;

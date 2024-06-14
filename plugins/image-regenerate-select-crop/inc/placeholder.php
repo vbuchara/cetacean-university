@@ -6,54 +6,97 @@
  */
 
 declare( strict_types=1 );
-
 namespace SIRSC\Placeholder;
 
-if ( ! defined( 'SIRSC_PLACEHOLDER_FOLDER' ) ) {
-	$dest_url  = SIRSC_PLUGIN_URL . 'assets/placeholders';
-	$dest_path = SIRSC_PLUGIN_FOLDER . 'assets/placeholders';
-	if ( ! file_exists( $dest_path ) ) {
-		@wp_mkdir_p( $dest_path ); //phpcs:ignore
-	}
-	define( 'SIRSC_PLACEHOLDER_FOLDER', $dest_path );
-	define( 'SIRSC_PLACEHOLDER_URL', esc_url( $dest_url ) );
-}
+define( 'SIRSC_PLACEHOLDER_DIR', SIRSC_DIR . 'assets/placeholders' );
+define( 'SIRSC_PLACEHOLDER_URL', \esc_url( SIRSC_URL . 'assets/placeholders' ) );
 
-if ( ! \is_admin() && class_exists( 'SIRSC' ) && ! empty( \SIRSC::$settings['placeholders'] ) ) {
-	// For the front side, let's use placeolders if the case.
-	if ( ! empty( \SIRSC::$settings['placeholders']['force_global'] ) ) {
-		\add_filter( 'image_downsize', __NAMESPACE__ . '\\image_downsize_placeholder_force_global', 10, 3 );
-	} elseif ( ! empty( \SIRSC::$settings['placeholders']['only_missing'] ) ) {
-		\add_filter( 'image_downsize', __NAMESPACE__ . '\\image_downsize_placeholder_only_missing', 10, 3 );
+\add_filter( 'image_downsize', __NAMESPACE__ . '\\image_downsize_placeholder_force_global', 10, 3 );
+\add_filter( 'image_downsize', __NAMESPACE__ . '\\image_downsize_placeholder_only_missing', 10, 3 );
+\add_filter( 'init', __NAMESPACE__ . '\\prepare_folder', 10, 3 );
+
+/**
+ * Prepare placeholders folder.
+ */
+function prepare_folder() {
+	if ( empty( \SIRSC::$settings['placeholders'] ) ) {
+		// Fail-fast, not the expected setting.
+		return;
+	}
+
+	if ( ! file_exists( SIRSC_PLACEHOLDER_DIR ) ) {
+		@wp_mkdir_p( SIRSC_PLACEHOLDER_DIR ); // phpcs:ignore
 	}
 }
 
 /**
- * Replace all the front side images retrieved programmatically with wp function with the placeholders instead of the full size image.
- *
- * @param string  $f  The file.
- * @param integer $id The post ID.
- * @param string  $s  The size slug.
+ * Regenerate all placeholders.
  */
-function image_downsize_placeholder_force_global( $f, $id, $s ) { //phpcs:ignore
+function regenerate_all_placeholders() {
+	$files = glob( SIRSC_PLACEHOLDER_DIR . '/*' );
+	if ( ! empty( $files ) ) {
+		foreach ( $files as $file ) {
+			if ( is_file( $file ) ) {
+				\wp_delete_file( $file );
+			}
+		}
+	}
+
+	get_placeholder_url_for_subsize( 'full', true, true );
+	$sizes = \SIRSC::get_all_image_sizes();
+	if ( ! empty( $sizes ) ) {
+		foreach ( $sizes as $n => $s ) {
+			get_placeholder_url_for_subsize( $n, true, true );
+		}
+	}
+}
+
+/**
+ * Replace all the front side images retrieved programmatically with wp function
+ * with the placeholders instead of the full size image.
+ *
+ * @param string $f  The file.
+ * @param int    $id The post ID.
+ * @param string $s  The size slug.
+ */
+function image_downsize_placeholder_force_global( $f, $id, $s ) { // phpcs:ignore
+	if ( \is_admin() ) {
+		// Fail-fast, this is in admin.
+		return $f;
+	}
+
+	if ( empty( \SIRSC::$settings['placeholders']['force_global'] ) ) {
+		// Fail-fast, not the expected setting.
+		return $f;
+	}
+
 	if ( is_array( $s ) ) {
 		$s = implode( 'x', $s );
 	}
-	$img_url = image_placeholder_for_image_size( $s );
-	$size    = \SIRSC::get_all_image_sizes( $s );
-	$width   = ( ! empty( $size['width'] ) ) ? $size['width'] : 0;
-	$height  = ( ! empty( $size['height'] ) ) ? $size['height'] : 0;
-	return [ $img_url, $width, $height, true ];
+
+	$url  = get_placeholder_url_for_subsize( $s );
+	$size = \SIRSC::get_all_image_sizes( $s );
+	return [ $url, $size['width'] ?? 0, $size['height'] ?? 0, true ];
 }
 
 /**
- * Replace the missing images sizes with the placeholders instead of the full size image. As the "image size name" is specified, we know what width and height the resulting image should have. Hence, first, the potential image width and height are matched against the entire set of image sizes defined in order to identify if there is the exact required image either an alternative file with the specific required width and height already generated for that width and height but with another "image size name" in the database or not. Basically, the first step is to identify if there is an image with the required width and height. If that is identified, it will be presented, regardless of the fact that the "image size name" is the requested one or it is not even yet defined for this specific post (due to a later definition of the image in the project development). If the image to be presented is not identified at any level, then the code is trying to identify the appropriate theme placeholder for the requested "image size name". For that we are using the placeholder function with the requested "image size name". If the placeholder exists, then this is going to be presented, else we are logging the missing placeholder alternative that can be added in the image_placeholder_for_image_size function.
+ * Replace the missing images sizes with the placeholders instead of the full size image. As the "image size name" is specified, we know what width and height the resulting image should have. Hence, first, the potential image width and height are matched against the entire set of image sizes defined in order to identify if there is the exact required image either an alternative file with the specific required width and height already generated for that width and height but with another "image size name" in the database or not. Basically, the first step is to identify if there is an image with the required width and height. If that is identified, it will be presented, regardless of the fact that the "image size name" is the requested one or it is not even yet defined for this specific post (due to a later definition of the image in the project development). If the image to be presented is not identified at any level, then the code is trying to identify the appropriate theme placeholder for the requested "image size name". For that we are using the placeholder function with the requested "image size name". If the placeholder exists, then this is going to be presented, else we are logging the missing placeholder alternative that can be added in the get_placeholder_url_for_subsize function.
  *
- * @param string  $f  The file.
- * @param integer $id The pot ID.
- * @param string  $s  The size slug.
+ * @param string $f  The file.
+ * @param int    $id The pot ID.
+ * @param string $s  The size slug.
  */
-function image_downsize_placeholder_only_missing( $f, $id, $s ) { //phpcs:ignore
+function image_downsize_placeholder_only_missing( $f, $id, $s ) { // phpcs:ignore
+	if ( \is_admin() ) {
+		// Fail-fast, this is in admin.
+		return $f;
+	}
+
+	if ( empty( \SIRSC::$settings['placeholders']['only_missing'] ) ) {
+		// Fail-fast, not the expected setting.
+		return $f;
+	}
+
 	$all_sizes = \SIRSC::get_all_image_sizes();
 	if ( 'full' !== $s && is_scalar( $s ) && ! empty( $all_sizes[ $s ] ) ) {
 		try {
@@ -123,31 +166,28 @@ function image_downsize_placeholder_only_missing( $f, $id, $s ) { //phpcs:ignore
 					}
 				}
 			}
+
 			if ( ! empty( $alternative ) && $found_match ) {
-				$placeholder = [ $alternative['file'], $alternative['width'], $alternative['height'], $alternative['intermediate'] ];
-				return $placeholder;
+				// Alternative found.
+				return [ $alternative['file'], $alternative['width'], $alternative['height'], $alternative['intermediate'] ];
 			} else {
-				$img_url = image_placeholder_for_image_size( $s );
-				if ( ! empty( $img_url ) ) {
-					$width           = (int) $request_w;
-					$height          = (int) $request_w;
-					$is_intermediate = true;
-					$placeholder     = [ $img_url, $width, $height, $is_intermediate ];
-					return $placeholder;
+				$url = get_placeholder_url_for_subsize( $s );
+				if ( ! empty( $url ) ) {
+					// Is intermediate.
+					return [ $url, (int) $request_w ?? 0, (int) $request_w ?? 0, true ];
 				} else {
 					return;
 				}
 			}
 		} catch ( ErrorException $e ) {
-			error_log( 'sirsc exception ' . print_r( $e, 1 ) ); //phpcs:ignore
+			error_log( 'sirsc exception ' . print_r( $e, 1 ) ); // phpcs:ignore
 		}
 	}
 
 	// Fallback.
-	$img_url = image_placeholder_for_image_size( $s, false, true );
-	if ( ! empty( $img_url ) ) {
-		$placeholder = [ $img_url, (int) $s[0], (int) $s[1], false ];
-		return $placeholder;
+	$url = get_placeholder_url_for_subsize( $s, false, true );
+	if ( ! empty( $url ) ) {
+		return [ $url, (int) $s[0] ?? 0, (int) $s[1] ?? 0, false ];
 	} else {
 		return;
 	}
@@ -156,165 +196,154 @@ function image_downsize_placeholder_only_missing( $f, $id, $s ) { //phpcs:ignore
 /**
  * Generate a placeholder image for a specified image size name.
  *
- * @param string  $selected_size The selected image size slug.
- * @param boolean $force_update  True if the update is forced, to clear the cache.
- * @param boolean $execute       True if the image size should be used as such.
+ * @param string $size    The selected image size slug.
+ * @param bool   $update  True if the update is forced, to clear the cache.
+ * @param bool   $execute True if the image size should be used as such.
  */
-function image_placeholder_for_image_size( $selected_size, $force_update = false, $execute = false ) { //phpcs:ignore
-	if ( empty( $selected_size ) ) {
-		$selected_size = 'full';
+function get_placeholder_url_for_subsize( $size, $update = false, $execute = false ) {
+	if ( empty( $size ) ) {
+		$size = 'full';
 	}
 
-	$alternative = \SIRSC\Helper\maybe_match_size_name_by_width_height( $selected_size );
-	if ( ! is_scalar( $selected_size ) ) {
+	$alternative = \SIRSC\Helper\maybe_match_size_name_by_width_height( $size );
+	if ( ! is_scalar( $size ) ) {
 		if ( true === $execute ) {
-			$selected_size = implode( 'x', $selected_size );
+			$size = implode( 'x', $size );
 		} elseif ( ! empty( $alternative ) ) {
-			$selected_size = $alternative;
+			$size = $alternative;
 		} else {
-			$selected_size = implode( 'x', $selected_size );
+			$size = implode( 'x', $size );
 		}
 	}
 
-	$dest     = realpath( SIRSC_PLACEHOLDER_FOLDER ) . '/' . $selected_size . '.png';
-	$dest_url = \esc_url( SIRSC_PLACEHOLDER_URL . '/' . $selected_size . '.png' );
-
-	if ( file_exists( $dest ) && ! $force_update ) {
+	$dest = realpath( SIRSC_PLACEHOLDER_DIR ) . '/' . $size . '.svg';
+	$url  = \esc_url( SIRSC_PLACEHOLDER_URL . '/' . $size . '.svg' );
+	if ( file_exists( $dest ) && ! $update ) {
 		// Return the found image url.
-		return $dest_url;
+		return $url;
 	}
 
-	if ( file_exists( $dest ) && $force_update ) {
-		@unlink( $dest ); //phpcs:ignore
+	if ( file_exists( $dest ) && $update ) {
+		@unlink( $dest ); // phpcs:ignore
 	}
 
-	$alls     = \SIRSC::get_all_image_sizes_plugin();
-	$dest_url = url( $alls, $dest, $dest_url, $selected_size, $alternative );
-
-	return $dest_url;
+	$alls = \SIRSC::get_all_image_sizes_plugin();
+	return placeholder_url( $alls, $dest, $url, $size, $alternative );
 }
 
 /**
  * Compute placeholder url.
  *
- * @param  array  $alls          All image sizes.
- * @param  string $dest          The destination path.
- * @param  string $dest_url      The destination url.
- * @param  string $selected_size The intended image size.
- * @param  string $alternative   The alternative image size.
+ * @param  array  $sizes       All image sizes.
+ * @param  string $dest        The destination path.
+ * @param  string $dest_url    The destination url.
+ * @param  string $selected    The intended image size.
+ * @param  string $alternative The alternative image size.
  * @return string
  */
-function url( $alls, $dest, $dest_url, $selected_size, $alternative ) { //phpcs:ignore
-	if ( empty( $alls ) ) {
-		if ( class_exists( 'SIRSC' ) ) {
-			$alls = \SIRSC::get_all_image_sizes_plugin();
-		}
+function placeholder_url( $sizes, $dest, $dest_url = '', $selected = '', $alternative = '' ) {
+	if ( empty( $sizes ) && class_exists( 'SIRSC' ) ) {
+		$sizes = \SIRSC::get_all_image_sizes_plugin();
 	}
 
-	$fallback = \SIRSC::$limit9999;
-
-	$iw = 0;
-	$ih = 0;
-	$ew = 0;
-	$eh = 0;
-
-	$size_sel = $selected_size;
-	if ( 'full' === $selected_size ) {
+	$name = $selected;
+	if ( 'full' === $selected ) {
 		// Compute the full fallback for a width and height.
-		$size_sel = 'full';
+		$name = 'full';
 		if ( ! empty( $alternative ) && 'full' !== $alternative ) {
-			$size_sel = $alternative;
-		} elseif ( ! empty( $alls['large'] ) ) {
-			$size_sel = 'large';
-		} elseif ( ! empty( $alls['medium_large'] ) ) {
-			$size_sel = 'medium_large';
+			$name = $alternative;
+		} elseif ( ! empty( $sizes['large'] ) ) {
+			$name = 'large';
+		} elseif ( ! empty( $sizes['medium_large'] ) ) {
+			$name = 'medium_large';
 		}
 	}
-	if ( ! empty( $alls[ $size_sel ] ) ) {
-		$size = $alls[ $size_sel ];
-		$iw   = (int) $size['width'];
-		$ih   = (int) $size['height'];
-		if ( ! empty( $size['width'] ) && empty( $size['height'] ) ) {
-			$ih = $iw;
-		} elseif ( empty( $size['width'] ) && ! empty( $size['height'] ) ) {
-			$iw = $ih;
-		}
+
+	if ( ! empty( $sizes[ $name ] ) ) {
+		$width  = $sizes[ $name ]['width'] ?? 0;
+		$height = $sizes[ $name ]['height'] ?? 0;
 	} else {
-		$s  = explode( 'x', $size_sel );
-		$iw = ( ! empty( $s[0] ) ) ? (int) $s[0] : 0;
-		$iw = ( empty( $iw ) ) ? $fallback : $iw;
-		$ih = ( ! empty( $s[1] ) ) ? (int) $s[1] : 0;
-		$ih = ( empty( $ih ) ) ? $fallback : $ih;
+		$size   = explode( 'x', $name );
+		$width  = $size[0] ?? 0;
+		$height = $size[1] ?? 0;
 	}
 
-	$ew = $iw;
-	$eh = $ih;
-	if ( $iw >= 9999 ) {
-		$iw = $fallback;
-		$ew = '0';
+	$width  = (int) $width;
+	$height = (int) $height;
+	$text   = $width . 'x' . $height;
+
+	if ( empty( $width ) ) {
+		$width = ! empty( $height ) ? ceil( $height / 2 ) : 1200;
 	}
-	if ( $ih >= 9999 ) {
-		$ih = $fallback;
-		$eh = '0';
+	if ( empty( $height ) ) {
+		$height = ! empty( $width ) ? ceil( $width / 2 ) : 1200;
 	}
 
-	$iw = empty( $iw ) ? 1024 : abs( (int) $iw );
-	$ih = empty( $ih ) ? 1024 : abs( (int) $ih );
-
-	if ( ! \wp_is_writable( SIRSC_PLACEHOLDER_FOLDER ) ) {
+	if ( ! \wp_is_writable( SIRSC_PLACEHOLDER_DIR ) ) {
 		// By default set the dummy, the folder is not writtable.
-		$dest_url = make_placeholder_dummy( $dest, $iw, $ih, $ew, $eh, $selected_size );
-		return $dest_url;
-	} else {
-		$dest_url = make_placeholder_dummy( $dest, $iw, $ih, $ew, $eh, $selected_size );
-		if ( ! file_exists( $dest ) ) {
-			if ( function_exists( 'imagettfbbox' ) ) {
-				make_placeholder_imagettftext( $dest, $iw, $ih, $selected_size, $ew, $eh );
-			} elseif ( class_exists( 'Imagick' ) ) {
-				make_placeholder_imagick( $dest, $iw, $ih, $selected_size, $ew, $eh );
-			} elseif ( function_exists( 'imagestring' ) ) {
-				make_placeholder_imagestring( $dest, $iw, $ih, $selected_size, $ew, $eh );
-			}
-		}
+		return make_placeholder_dummy( $dest, $name, $text, $width, $height );
 	}
 
-	return $dest_url;
+	return make_placeholder_svg( $dest, $name, $text, $width, $height );
 }
 
 /**
  * Make placeholder url.
  *
- * @param  string $dest Images destination.
- * @param  int    $iw   Image width.
- * @param  int    $ih   Image height.
- * @param  int    $sw   Width text.
- * @param  int    $sh   Height text.
- * @param  string $name Images size name.
+ * @param  string $dest   Images destination.
+ * @param  string $name   Subsize name.
+ * @param  string $text   Placeholder text.
+ * @param  int    $width  Image width.
+ * @param  int    $height Image height.
  * @return string
  */
-function make_placeholder_dummy( $dest, $iw, $ih, $sw, $sh, $name = '' ) { //phpcs:ignore
-	$name = str_replace( '-', '+', $name );
-	$name = str_replace( '_', '+', $name );
-	$url  = 'https://dummyimage.com/' . $iw . 'x' . $ih . '/' . substr( str_shuffle( 'ABCDEF0123456789' ), 0, 6 ) . '/ffffff&fsize=7&size=7&text=++' . $name . '+' . $sw . 'x' . $sh . '+';
+function make_placeholder_dummy( $dest , $name = '', $text = '', $width = 0, $height = 0 ) { // phpcs:ignore
+	$color      = \SIRSC\Helper\string2color( $name . $text );
+	$is_light   = \SIRSC\Helper\is_light_color( $color );
+	$color      = str_replace( '#', '', $color );
+	$text_color = $is_light ? '000' : 'fff';
 
-	if ( ! file_exists( $dest ) && \wp_is_writable( SIRSC_PLACEHOLDER_FOLDER ) ) {
-		// Let's fetch the remote image.
-		$response = \wp_safe_remote_get( $url );
-		$url      = '';
-		$code     = \wp_remote_retrieve_response_code( $response );
-		if ( 200 === $code ) {
-			// Seems that we got a successful response from the remore URL.
-			$content_type = \wp_remote_retrieve_header( $response, 'content-type' );
-			if ( ! empty( $content_type ) && substr_count( $content_type, 'image/' ) ) {
-				// Seems that the content type is an image, let's get the body as the file content.
-				$file_content = \wp_remote_retrieve_body( $response );
-			}
+	if ( $name !== $text ) {
+		$text = $name . ' (' . $text . ')';
+	}
+
+	return 'https://dummyimage.com/' . $width . 'x' . $height . '/' . $color . '/' . $text_color . '/jpeg?text=' . rawurlencode( '  ' . trim( $text ) . ' ' );
+}
+
+/**
+ * Make placeholder svg and returns the URL.
+ *
+ * @param  string $dest   Images destination.
+ * @param  string $name   Subsize name.
+ * @param  string $text   Placeholder text.
+ * @param  int    $width  Image width.
+ * @param  int    $height Image height.
+ * @return string
+ */
+function make_placeholder_svg( $dest, $name = '', $text = '', $width = 0, $height = 0 ) {
+	$font_size1 = 18;
+	$font_size2 = 14;
+	if ( (int) $width <= 200 ) {
+		$font_size1 = 10;
+		if ( strlen( $name ) > 20 ) {
+			$font_size1 = 5;
 		}
+	}
 
-		if ( ! empty( $file_content ) ) {
-			if ( @file_put_contents( $dest, $file_content ) ) { //phpcs:ignore
-				$url = str_replace( SIRSC_PLACEHOLDER_FOLDER, SIRSC_PLACEHOLDER_URL, $dest );
-			}
+	$middle     = $height / 2;
+	$color      = \SIRSC\Helper\string2color( $name . $text . $font_size1 );
+	$is_light   = \SIRSC\Helper\is_light_color( $color );
+	$text_color = $is_light ? '#000' : '#fff';
+	$content    = '<svg width="' . $width . '" height="' . $height . '" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="' . $color . '"/><text x="50%" y="' . ( $middle - 10 ) . '" dominant-baseline="middle" text-anchor="middle" fill="' . $text_color . '" font-size="' . $font_size1 . '" font-family="system-ui">' . $name . '</text><text x="50%" y="' . ( $middle + 10 ) . '" dominant-baseline="middle" text-anchor="middle" fill="' . $text_color . '" fill-opacity="0.6" font-size="' . ( $font_size2 ) . '" font-family="system-ui">' . $text . '</text></svg>';
+
+	if ( file_exists( $dest ) ) {
+		\wp_delete_file( $dest );
+	}
+
+	$url = str_replace( SIRSC_PLACEHOLDER_DIR, SIRSC_PLACEHOLDER_URL, $dest );
+	if ( ! file_exists( $dest ) && \wp_is_writable( SIRSC_PLACEHOLDER_DIR ) ) {
+		if ( @file_put_contents( $dest, $content ) ) { // phpcs:ignore
+			return $url;
 		}
 	}
 
@@ -322,88 +351,14 @@ function make_placeholder_dummy( $dest, $iw, $ih, $sw, $sh, $name = '' ) { //php
 }
 
 /**
- * Make placeholder with imagettftext.
+ * Outputs the placeholder for preview.
  *
- * @param  string  $dest Images destination.
- * @param  integer $iw   Image width.
- * @param  integer $ih   Image height.
- * @param  string  $name Image size name.
- * @param  integer $sw   Width text.
- * @param  integer $sh   Height text.
- * @return void
+ * @param string $size Subsize name.
  */
-function make_placeholder_imagettftext( $dest, $iw, $ih, $name, $sw, $sh ) { //phpcs:ignore
-	if ( empty( $iw ) || empty( $ih ) ) {
-		return;
-	}
-	// phpcs:disable
-	$im    = @imagecreatetruecolor( abs( (int) $iw ), abs( (int) $ih ) );
-	$white = @imagecolorallocate( $im, 255, 255, 255 );
-	$rand  = @imagecolorallocate( $im, \wp_rand( 0, 150 ), \wp_rand( 0, 150 ), \wp_rand( 0, 150 ) );
-	@imagefill( $im, 0, 0, $rand );
-	$font = @realpath( SIRSC_PLUGIN_FOLDER . '/assets/fonts' ) . '/arial.ttf';
-	@imagettftext( $im, 6.5, 0, 2, 10, $white, $font, 'placeholder' );
-	@imagettftext( $im, 6.5, 0, 2, 20, $white, $font, $name );
-	@imagettftext( $im, 6.5, 0, 2, 30, $white, $font, $sw . 'x' . $sh );
-	@imagepng( $im, $dest, 9 );
-	@imagedestroy( $im );
-	// phpcs:enable
-}
-
-/**
- * Make placeholder with Imagick.
- *
- * @param  string  $dest Images destination.
- * @param  integer $iw   Image width.
- * @param  integer $ih   Image height.
- * @param  string  $name Image size name.
- * @param  integer $sw   Width text.
- * @param  integer $sh   Height text.
- * @return void
- */
-function make_placeholder_imagick( $dest, $iw, $ih, $name, $sw, $sh ) { //phpcs:ignore
-	if ( empty( $iw ) || empty( $ih ) ) {
-		return;
-	}
-	$im    = new \Imagick();
-	$draw  = new \ImagickDraw();
-	$pixel = new \ImagickPixel( '#' . \wp_rand( 10, 99 ) . \wp_rand( 10, 99 ) . \wp_rand( 10, 99 ) );
-	$im->newImage( $iw, $ih, $pixel );
-	$draw->setFillColor( '#FFFFFF' );
-	$draw->setFont( SIRSC_PLUGIN_FOLDER . '/assets/fonts/arial.ttf' );
-	$draw->setFontSize( 12 );
-	$draw->setGravity( \Imagick::GRAVITY_CENTER );
-	$im->annotateImage( $draw, 0, 0, 0, $sw . 'x' . $sh );
-	$im->setImageFormat( 'png' );
-	$im->writeimage( $dest );
-}
-
-/**
- * Make placeholder with imagestring.
- *
- * @param  string  $dest Images destination.
- * @param  integer $iw   Image width.
- * @param  integer $ih   Image height.
- * @param  string  $name Image size name.
- * @param  integer $sw   Width text.
- * @param  integer $sh   Height text.
- * @return void
- */
-function make_placeholder_imagestring( $dest, $iw, $ih, $name, $sw, $sh ) { //phpcs:ignore
-	if ( empty( $iw ) || empty( $ih ) ) {
-		return;
-	}
-	// phpcs:disable
-	$im    = @imagecreatetruecolor( abs( (int) $iw ), abs( (int) $ih ) );
-	$white = @imagecolorallocate( $im, 255, 255, 255 );
-	$rand  = @imagecolorallocate( $im, \wp_rand( 0, 150 ), \wp_rand( 0, 150 ), \wp_rand( 0, 150 ) );
-	@imagefill( $im, 0, 0, $rand );
-	@imagestring( $im, 2, 2, 2, 'placeholder', $white );
-	@imagestring( $im, 2, 2, 12, $name, $white );
-	if ( $name !== $sw . 'x' . $sh ) {
-		@imagestring( $im, 2, 2, 22, $sw . 'x' . $sh, $white );
-	}
-	@imagepng( $im, $dest, 9 );
-	@imagedestroy( $im );
-	// phpcs:enable
+function the_placeholder_preview( $size = '' ) {
+	$url  = get_placeholder_url_for_subsize( $size, false, false );
+	$url .= substr_count( $url, '?' ) ? '&t=' . time() : '?t=' . time();
+	?>
+	<a href="<?php echo \esc_url( $url ); ?>" class="sirsc-placeholder" target="_blank"><img src="<?php echo \esc_url( $url ); ?>"></a>
+	<?php
 }

@@ -21,7 +21,7 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	 *
 	 * @return object
 	 */
-	public static function get_instance() { //phpcs:ignore
+	public static function get_instance() { // phpcs:ignore
 		if ( ! self::$instance ) {
 			self::$instance = new SIRSC_Adons();
 		}
@@ -46,27 +46,30 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 			add_action( 'init', [ $called, 'maybe_deal_with_adons' ] );
 			add_action( 'admin_menu', [ $called, 'admin_menu' ], 30 );
 		}
+
+		if ( wp_doing_cron() ) {
+			add_action( 'init', [ $called, 'detect_adons' ] );
+		}
 	}
 
 	/**
 	 * Detect menu items.
-	 *
-	 * @return void
 	 */
 	public static function detect_menu_items() {
-		self::$menu_items = [
-			self::PLUGIN_PAGE_SLUG               => [
-				'slug'  => self::PLUGIN_PAGE_SLUG,
-				'title' => __( 'General Settings', 'sirsc' ),
-				'url'   => admin_url( 'admin.php?page=' . self::PLUGIN_PAGE_SLUG ),
-				'icon'  => '',
-			],
-			'image-regenerate-select-crop-rules' => [
-				'slug'  => 'image-regenerate-select-crop-rules',
-				'title' => __( 'Advanced Rules', 'sirsc' ),
-				'url'   => admin_url( 'admin.php?page=image-regenerate-select-crop-rules' ),
-				'icon'  => '',
-			],
+		self::$menu_items = [];
+
+		self::$menu_items[ SIRSC_PAGE ] = [
+			'slug'  => SIRSC_PAGE,
+			'title' => __( 'General Settings', 'sirsc' ),
+			'url'   => admin_url( 'admin.php?page=' . SIRSC_PAGE ),
+			'icon'  => '',
+		];
+
+		self::$menu_items['image-regenerate-select-crop-rules'] = [
+			'slug'  => 'image-regenerate-select-crop-rules',
+			'title' => __( 'Advanced Rules', 'sirsc' ),
+			'url'   => admin_url( 'admin.php?page=image-regenerate-select-crop-rules' ),
+			'icon'  => '',
 		];
 
 		if ( ! empty( self::$settings['enable_debug_log'] ) ) {
@@ -90,9 +93,8 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	 * Detect menu items.
 	 *
 	 * @param array $item New menu item.
-	 * @return void
 	 */
-	public static function sirsc_add_menu_items( $item ) { //phpcs:ignore
+	public static function sirsc_add_menu_items( $item ) { // phpcs:ignore
 		if ( empty( self::$menu_items[ $item['slug'] ] ) ) {
 			self::$menu_items[ $item['slug'] ] = $item;
 		}
@@ -105,7 +107,7 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	 * @param  string $prop Adon property.
 	 * @return mixed
 	 */
-	public static function get_adon_details( $slug, $prop = '' ) { //phpcs:ignore
+	public static function get_adon_details( $slug, $prop = '' ) { // phpcs:ignore
 		if ( empty( $slug ) || empty( self::$adons[ $slug ] ) ) {
 			return;
 		}
@@ -122,18 +124,14 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 
 	/**
 	 * Regenerate options.
-	 *
-	 * @return void
 	 */
 	public static function regenerate_options() {
 		global $wpdb;
-		$wpdb->query( //phpcs:ignore
-			$wpdb->prepare(
-				' DELETE FROM ' . $wpdb->options . ' WHERE option_name like %s or option_name like %s ',
-				'%sirsc_adon%',
-				'%sirsc-adon%'
-			)
-		);
+		$wpdb->query( $wpdb->prepare( // phpcs:ignore
+			' DELETE FROM ' . $wpdb->options . ' WHERE option_name like %s or option_name like %s ',
+			'%sirsc_adon%',
+			'%sirsc-adon%'
+		) );
 	}
 
 	/**
@@ -146,7 +144,7 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 			'import-export'       => [
 				'name'        => __( 'Import/Export', 'sirsc' ),
 				'description' => __( 'This extension allows you to export and import the plugin settings from an instance to another. The export includes the general settings, the advanced rules, the media settings, and the additional sizes manages with this plugin.', 'sirsc' ),
-				'icon'        => '',
+				'icon'        => '<span class="dashicons dashicons-migrate"></span>',
 				'available'   => true,
 				'active'      => false,
 				'free'        => true,
@@ -201,8 +199,6 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 
 	/**
 	 * Detect adons.
-	 *
-	 * @return void
 	 */
 	public static function detect_adons() {
 		$options     = get_option( 'sirsc_adons_list', [] );
@@ -210,20 +206,25 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 		self::$adons = wp_parse_args( $options, $default );
 
 		foreach ( self::$adons as $key => $value ) {
+			if ( empty( $default[ $key ]['name'] ) ) {
+				unset( self::$adons[ $key ] );
+				continue;
+			}
+
 			self::$adons[ $key ]['name']        = $default[ $key ]['name'];
 			self::$adons[ $key ]['free']        = $default[ $key ]['free'];
 			self::$adons[ $key ]['description'] = $default[ $key ]['description'];
 			self::$adons[ $key ]['price']       = $default[ $key ]['price'];
 			self::$adons[ $key ]['buy_url']     = $default[ $key ]['buy_url'];
-			if ( file_exists( SIRSC_ADONS_FOLDER . $key . '/class-sirsc-' . $key . '.php' ) ) {
+			if ( file_exists( SIRSC_ADONS_DIR . $key . '/class-sirsc-' . $key . '.php' ) ) {
 				if ( ! empty( self::$adons[ $key ]['available'] ) && ! empty( self::$adons[ $key ]['active'] ) ) {
 					self::sirsc_add_menu_items( [
 						'slug'  => 'sirsc-adon-' . $key,
 						'title' => $value['name'],
 						'url'   => admin_url( 'admin.php?page=sirsc-adon-' . $key ),
-						'icon'  => $value['icon'],
+						'icon'  => ! empty( $default[ $key ]['icon'] ) ? $default[ $key ]['icon'] : $value['icon'],
 					] );
-					include_once SIRSC_ADONS_FOLDER . $key . '/class-sirsc-' . $key . '.php';
+					include_once SIRSC_ADONS_DIR . $key . '/class-sirsc-' . $key . '.php';
 				}
 			}
 		}
@@ -234,7 +235,7 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	 */
 	public static function admin_menu() {
 		$adons_notice = '';
-		$maybe_trans  = get_transient( self::PLUGIN_TRANSIENT . '_adons_notice' );
+		$maybe_trans  = get_transient( SIRSC_NOTICE . '_adons_notice' );
 		if ( ! empty( $maybe_trans ) ) {
 			$adons_notice = '<span class="update-plugins count-4"><span class="plugin-count">4</span></span>';
 		}
@@ -249,18 +250,33 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 		);
 
 		global $submenu;
-		if ( ! empty( $submenu['image-regenerate-select-crop-settings'][0][0] ) ) {
-			$submenu['image-regenerate-select-crop-settings'][0][0] = __( 'General Settings', 'sirsc' ); // PHPCS:ignore
+		if ( ! empty( $submenu['image-regenerate-select-crop-settings'] ) ) {
+			$items = [];
+			foreach ( $submenu['image-regenerate-select-crop-settings'] as $k => $item ) {
+				if ( substr_count( $item[2], 'sirsc-adon-' ) || substr_count( $item[2], 'options-media.php' ) ) {
+					$item[0] = ' - ' . $item[0];
+				}
+
+				if ( substr_count( $item[2], 'sirsc-adon-' ) ) {
+					$items[ 20 + (int) $k ] = $item;
+				} else {
+					$items[ $k ] = $item;
+				}
+			}
+
+			ksort( $items );
+			$items[0][0] = __( 'General Settings', 'sirsc' );
+
+			$submenu['image-regenerate-select-crop-settings'] = $items; // phpcs:ignore
 		}
 	}
 
 	/**
 	 * Check adon valid.
 	 *
-	 * @param  string $slug Adon slug.
-	 * @return void
+	 * @param string $slug Adon slug.
 	 */
-	public static function check_adon_valid( $slug ) { //phpcs:ignore
+	public static function check_adon_valid( $slug ) { // phpcs:ignore
 		$trans_id    = 'sirsc-adon-check-' . $slug;
 		$maybe_trans = get_transient( $trans_id );
 		if ( empty( $maybe_trans ) ) {
@@ -270,14 +286,12 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 				$id  = self::get_adon_details( $slug, 'activation_id' );
 				SIRSC_Adons_API::validate_license_key( $slug, $sku, $key, $id );
 			}
-			set_transient( $trans_id, current_time( 'timestamp' ), 1 * HOUR_IN_SECONDS ); //phpcs:ignore
+			set_transient( $trans_id, time(), 1 * HOUR_IN_SECONDS );
 		}
 	}
 
 	/**
 	 * Maybe deal with adons.
-	 *
-	 * @return void
 	 */
 	public static function maybe_deal_with_adons() {
 		$nonce = filter_input( INPUT_POST, '_sirsc_adon_box_nonce', FILTER_DEFAULT );
@@ -329,7 +343,7 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	 * @param  string $slug Adon slug.
 	 * @return array
 	 */
-	public static function adon_check( $slug ) { //phpcs:ignore
+	public static function adon_check( $slug ) { // phpcs:ignore
 		$attr = [
 			'class'  => '',
 			'action' => 'remove',
@@ -362,8 +376,8 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	 * @param  string $slug Adon slug.
 	 * @return boolean
 	 */
-	public static function adon_files_exist( $slug = '' ) { //phpcs:ignore
-		if ( file_exists( SIRSC_ADONS_FOLDER . $slug . '/class-sirsc-' . $slug . '.php' ) ) {
+	public static function adon_files_exist( $slug = '' ) { // phpcs:ignore
+		if ( file_exists( SIRSC_ADONS_DIR . $slug . '/class-sirsc-' . $slug . '.php' ) ) {
 			return true;
 		}
 		return false;
@@ -375,7 +389,7 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	 * @param  string $slug Adon slug.
 	 * @return array
 	 */
-	public static function button_processing( $slug ) { //phpcs:ignore
+	public static function button_processing( $slug ) { // phpcs:ignore
 		return [
 			'onclick' => 'sirscToggleAdon( \'' . esc_attr( $slug ) . '\');',
 		];
@@ -384,10 +398,9 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	/**
 	 * Adon activate/deactivate button.
 	 *
-	 * @param  string $slug Adon slug.
-	 * @return void
+	 * @param string $slug Adon slug.
 	 */
-	public static function maybe_adon_button_activate_deactivate( $slug ) { //phpcs:ignore
+	public static function maybe_adon_button_activate_deactivate( $slug ) { // phpcs:ignore
 		if ( ! empty( self::$adons[ $slug ] ) && self::adon_files_exist( $slug ) ) {
 			$item = self::$adons[ $slug ];
 			if ( ! empty( $item['available'] ) ) {
@@ -396,22 +409,14 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 					<?php
 					if ( empty( $item['active'] ) ) {
 						?>
-						<button type="submit"
-							class="sirsc-save-adon-activate button button-secondary sirsc-button-icon"
-							name="sirsc-save-adon-activate"
-							value="activate"
-							onclick="sirscToggleAdon( '<?php echo esc_attr( $slug ); ?>' );">
+						<button type="submit" class="sirsc-save-adon-activate button has-icon button-secondary sirsc-button-icon" name="sirsc-save-adon-activate" value="activate" onclick="sirscToggleAdon( '<?php echo esc_attr( $slug ); ?>' );">
 							<span class="dashicons dashicons-marker"></span>
 							<span><?php esc_html_e( 'Disabled', 'sirsc' ); ?></span>
 						</button>
 						<?php
 					} else {
 						?>
-						<button type="submit"
-							class="sirsc-save-adon-deactivate button button-primary sirsc-button-icon"
-							name="sirsc-save-adon-deactivate"
-							value="deactivate"
-							onclick="sirscToggleAdon( '<?php echo esc_attr( $slug ); ?>' );">
+						<button type="submit" class="sirsc-save-adon-deactivate button has-icon button-primary sirsc-button-icon" name="sirsc-save-adon-deactivate" value="deactivate" onclick="sirscToggleAdon( '<?php echo esc_attr( $slug ); ?>' );">
 							<span class="dashicons dashicons-yes-alt"></span>
 							<span><?php esc_html_e( 'Enabled', 'sirsc' ); ?></span>
 						</button>
@@ -424,18 +429,16 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 		}
 	}
 
-
 	/**
 	 * Adon activate/deactivate button.
 	 *
-	 * @param  string $slug Adon slug.
-	 * @return void
+	 * @param string $slug Adon slug.
 	 */
-	public static function maybe_adon_button_buy( $slug ) { //phpcs:ignore
+	public static function maybe_adon_button_buy( $slug ) { // phpcs:ignore
 		if ( ! empty( self::$adons[ $slug ] ) ) {
 			$item = self::$adons[ $slug ];
 			?>
-			<a href="<?php echo esc_url( $item['buy_url'] ); ?>" target="_blank" class="sirsc-save-adon-purchase"><?php esc_html_e( 'Purchase', 'sirsc' ); ?></a>
+			<a href="<?php echo esc_url( $item['buy_url'] ); ?>" target="_blank" class="button has-icon auto button-primary sirsc-save-adon-purchase"><span class="dashicons dashicons-cart"></span> <?php esc_html_e( 'Purchase', 'sirsc' ); ?></a>
 			<?php
 		}
 	}
@@ -443,10 +446,9 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	/**
 	 * Adon activate/deactivate button.
 	 *
-	 * @param  string $slug Adon slug.
-	 * @return void
+	 * @param string $slug Adon slug.
 	 */
-	public static function maybe_adon_button_license_key( $slug ) { //phpcs:ignore
+	public static function maybe_adon_button_license_key( $slug ) { // phpcs:ignore
 		if ( ! empty( self::$adons[ $slug ] ) ) {
 			$item    = self::$adons[ $slug ];
 			$message = ( ! empty( $item['key_message'] ) ) ? $item['key_message'] : '';
@@ -454,15 +456,9 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 				echo wp_kses_post( str_replace( '">', '"><b class="key">' . esc_attr( $item['license_key'] ) . '</b><br>', $message ) );
 			} else {
 				?>
-				<div class="sirsc-message info">
-					<div class="rows no-top sirsc-save-adon-activate-license">
-						<div class="span8">
-							<input type="text" name="license-key" class="button wide" autocomplete="off" value="<?php echo esc_attr( $item['license_key'] ); ?>" placeholder="<?php esc_attr_e( 'License Key', 'sirsc' ); ?>">
-						</div>
-						<div class="span4">
-							<?php submit_button( __( 'Activate', 'sirsc' ), 'primary wide', 'sirsc-save-adon-activate-license-key', false, self::button_processing( $slug ) ); ?></td>
-						</div>
-					</div>
+				<div class="as-row no-margin sirsc-message info sirsc-save-adon-activate-license">
+					<input type="text" name="license-key" class="button wide" autocomplete="off" value="<?php echo esc_attr( $item['license_key'] ); ?>" placeholder="<?php esc_attr_e( 'License Key', 'sirsc' ); ?>">
+					<?php submit_button( __( 'Activate', 'sirsc' ), 'primary auto last', 'sirsc-save-adon-activate-license-key', false, self::button_processing( $slug ) ); ?></td>
 				</div>
 				<?php echo wp_kses_post( $message ); ?>
 				<?php
@@ -473,28 +469,28 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	/**
 	 * Adon details and purchase buttons.
 	 *
-	 * @param  string $slug The slug.
-	 * @param  array  $item The item.
-	 * @param  array  $attr The attributes.
-	 * @return void
+	 * @param string $slug The slug.
+	 * @param array  $item The item.
+	 * @param array  $attr The attributes.
 	 */
-	public static function adon_details_button( $slug, $item, $attr ) { //phpcs:ignore
+	public static function adon_details_button( $slug, $item, $attr ) { // phpcs:ignore
 		if ( empty( $item['price'] ) && ! empty( $item['free'] ) ) {
 			if ( ! empty( $item['buy_url'] ) ) {
 				?>
-				<a href="<?php echo esc_url( $item['buy_url'] ); ?>" target="_blank" class="button button-primary sirsc-save-adon-details"><?php esc_html_e( 'Details', 'sirsc' ); ?></a>
+				<a href="<?php echo esc_url( $item['buy_url'] ); ?>" target="_blank" class="button auto last button-secondary sirsc-save-adon-details"><?php esc_html_e( 'Details', 'sirsc' ); ?></a>
 				<?php
 			}
 		} else {
-			if ( ! empty( $item['buy_url'] ) ) {
-				?>
-				<a href="<?php echo esc_url( $item['buy_url'] ); ?>" target="_blank" class="button button-primary sirsc-save-adon-details"><?php esc_html_e( 'Details', 'sirsc' ); ?></a>
-				<?php
-			}
 			self::check_adon_valid( $slug );
 			$id = self::get_adon_details( $slug, 'activation_id' );
 			if ( empty( $id ) ) {
 				self::maybe_adon_button_buy( $slug );
+			}
+
+			if ( ! empty( $item['buy_url'] ) ) {
+				?>
+				<a href="<?php echo esc_url( $item['buy_url'] ); ?>" target="_blank" class="button auto last  button-secondary sirsc-save-adon-details"><?php esc_html_e( 'Details', 'sirsc' ); ?></a>
+				<?php
 			}
 		}
 	}
@@ -502,25 +498,22 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	/**
 	 * Adon price info.
 	 *
-	 * @param  string $slug The slug.
-	 * @param  array  $item The item.
-	 * @param  array  $attr The attributes.
-	 * @return void
+	 * @param string $slug The slug.
+	 * @param array  $item The item.
+	 * @param array  $attr The attributes.
 	 */
-	public static function adon_price_info( $slug, $item, $attr ) { //phpcs:ignore
+	public static function adon_price_info( $slug, $item, $attr ) { // phpcs:ignore
 		?>
 		<b class="price">
 			<?php
 			if ( empty( $item['price'] ) && ! empty( $item['free'] ) ) {
 				esc_html_e( 'Free', 'sirsc' );
 			} else {
-				echo esc_html(
-					sprintf(
-						// Translators: %1$s - adon price.
-						__( '&euro; %1$s / year', 'sirsc' ),
-						number_format( $item['price'], 2, '.', '' )
-					)
-				);
+				echo esc_html( sprintf(
+					// Translators: %1$s - adon price.
+					__( '&euro; %1$s / year', 'sirsc' ),
+					number_format( $item['price'], 2, '.', '' )
+				) );
 			}
 			?>
 		</b>
@@ -530,12 +523,11 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	/**
 	 * Adon action button.
 	 *
-	 * @param  string $slug The slug.
-	 * @param  array  $item The item.
-	 * @param  array  $attr The attributes.
-	 * @return void
+	 * @param string $slug The slug.
+	 * @param array  $item The item.
+	 * @param array  $attr The attributes.
 	 */
-	public static function adon_on_off_button( $slug, $item, $attr ) { //phpcs:ignore
+	public static function adon_on_off_button( $slug, $item, $attr ) { // phpcs:ignore
 		if ( empty( $item['price'] ) && ! empty( $item['free'] ) ) {
 			self::maybe_adon_button_activate_deactivate( $slug );
 		} else {
@@ -550,12 +542,11 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	/**
 	 * Adon action button.
 	 *
-	 * @param  string $slug The slug.
-	 * @param  array  $item The item.
-	 * @param  array  $attr The attributes.
-	 * @return void
+	 * @param string $slug The slug.
+	 * @param array  $item The item.
+	 * @param array  $attr The attributes.
 	 */
-	public static function adon_action_button( $slug, $item, $attr ) { //phpcs:ignore
+	public static function adon_action_button( $slug, $item, $attr ) { // phpcs:ignore
 		if ( ! ( empty( $item['price'] ) && ! empty( $item['free'] ) ) ) {
 			self::check_adon_valid( $slug );
 			$id = self::get_adon_details( $slug, 'activation_id' );
@@ -570,32 +561,31 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 	/**
 	 * Output adon box.
 	 *
-	 * @param  string $slug Adon slug.
-	 * @param  array  $item Adon item.
-	 * @return void
+	 * @param string $slug Adon slug.
+	 * @param array  $item Adon item.
 	 */
-	public static function output_adon_box( $slug, $item ) { //phpcs:ignore
+	public static function output_adon_box( $slug, $item ) { // phpcs:ignore
 		if ( empty( $slug ) ) {
 			// Fail-fast.
 			return;
 		}
 		$attr = self::adon_check( $slug );
 		?>
-		<form id="sirsc-box-adon-<?php echo esc_attr( $slug ); ?>"
-			name="sirsc-box-adon-<?php echo esc_attr( $slug ); ?>"
-			class="sirsc-feature as-target sirsc-adon-box adon-<?php echo esc_attr( $slug ); ?> <?php echo esc_attr( $attr['class'] ); ?>" action="" method="post">
+		<form id="sirsc-box-adon-<?php echo esc_attr( $slug ); ?>" name="sirsc-box-adon-<?php echo esc_attr( $slug ); ?>" class="sirsc-feature as-target sirsc-adon-box adon-<?php echo esc_attr( $slug ); ?> <?php echo esc_attr( $attr['class'] ); ?>" action="" method="post">
+			<?php wp_nonce_field( '_sirsc_adon_box_action', '_sirsc_adon_box_nonce' ); ?>
+			<input type="hidden" name="sirsc-adon-slug" value="<?php echo esc_attr( $slug ); ?>">
+
 			<div class="box-wrap">
-				<img src="<?php echo esc_url( SIRSC_PLUGIN_URL . 'assets/images/adon-' . esc_attr( $slug ) . '-image.png' ); ?>" loading="lazy">
-				<div class="links"><?php self::adon_details_button( $slug, $item, $attr ); ?></div>
+				<img src="<?php echo esc_url( SIRSC_URL . 'assets/images/adon-' . esc_attr( $slug ) . '-image.png' ); ?>" loading="lazy">
 				<?php self::adon_price_info( $slug, $item, $attr ); ?>
+			</div>
+
+			<b class="label-row as-title"><?php echo esc_html( $item['name'] ); ?></b>
+			<div class="as-row small-gap">
 				<?php self::adon_on_off_button( $slug, $item, $attr ); ?>
+				<?php self::adon_details_button( $slug, $item, $attr ); ?>
 			</div>
-			<div>
-				<h2><?php echo esc_html( $item['name'] ); ?></h2>
-				<?php wp_nonce_field( '_sirsc_adon_box_action', '_sirsc_adon_box_nonce' ); ?>
-				<input type="hidden" name="sirsc-adon-slug" value="<?php echo esc_attr( $slug ); ?>">
-				<?php self::adon_action_button( $slug, $item, $attr ); ?>
-			</div>
+			<?php self::adon_action_button( $slug, $item, $attr ); ?>
 			<p><?php echo esc_html( $item['description'] ); ?></p>
 		</form>
 		<?php
@@ -609,28 +599,24 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 			// Verify user capabilities in order to deny the access if the user does not have the capabilities.
 			wp_die( esc_html__( 'Action not allowed.', 'sirsc' ) );
 		}
-		$maybe_trans = get_transient( self::PLUGIN_TRANSIENT . '_adons_notice' );
+		$maybe_trans = get_transient( SIRSC_NOTICE . '_adons_notice' );
 		if ( ! empty( $maybe_trans ) ) {
-			delete_transient( self::PLUGIN_TRANSIENT . '_adons_notice' );
+			delete_transient( SIRSC_NOTICE . '_adons_notice' );
 		}
 		?>
 
 		<div class="wrap sirsc-settings-wrap sirsc-feature">
 			<?php \SIRSC\Admin\show_plugin_top_info(); ?>
 			<?php \SIRSC\Admin\maybe_all_features_tab(); ?>
+
 			<div class="sirsc-tabbed-menu-content">
-				<div class="rows bg-secondary no-top">
-					<div>
-						<?php esc_html_e( 'You will see here the available extensions compatible with the installed plugin version.', 'sirsc' ); ?>
-						<br><?php esc_html_e( 'You can activate and deactivate these at any time.', 'sirsc' ); ?>
-					</div>
-				</div>
+				<p><?php esc_html_e( 'You will see here the available extensions compatible with the installed plugin version.', 'sirsc' ); ?> <?php esc_html_e( 'You can activate and deactivate these at any time.', 'sirsc' ); ?></p>
 
 				<?php if ( ! empty( self::$adons ) ) : ?>
-					<div class="rows has-gaps">
+					<div class="as-row columns-4">
 						<?php foreach ( self::$adons as $slug => $item ) : ?>
-							<?php $class = ( ! empty( $item['active'] ) ) ? 'bg-secondary' : 'bg-dark'; ?>
-							<div class="span3 <?php echo esc_attr( $class ); ?>">
+							<?php $class = ( ! empty( $item['active'] ) ) ? ' bg-secondary' : ' bg-dark'; ?>
+							<div class="as-box<?php echo esc_attr( $class ); ?>">
 								<?php self::output_adon_box( $slug, $item ); ?>
 							</div>
 						<?php endforeach; ?>
@@ -639,6 +625,8 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 					<?php esc_html_e( 'No extension available at the moment.', 'sirsc' ); ?>
 				<?php endif; ?>
 			</div>
+
+			<?php \SIRSC\admin\show_donate_text(); ?>
 		</div>
 		<?php
 	}
@@ -647,7 +635,7 @@ class SIRSC_Adons extends SIRSC_Image_Regenerate_Select_Crop {
 // Instantiate the class.
 SIRSC_Adons::get_instance();
 
-if ( file_exists( SIRSC_PLUGIN_DIR . 'inc/adons-api.php' ) ) {
+if ( file_exists( SIRSC_DIR . 'inc/adons-api.php' ) ) {
 	// Hookup the SIRSC adons API component.
-	require_once SIRSC_PLUGIN_DIR . 'inc/adons-api.php';
+	require_once SIRSC_DIR . 'inc/adons-api.php';
 }

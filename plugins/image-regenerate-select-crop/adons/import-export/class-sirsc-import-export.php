@@ -3,7 +3,7 @@
  * Export/Import extension.
  *
  * @package sirsc
- * @version 1.0
+ * @version 8.0.0
  */
 
 /**
@@ -40,7 +40,7 @@ class SIRSC_Adons_Import_Export {
 	 *
 	 * @return object
 	 */
-	public static function get_instance() { //phpcs:ignore
+	public static function get_instance() { // phpcs:ignore
 		if ( ! self::$instance ) {
 			self::$instance = new SIRSC_Adons_Import_Export();
 		}
@@ -70,8 +70,6 @@ class SIRSC_Adons_Import_Export {
 
 	/**
 	 * Get options.
-	 *
-	 * @return void
 	 */
 	public static function get_options() {
 		$post_types = \SIRSC\Helper\get_all_post_types_plugin();
@@ -87,20 +85,18 @@ class SIRSC_Adons_Import_Export {
 	 *
 	 * @return string
 	 */
-	public static function prepare_export_string() { //phpcs:ignore
+	public static function prepare_export_string() { // phpcs:ignore
 		self::get_options();
 		$export = [];
 		foreach ( self::$options as $key ) {
 			$export[ $key ] = get_option( $key, '' );
 		}
 
-		return serialize( $export ); //phpcs:ignore
+		return serialize( $export ); // phpcs:ignore
 	}
 
 	/**
 	 * Maybe import settings.
-	 *
-	 * @return void
 	 */
 	public static function maybe_import_settings() {
 		$nonce = filter_input( INPUT_POST, '_sirsc_adon_export_settings_nonce', FILTER_DEFAULT );
@@ -151,7 +147,7 @@ class SIRSC_Adons_Import_Export {
 	/**
 	 * Maybe register the image sizes.
 	 */
-	public static function maybe_register_custom_image_sizes_snippet() { //phpcs:ignore
+	public static function maybe_register_custom_image_sizes_snippet() { // phpcs:ignore
 		$all = maybe_unserialize( get_option( 'sirsc_use_custom_image_sizes' ) );
 		if ( empty( $all['sizes'] ) ) {
 			// Fail-fast, no custom image sizes registered.
@@ -190,8 +186,6 @@ class SIRSC_Adons_Import_Export {
 
 	/**
 	 * Add the plugin menu.
-	 *
-	 * @return void
 	 */
 	public static function adon_admin_menu() {
 		add_submenu_page(
@@ -206,8 +200,6 @@ class SIRSC_Adons_Import_Export {
 
 	/**
 	 * Add the plugin menu.
-	 *
-	 * @return void
 	 */
 	public static function adon_page() {
 		$export  = self::prepare_export_string();
@@ -217,57 +209,16 @@ class SIRSC_Adons_Import_Export {
 		SIRSC_Adons::check_adon_valid( self::ADON_SLUG );
 		$desc = SIRSC_Adons::get_adon_details( self::ADON_SLUG, 'description' );
 		?>
-
 		<div class="wrap sirsc-settings-wrap sirsc-feature">
 			<?php \SIRSC\Admin\show_plugin_top_info(); ?>
 			<?php \SIRSC\Admin\maybe_all_features_tab(); ?>
+			<?php \SIRSC\admin\addon_intro( __( 'Import/Export', 'sirsc' ), $desc, 'adon-import-export-image.png' ); ?>
+
 			<div class="sirsc-tabbed-menu-content">
-				<div class="rows bg-secondary no-top">
-					<div class="min-height-130">
-						<img src="<?php echo esc_url( SIRSC_PLUGIN_URL . 'assets/images/adon-import-export-image.png' ); ?>" loading="lazy" class="negative-margins has-left">
-						<h2>
-							<span class="dashicons dashicons-admin-plugins"></span>
-							<?php esc_html_e( 'Import/Export', 'sirsc' ); ?>
-						</h2>
-						<?php echo wp_kses_post( $desc ); ?>
-						<b><?php esc_html_e( 'Please note that the import/export of the settings is in relation with the image sizes that are found on the instance, through the plugins that are activated and also the theme settings. You might need to partially adjust these manually after an import.', 'sirsc' ); ?></b>
-					</div>
-				</div>
-
-				<form action="" method="post" autocomplete="off" id="js-sirsc_adon_import_frm">
-					<?php wp_nonce_field( '_sirsc_adon_export_settings_action', '_sirsc_adon_export_settings_nonce' ); ?>
-
-					<div class="rows three-columns bg-secondary has-gaps breakable">
-						<div class="span6">
-							<h2><?php esc_html_e( 'Export Settings', 'sirsc' ); ?> - JSON</h2>
-							<p><?php esc_html_e( 'Copy the settings and import these into another instance.', 'sirsc' ); ?></p>
-							<textarea rows="16" class="code"><?php echo esc_html( $export ); ?></textarea>
-						</div>
-
-						<div class="span6">
-							<button type="submit"
-								class="button button-primary f-right"
-								name="submit"
-								value="submit"
-								onclick="sirscToggleAdon( 'sirsc-import-settings' );">
-								<?php esc_html_e( 'Import Settings', 'sirsc' ); ?>
-							</button>
-							<h2><?php esc_html_e( 'Import Settings', 'sirsc' ); ?>  - JSON</h2>
-
-							<p><?php esc_html_e( 'Paste here the settings and import these into the current instance.', 'sirsc' ); ?></p>
-							<textarea name="sirsc-import-settings" rows="16" class="code"></textarea>
-						</div>
-
-						<?php if ( ! empty( $snippet ) ) : ?>
-							<div class="span6">
-								<h2><?php esc_html_e( 'Registered Image Sizes', 'sirsc' ); ?></h2>
-								<p><?php esc_html_e( 'If you deactivate the plugin but still want to keep the image sizes you registered with this plugin, you can copy the snippet in your theme functions.php file or in a plugin.', 'sirsc' ); ?></p>
-								<textarea rows="14" class="code"><?php echo esc_html( $snippet ); ?></textarea>
-							</div>
-						<?php endif; ?>
-					</div>
-				</form>
+				<?php require_once __DIR__ . '/parts/areas.php'; ?>
 			</div>
+
+			<?php \SIRSC\admin\show_donate_text(); ?>
 		</div>
 		<?php
 	}

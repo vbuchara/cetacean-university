@@ -16,7 +16,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param  array $args Command default arguments.
 		 * @return mixed
 		 */
-		private static function prepare_args( $args ) { //phpcs:ignore
+		private static function prepare_args( $args ) { // phpcs:ignore
 			\SIRSC\Helper\notify_doing_sirsc_cli();
 
 			$rez = [
@@ -104,7 +104,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param  array $assoc_args Command associated arguments.
 		 * @return bool
 		 */
-		private static function is_verbose( $assoc_args ) { //phpcs:ignore
+		private static function is_verbose( $assoc_args ) { // phpcs:ignore
 			if ( ! empty( $assoc_args['verbose'] ) ) {
 				return true;
 			}
@@ -140,7 +140,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param array $args       Command default arguments.
 		 * @param array $assoc_args Command associated arguments.
 		 */
-		public function regenerate( $args, $assoc_args ) { //phpcs:ignore
+		public function regenerate( $args, $assoc_args ) { // phpcs:ignore
 			$config = self::prepare_args( $args );
 			if ( ! is_array( $config ) ) {
 				return;
@@ -152,9 +152,13 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			}
 
 			$verbose = self::is_verbose( $assoc_args );
-			extract( $config ); //phpcs:ignore
+			extract( $config ); // phpcs:ignore
 			if ( ! empty( $post_type ) && ! empty( $size_name ) && ! empty( $all_sizes ) ) {
 				global $wpdb;
+
+				delete_transient( \SIRSC\Admin\get_count_trans_name( 'cleanup', $post_type, $size_name ) );
+				delete_transient( \SIRSC\Admin\get_count_trans_name( 'cleanup', '', $size_name ) );
+
 				$execute_sizes = [];
 				if ( 'all' === $size_name ) {
 					$execute_sizes = $all_sizes;
@@ -239,7 +243,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param array $args       Command default arguments.
 		 * @param array $assoc_args Command associated arguments.
 		 */
-		public function cleanup( $args, $assoc_args ) { //phpcs:ignore
+		public function cleanup( $args, $assoc_args ) { // phpcs:ignore
 			$is_forced = ( ! empty( $assoc_args['force'] ) ) ? true : false;
 			$config    = self::prepare_args( array_merge( $args, [ 'is_cleanup' => true ] ) );
 			if ( ! is_array( $config ) ) {
@@ -247,9 +251,13 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			}
 
 			$verbose = self::is_verbose( $assoc_args );
-			extract( $config ); //phpcs:ignore
+			extract( $config ); // phpcs:ignore
 			if ( ! empty( $post_type ) && ! empty( $size_name ) && ! empty( $all_sizes ) ) {
 				global $wpdb;
+
+				delete_transient( \SIRSC\Admin\get_count_trans_name( 'cleanup', $post_type, $size_name ) );
+				delete_transient( \SIRSC\Admin\get_count_trans_name( 'cleanup', '', $size_name ) );
+
 				$execute_sizes = [];
 				if ( 'all' === $size_name ) {
 					$execute_sizes = $all_sizes;
@@ -263,6 +271,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 						foreach ( $execute_sizes as $sn => $sv ) {
 							$progress = \WP_CLI\Utils\make_progress_bar( '------- REMOVE ' . $sn, count( $rows ) );
 							foreach ( $rows as $v ) {
+
+								WP_CLI::error( 'trans id ' . \SIRSC\Admin\get_count_trans_name( 'cleanup', $v['post_type'], $sn ) );
+
 								\SIRSC\Debug\bulk_log_write( 'WP-CLI cleanup ' . $v['ID'] . ' ' . $sn );
 								\SIRSC\Action\cleanup_attachment_one_size( $v['ID'], $sn, true, $verbose );
 								$progress->tick();
@@ -297,7 +308,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param array $args       Command default arguments.
 		 * @param array $assoc_args Command associated arguments.
 		 */
-		public function rawcleanup( $args, $assoc_args ) { //phpcs:ignore
+		public function rawcleanup( $args, $assoc_args ) { // phpcs:ignore
 			$config = self::prepare_args(
 				array_merge(
 					$args,
@@ -312,7 +323,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			}
 
 			$verbose = self::is_verbose( $assoc_args );
-			extract( $config ); //phpcs:ignore
+			extract( $config ); // phpcs:ignore
 			if ( ! empty( $post_type ) ) {
 				$rows = self::make_query( $post_type, $parent_id, 'REMOVE' );
 				if ( ! empty( $rows ) && is_array( $rows ) ) {
@@ -353,7 +364,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param array $args       Command default arguments.
 		 * @param array $assoc_args Command associated arguments.
 		 */
-		public function resetcleanup( $args, $assoc_args ) { //phpcs:ignore
+		public function resetcleanup( $args, $assoc_args ) { // phpcs:ignore
 			$config = self::prepare_args(
 				array_merge(
 					$args,
@@ -413,7 +424,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 									}
 									$removable = $pref . $sfn;
 									if ( file_exists( $removable ) ) {
-										@unlink( $removable ); //phpcs:ignore
+										@unlink( $removable ); // phpcs:ignore
 										// Make sure not to delete the original file.
 										if ( $verbose ) {
 											WP_CLI::success( $removable . ' ' . esc_html__( 'was removed', 'sirsc' ) );
@@ -458,7 +469,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param  string         $action    Action title, regenerate or remove.
 		 * @return mixed
 		 */
-		private function make_query( $post_type = '', $parent_id = 0, $action = 'REGENERATE' ) { //phpcs:ignore
+		private function make_query( $post_type = '', $parent_id = 0, $action = 'REGENERATE' ) { // phpcs:ignore
 			global $wpdb;
 			$args  = [];
 			$query = ' SELECT p.ID FROM ' . $wpdb->posts . ' as p ';
@@ -497,7 +508,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				$query .= ' ORDER BY p.ID ASC LIMIT 0, 500000';
 			}
 
-			$rows = $wpdb->get_results( $wpdb->prepare( $query, $args ), ARRAY_A ); //phpcs:ignore
+			$rows = $wpdb->get_results( $wpdb->prepare( $query, $args ), ARRAY_A ); // phpcs:ignore
 			return $rows;
 		}
 
@@ -535,7 +546,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param array $args       Command default arguments.
 		 * @param array $assoc_args Command associated arguments.
 		 */
-		public function seorename( $args, $assoc_args ) { //phpcs:ignore
+		public function seorename( $args, $assoc_args ) { // phpcs:ignore
 			if ( ! class_exists( 'SIRSC_Adons' ) ) {
 				WP_CLI::error( 'The Images SEO adon is not available.' );
 				return;
@@ -581,15 +592,15 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 			if ( 'only' === $db_replace_type ) {
 				self::process_seo_rename_log_file( $db_replace_type, $verbose );
-				\WP_CLI::line( '🟦 SEO IMAGES - ' . esc_html__( 'PERMALINKS REFRESH', 'sirsc' ) );
+				\WP_CLI::line( '🟦 SEO IMAGES - ' . \esc_html__( 'Permalinks refresh', 'sirsc' ) );
 				\WP_CLI::runcommand( 'rewrite flush --quiet', [] );
-				\WP_CLI::line( '🟦 SEO IMAGES - ' . esc_html__( 'CACHE REFRESH', 'sirsc' ) );
+				\WP_CLI::line( '🟦 SEO IMAGES - ' . \esc_html__( 'Cache refresh', 'sirsc' ) );
 				\WP_CLI::runcommand( 'cache flush --quiet', [] );
 				\WP_CLI::success( '>>>> ALL DONE!' );
 				return;
 			}
 
-			extract( $config ); //phpcs:ignore
+			extract( $config ); // phpcs:ignore
 			if ( ! empty( $post_type ) ) {
 				global $wpdb;
 
@@ -652,9 +663,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 					self::process_seo_rename_log_file( $db_replace_type, $verbose );
 				}
 
-				\WP_CLI::line( '🟦 SEO IMAGES - ' . esc_html__( 'PERMALINKS REFRESH', 'sirsc' ) );
+				\WP_CLI::line( '🟦 SEO IMAGES - ' . esc_html__( 'Permalinks refresh', 'sirsc' ) );
 				\WP_CLI::runcommand( 'rewrite flush --quiet', [] );
-				\WP_CLI::line( '🟦 SEO IMAGES - ' . esc_html__( 'CACHE REFRESH', 'sirsc' ) );
+				\WP_CLI::line( '🟦 SEO IMAGES - ' . esc_html__( 'Cache refresh', 'sirsc' ) );
 				\WP_CLI::runcommand( 'cache flush --quiet', [] );
 				\WP_CLI::success( '>>>> ALL DONE!' );
 			} else {
@@ -669,7 +680,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * @param  boolean $verbose         Show info.
 		 * @return void
 		 */
-		private static function process_seo_rename_log_file( $db_replace_type = 'all', $verbose = false ) { //phpcs:ignore
+		private static function process_seo_rename_log_file( $db_replace_type = 'all', $verbose = false ) { // phpcs:ignore
 			$fake_progress = true;
 			$replacements  = \SIRSC\Debug\log_read( 'seo-images' );
 

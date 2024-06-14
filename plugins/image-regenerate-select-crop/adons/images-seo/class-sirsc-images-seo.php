@@ -3,11 +3,8 @@
  * Images SEO extension.
  *
  * @package sirsc
- * @version 2.0
+ * @version 8.0.0
  */
-
-define( 'SIRSC_ADON_IMGSEO_ASSETS_VER', '20221212.2049' );
-define( 'SIRSC_ADON_IMGSEO_PLUGIN_VER', 2.0 );
 
 /**
  * Class for Image Regenerate & Select Crop plugin adon Images SEO.
@@ -45,7 +42,7 @@ class SIRSC_Adons_Images_SEO {
 	 *
 	 * @return object
 	 */
-	public static function get_instance() { //phpcs:ignore
+	public static function get_instance() { // phpcs:ignore
 		if ( ! self::$instance ) {
 			self::$instance = new SIRSC_Adons_Images_SEO();
 		}
@@ -72,6 +69,7 @@ class SIRSC_Adons_Images_SEO {
 		add_action( 'wp_ajax_sirsc_adon_is_execute_bulk_rename', [ $called, 'execute_bulk_rename' ] );
 		add_action( 'wp_generate_attachment_metadata', [ $called, 'process_rename_after_file_uploaded' ], 99, 2 );
 		add_action( 'sirsc_seo_after_file_renamed', [ $called, 'trace_rename_changes' ], 30, 3 );
+		add_filter( 'get_attached_media_args', [ $called, 'get_attached_media_sorted' ], 30, 3 );
 
 		if ( is_admin() ) {
 			add_action( 'admin_menu', [ $called, 'images_admin_menu' ], 20 );
@@ -83,8 +81,6 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Get available filtered post types and settings.
-	 *
-	 * @return void
 	 */
 	public static function init_settings_types() {
 		self::get_types();
@@ -93,29 +89,21 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Init the adon main buttons.
-	 *
-	 * @return void
 	 */
 	public static function init_buttons() {
-		do_action(
-			'sirsc/iterator/setup_buttons',
-			'sirsc-is',
-			[
-				'rename' => [
-					'icon'     => '<span class="dashicons dashicons-image-rotate"></span>',
-					'text'     => __( 'Bulk rename', 'sirsc' ),
-					'callback' => 'sirscIsBulkRename()',
-					'buttons'  => [ 'stop', 'resume', 'cancel' ],
-					'class'    => 'auto f-right',
-				],
-			]
-		);
+		do_action( 'sirsc/iterator/setup_buttons', 'sirsc-is', [
+			'rename' => [
+				'icon'     => '<span class="dashicons dashicons-image-rotate"></span>',
+				'text'     => __( 'Bulk rename', 'sirsc' ),
+				'callback' => 'sirscIsBulkRename()',
+				'buttons'  => [ 'stop', 'resume', 'cancel' ],
+				'class'    => '',
+			],
+		] );
 	}
 
 	/**
 	 * Get available filtered post types and settings.
-	 *
-	 * @return void
 	 */
 	public static function init_settings() {
 		self::init_settings_types();
@@ -144,8 +132,6 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Get available filtered post types.
-	 *
-	 * @return void
 	 */
 	public static function get_types() {
 		$types      = [];
@@ -154,6 +140,10 @@ class SIRSC_Adons_Images_SEO {
 			$list = wp_list_pluck( $post_types, 'label', 'name' );
 			if ( ! empty( $list ) ) {
 				foreach ( $list as $type => $label ) {
+					if ( in_array( $type, \SIRSC::$exclude_post_type, true ) && 'attachment' !== $type ) {
+						continue;
+					}
+
 					if ( 'attachment' === $type || post_type_supports( $type, 'thumbnail' ) ) {
 						$types[ $type ] = $label;
 					}
@@ -170,8 +160,6 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Get current settings of the plugin.
-	 *
-	 * @return void
 	 */
 	public static function get_settings() {
 		$settings = get_option( 'sirsc_adon_images_seo_settings', [] );
@@ -192,39 +180,27 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Enqueue the custom styles.
-	 *
-	 * @return void
 	 */
 	public static function load_admin_assets() {
-		$uri = $_SERVER['REQUEST_URI']; //phpcs:ignore
+		$uri = $_SERVER['REQUEST_URI']; // phpcs:ignore
 		if ( ! substr_count( $uri, 'page=sirsc-adon-images-seo' ) && ! substr_count( $uri, 'post.php' ) ) {
 			// Fail-fast, the assets should not be loaded.
 			return;
 		}
 
-		wp_enqueue_script(
-			'sirsc-adons-is',
-			SIRSC_PLUGIN_URL . 'adons/images-seo/src/index.js',
-			[ 'sirsc-iterator' ],
-			filemtime( SIRSC_PLUGIN_DIR . 'adons/images-seo/src/index.js' ),
-			true
-		);
-		wp_enqueue_style(
-			'sirsc-adons-is',
-			SIRSC_PLUGIN_URL . 'adons/images-seo/src/style.css',
-			[],
-			filemtime( SIRSC_PLUGIN_DIR . 'adons/images-seo/src/style.css' ),
-			false
-		);
+		$dir = SIRSC_URL . 'build/adons/images-seo/';
+		$ver = \SIRSC\get_build_ver();
+		wp_enqueue_script( 'sirsc-adons-is', $dir . 'index.js', [ 'sirsc-iterator' ], $ver, true );
+		wp_enqueue_style( 'sirsc-adons-is', $dir . 'style.css', [], $ver, false );
 	}
 
 	/**
 	 * Do some custom processing then return back the attachment metadata.
 	 *
-	 * @param  array   $metadata      Attachment metadata.
-	 * @param  integer $attachment_id Attachment ID.
+	 * @param array $metadata      Attachment metadata.
+	 * @param int   $attachment_id Attachment ID.
 	 */
-	public static function process_rename_after_file_uploaded( $metadata = [], $attachment_id = 0 ) { //phpcs:ignore
+	public static function process_rename_after_file_uploaded( $metadata = [], $attachment_id = 0 ) { // phpcs:ignore
 		if ( ! empty( $attachment_id ) && defined( 'DOING_SIRSC' ) ) {
 			\SIRSC\Helper\debug( 'ATTEMPT TO RENAME files for ' . $attachment_id, true, true );
 			$post = get_post( $attachment_id );
@@ -259,19 +235,18 @@ class SIRSC_Adons_Images_SEO {
 	/**
 	 * Rename image filename.
 	 *
-	 * @param  integer $id      The attachment ID.
-	 * @param  string  $title   The "parent" post title.
-	 * @param  integer $count   Perhaps a counter suffix for the image.
-	 * @param  string  $type    The "parent" post type.
-	 * @param  boolean $output  Output the result or not.
-	 * @param  string  $message The extra message.
-	 * @return void
+	 * @param int    $id      The attachment ID.
+	 * @param string $title   The "parent" post title.
+	 * @param int    $count   Perhaps a counter suffix for the image.
+	 * @param string $type    The "parent" post type.
+	 * @param bool   $output  Output the result or not.
+	 * @param string $message The extra message.
 	 */
-	public static function rename_image_filename( $id, $title, $count, $type, $output = true, $message = '' ) { //phpcs:ignore
+	public static function rename_image_filename( $id, $title, $count, $type, $output = true, $message = '' ) { // phpcs:ignore
 		$meta  = wp_get_attachment_metadata( $id );
 		$title = apply_filters( 'sirsc_seo_title_before_rename_file', $title, $id, $meta );
 
-		if ( ! empty( $meta['file'] ) && ! empty( $title ) ) {
+		if ( ! empty( $meta['file'] ) && ! empty( $title ) && \SIRSC\Helper\file_is_image( $meta['file'] ) ) {
 			$upls = wp_upload_dir();
 			if ( empty( self::$settings ) ) {
 				self::get_settings();
@@ -290,28 +265,43 @@ class SIRSC_Adons_Images_SEO {
 			}
 			if ( ! empty( self::$settings['override_alt'] ) ) {
 				update_post_meta( $id, '_wp_attachment_image_alt', $title );
-				$extra_hints[] = __( 'The attachment alternative text was updated.', 'sirsc' );
+				$extra_hints[] = sprintf(
+					// Translators: %s - attribute.
+					__( 'The attachment %s was updated.', 'sirsc' ),
+					__( 'alternative text', 'sirsc' )
+				);
 			}
 			if ( ! empty( self::$settings['override_title'] ) ) {
 				wp_update_post( [
 					'ID'         => $id,
 					'post_title' => $title,
 				] );
-				$extra_hints[] = __( 'The attachment title was updated.', 'sirsc' );
+				$extra_hints[] = sprintf(
+					// Translators: %s - attribute.
+					__( 'The attachment %s was updated.', 'sirsc' ),
+					__( 'title', 'sirsc' )
+				);
 			}
 			if ( ! empty( self::$settings['override_permalink'] ) ) {
 				wp_update_post( [
 					'ID'        => $id,
 					'post_name' => sanitize_title( $title ),
 				] );
-				$extra_hints[] = __( 'The attachment permalink was updated.', 'sirsc' );
+				$extra_hints[] = sprintf(
+					// Translators: %s - attribute.
+					__( 'The attachment %s was updated.', 'sirsc' ),
+					__( 'permalink', 'sirsc' )
+				);
 			}
 
-			$basedir    = trailingslashit( $upls['basedir'] );
-			$old_path   = $basedir . $meta['file'];
-			$change_log = '<ul><li>No changes for ' . $old_path . '</li></ul>';
-			$renamed    = '<b class="dashicons dashicons-dismiss"></b>';
-			$tmp_name   = '';
+			$basedir      = trailingslashit( $upls['basedir'] );
+			$old_path     = $basedir . $meta['file'];
+			$renamed      = '<b class="dashicons dashicons-dismiss"></b>';
+			$tmp_name     = '';
+			$result_class = 'sirsc-info';
+
+			// Translators: %s - path.
+			$change_log = '<ul><li>' . sprintf( __( 'No changes for %s', 'sirsc' ), $old_path ) . '</li></ul>';
 
 			if ( ! empty( self::$settings['override_filename'] ) ) {
 				$maybe_type = wp_check_filetype( $meta['file'] );
@@ -319,7 +309,7 @@ class SIRSC_Adons_Images_SEO {
 					trailingslashit( $basedir . dirname( $meta['file'] ) ),
 					$title,
 					$maybe_type['ext'],
-					$count,
+					$count >= 1 ? 0 : $count,
 					$old_path
 				);
 
@@ -329,19 +319,23 @@ class SIRSC_Adons_Images_SEO {
 				$new_path     = trailingslashit( $basedir . $subdir ) . $new_filename;
 				$new_meta     = $meta;
 				$base_one     = wp_basename( $meta['file'] );
-				$change_log   = '<ul><li>No changes for ' . $old_path . '</li></ul>';
 				$renamed      = '<b class="dashicons dashicons-dismiss"></b>';
+
+				// Translators: %s - path.
+				$change_log = '<ul><li>' . sprintf( __( 'No changes for %s', 'sirsc' ), $old_path ) . '</li></ul>';
+
 				if ( $old_path === $new_path ) {
 					$renamed = '<b class="dashicons dashicons-yes-alt"></b>';
 				} elseif ( ! empty( $new_path ) && ! is_dir( $new_path ) && ! file_exists( $new_path ) ) {
-					$renamed = '<b class="dashicons dashicons-dismiss error"></b>';
-					if ( $old_path !== $new_path && @rename( $old_path, $new_path ) ) { //phpcs:ignore
+					$renamed      = '<b class="dashicons dashicons-dismiss error"></b>';
+					$result_class = 'warning sirsc-warning';
+					if ( $old_path !== $new_path && @rename( $old_path, $new_path ) ) { // phpcs:ignore
 						$new_meta['file'] = $subdir . $new_filename;
 
 						if ( ! empty( $meta['original_image'] ) && $meta['original_image'] !== $meta['file'] ) {
 							$orig_old_path = $basedir . $subdir . $meta['original_image'];
 							$orig_new_path = $basedir . $subdir . $new_filename;
-							@rename( $orig_old_path, $orig_new_path ); //phpcs:ignore
+							@rename( $orig_old_path, $orig_new_path ); // phpcs:ignore
 							$new_meta['original_image'] = $new_filename;
 						}
 
@@ -362,7 +356,7 @@ class SIRSC_Adons_Images_SEO {
 									$size_old = $basedir . $subdir . $image['file'];
 									$size_new = $basedir . $subdir . $fname;
 									if ( file_exists( $size_old ) ) {
-										@rename( $size_old, $size_new ); //phpcs:ignore
+										@rename( $size_old, $size_new ); // phpcs:ignore
 										do_action( 'sirsc_seo_file_renamed', $id, $size_old, $size_new );
 
 										++$size_count;
@@ -389,7 +383,8 @@ class SIRSC_Adons_Images_SEO {
 
 						wp_update_attachment_metadata( $id, $new_meta );
 						update_post_meta( $id, '_wp_attached_file', $subdir . $new_filename );
-						$renamed = '<b class="dashicons dashicons-yes-alt success"></b>';
+						$renamed      = '<b class="dashicons dashicons-yes-alt success"></b>';
+						$result_class = 'sirsc-success';
 
 						do_action( 'sirsc_seo_after_file_renamed', $id, $meta, $new_meta );
 					}
@@ -404,7 +399,7 @@ class SIRSC_Adons_Images_SEO {
 					$extra      = '<li>' . implode( ' &bull; ', $extra_hints ) . '</li>';
 					$change_log = str_replace( '</ul>', $extra . '</ul>', $change_log );
 				}
-				echo '<div class="file-info sirsc_imgseo-item-processed sirsc_imgseo-label-wrap-' . $type . '"><span class="label f-right">' . $renamed . '<label class="sirsc_imgseo-label-info">' . $type . '</label></span><div>' . esc_html__( 'Attachment ID' ) . ' <b>' . $id . '</b></div><div>' . esc_html__( 'New Title' ) . ' <strong>' . $title . '</strong></div><div><div class="small-font">' . $change_log . $message . '</div></div></div>'; // phpcs:ignore
+				echo '<div class="file-info sirsc_imgseo-item-processed as-box sirsc_imgseo-label-wrap-' . $type . ' ' . $result_class . '"><div class="label-row"><span>' . esc_html__( 'Attachment ID', 'sirsc' ) . ' <b>' . $id . '</b></span>' . $renamed . '<label class="sirsc_imgseo-label-info">' . $type . '</label></div><div>' . esc_html__( 'New Title', 'sirsc' ) . ' <strong>' . $title . '</strong></div><div class="small-font">' . $change_log . $message . '</div></div>'; // phpcs:ignore
 			}
 
 			// Attempt to clear the attachment cache.
@@ -415,11 +410,16 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Add the plugin menu.
-	 *
-	 * @return void
 	 */
 	public static function rename_metaboxes() {
-		if ( ! empty( self::$settings['types'] ) ) {
+		global $post;
+
+		if ( ! empty( self::$settings['types'] ) && ! empty( $post->ID ) ) {
+			if ( 'attachment' === $post->post_type && ! \SIRSC\Helper\file_is_image( $post->guid ) ) {
+				// Nor an image type.
+				return;
+			}
+
 			add_meta_box(
 				'sirsc_imgseo_rename_meta',
 				__( 'Images SEO', 'sirsc' ),
@@ -432,39 +432,41 @@ class SIRSC_Adons_Images_SEO {
 	}
 
 	/**
-	 * Exposes the custom wishlist info in the orders edit page sidebar box.
-	 *
-	 * @return void
+	 * Exposes the buttons info in the attachemnt edit page sidebar box.
 	 */
 	public static function rename_metaboxes_meta() {
 		global $post;
-		if ( ! empty( $post->ID ) ) {
-			?>
-			<div class="sirsc_imgseo_meta sirsc-feature">
-				<p>
-					<?php if ( 'attachment' === $post->post_type ) : ?>
-						<?php esc_html_e( 'You can rename this attachment files (including the files generated as image sizes) and other attributes.', 'sirsc' ); ?>
-					<?php else : ?>
-						<?php esc_html_e( 'You can rename and update attributes of some of the files already uploaded or attached to this post.', 'sirsc' ); ?>
-					<?php endif; ?>
-				</p>
-				<div class="sirsc-buttons">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG ) ); ?>" class="sirsc-button-icon button-secondary auto">
-						<span class="dashicons dashicons-admin-plugins"></span>
-						<span><?php esc_html_e( 'Settings', 'sirsc' ); ?></a></span>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG . '&tab=rename&target=' . $post->ID ) ); ?>" class="sirsc-button-icon button-primary auto f-right">
-						<span class="dashicons dashicons-image-rotate-right"></span>
-						<span><?php esc_html_e( 'Images SEO', 'sirsc' ); ?></a></span>
-				</div>
-			</div>
-			<?php
+		if ( empty( $post->ID ) ) {
+			return;
 		}
+		?>
+		<div class="sirsc_imgseo_meta sirsc-feature">
+			<p>
+				<?php
+				if ( 'attachment' === $post->post_type ) {
+					esc_html_e( 'You can rename this attachment files (including the files generated as image sizes) and other attributes.', 'sirsc' );
+				} else {
+					esc_html_e( 'You can rename and update attributes of some of the files already uploaded or attached to this post.', 'sirsc' );
+				}
+				?>
+			</p>
+
+			<div class="sirsc-buttons">
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG ) ); ?>" class="button has-icon button-secondary">
+					<span class="dashicons dashicons-admin-plugins"></span>
+					<span><?php esc_html_e( 'Settings', 'sirsc' ); ?></span>
+				</a>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG . '&tab=rename&target=' . $post->ID ) ); ?>" class="button has-icon button-primary last">
+					<span class="dashicons dashicons-image-rotate-right"></span>
+					<span><?php esc_html_e( 'Images SEO', 'sirsc' ); ?></span>
+				</a>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
 	 * Add the plugin menu.
-	 *
-	 * @return void
 	 */
 	public static function images_admin_menu() {
 		add_submenu_page(
@@ -479,8 +481,6 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Add the plugin menu.
-	 *
-	 * @return void
 	 */
 	public static function images_settings() {
 		$tab = filter_input( INPUT_GET, 'tab', FILTER_DEFAULT );
@@ -498,69 +498,41 @@ class SIRSC_Adons_Images_SEO {
 		<div class="wrap sirsc-settings-wrap sirsc-feature">
 			<?php \SIRSC\Admin\show_plugin_top_info(); ?>
 			<?php \SIRSC\Admin\maybe_all_features_tab(); ?>
+			<?php \SIRSC\admin\addon_intro( __( 'Images SEO', 'sirsc' ), $desc, 'adon-images-seo-image.png' ); ?>
+
 			<div class="sirsc-tabbed-menu-content">
-				<div class="rows bg-secondary no-top">
-					<div class="min-height-130">
-						<img src="<?php echo esc_url( SIRSC_PLUGIN_URL . 'assets/images/adon-images-seo-image.png' ); ?>" loading="lazy" class="negative-margins has-left">
-						<h2>
-							<span class="dashicons dashicons-admin-plugins"></span>
-							<?php esc_html_e( 'Images SEO', 'sirsc' ); ?>
-						</h2>
-						<?php echo wp_kses_post( $desc ); ?>
+				<div class="intro-next outside menu-wrap">
+					<div class="tabs-container">
+						<div class="tabs-wrap" tabindex="0">
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG ) ); ?>"class="button sirsc-button <?php if ( empty( $tab ) ) : ?>
+								button-primary on<?php endif; ?>"
+								><?php esc_html_e( 'Settings', 'sirsc' ); ?></a>
+							<?php if ( ! empty( $settings['bulk'] ) ) : ?>
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG . '&tab=bulk-rename' ) ); ?>" class="button <?php if ( 'bulk-rename' === $tab ) : ?>
+									button-primary on<?php endif; ?>"
+									><?php esc_html_e( 'Bulk rename images', 'sirsc' ); ?></a>
+							<?php endif; ?>
+							<?php if ( ! empty( $id ) ) : ?>
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG . '&tab=rename&target=' . $id ) ); ?>" class="button <?php if ( 'rename' === $tab ) : ?>
+								button-primary on<?php endif; ?>"
+								><?php esc_html_e( 'Rename images', 'sirsc' ); ?></a>
+							<?php endif; ?>
+						</div>
 					</div>
 				</div>
-
-				<p></p>
-				<div class="sirsc-tabbed-menu-buttons secondary">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG ) ); ?>"
-						class="button sirsc-button <?php if ( empty( $tab ) ) : ?>
-						button-primary on<?php endif; ?>"
-						><?php esc_html_e( 'Settings', 'sirsc' ); ?></a>
-
-					<?php if ( ! empty( $id ) ) : ?>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG . '&tab=rename&target=' . $id ) ); ?>"
-						class="button <?php if ( 'rename' === $tab ) : ?>
-						button-primary on<?php endif; ?>"
-						><?php esc_html_e( 'Rename Images', 'sirsc' ); ?></a>
-					<?php endif; ?>
-
-					<?php if ( ! empty( $settings['bulk'] ) ) : ?>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . self::ADON_PAGE_SLUG . '&tab=bulk-rename' ) ); ?>"
-							class="button <?php if ( 'bulk-rename' === $tab ) : ?>
-							button-primary on<?php endif; ?>"
-							><?php esc_html_e( 'Bulk Rename Images', 'sirsc' ); ?></a>
-					<?php endif; ?>
-				</div>
-
 				<div class="sirsc-tabbed-menu-content">
 					<?php
 					if ( empty( $tab ) ) {
 						self::form_settings_output();
-					} elseif ( ! empty( $id ) && 'rename' === $tab ) {
-						self::form_rename_output( $id );
 					} elseif ( 'bulk-rename' === $tab ) {
 						self::form_bulk_rename_output();
+					} elseif ( ! empty( $id ) && 'rename' === $tab ) {
+						self::form_rename_output( $id );
 					}
 					?>
 				</div>
 
-				<div class="rows three-columns bg-secondary has-gaps breakable">
-					<div class="span3">
-						<a class="button button-neutral f-right" onclick="resetLog( 'seo-images' )"><?php esc_html_e( 'Reset log', 'sirsc' ); ?></a>
-						<h2>
-							<a class="button button-secondary sirsc-button-icon tiny" onclick="refreshLog( 'seo-images' )"><span class="dashicons dashicons-update-alt"></span></a>
-							<?php esc_html_e( 'SEO Images Rename log', 'sirsc' ); ?>
-						</h2>
-						<p><?php esc_html_e( 'The SEO Images rename log can be seen below, the most recent events are shown at the bottom of the list. This log will reset if you run the wp-cli commands.', 'sirsc' ); ?></p>
-						<div id="sirsc-log-seo-images" class="code">
-							<?php echo wp_kses_post( nl2br( \SIRSC\Debug\log_read( 'seo-images' ) ) ); ?>
-						</div>
-						<p><?php esc_html_e( 'If you cannot run wp-cli commands, you can use the data from this log to make your own find-replace script that replaces the old strings with new strings in your database, if you have hardcoded URLs for the images. Each line represents a string to be replaced, the first part before the comma is the old reference, the second part is the new reference.', 'sirsc' ); ?>
-
-							<?php esc_html_e( 'If you cannot run wp-cli commands, you can use the data from this log to make your own find-replace script that replaces the old strings with new strings in your database (or use WP Migrate DB PRO plugin find-replace feature), if you have hardcoded URLs for the images. Each line represents a string to be replaced, the first part before the comma is the old reference, the second part is the new reference.', 'sirsc' ); ?>
-						</p>
-					</div>
-				</div>
+				<?php require_once __DIR__ . '/parts/seo-log.php'; ?>
 			</div>
 		</div>
 		<?php
@@ -568,8 +540,6 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Outputs the plugin settings form.
-	 *
-	 * @return void
 	 */
 	public static function form_settings_output() {
 		$types = self::$post_types;
@@ -582,164 +552,13 @@ class SIRSC_Adons_Images_SEO {
 		?>
 		<form action="" method="post" autocomplete="off" id="js-sirsc_imgseo-frm-settings">
 			<?php wp_nonce_field( '_sirsc_imgseo_settings_action', '_sirsc_imgseo_settings_nonce' ); ?>
-
-			<div class="rows bg-secondary no-top">
-				<div class="span12">
-					<h2>
-						<span class="dashicons dashicons-feedback"></span>
-						<?php esc_html_e( 'What Does Images SEO Do?', 'sirsc' ); ?>
-					</h2>
-					<p><?php esc_html_e( 'You can enable/disable any of the actions that the SEO rename extension is providing. The ones enabled will be used for processing images on upload, on bulk rename, and on manual rename too.', 'sirsc' ); ?></p>
-
-					<div class="rows two-columns breakable bg-trans mini-gaps no-shadow">
-						<div>
-							<label class="settings sirsc-label wide" for="_sirsc_imgseo_settings_override_filename">
-								<input type="checkbox"
-									name="_sirsc_imgseo_settings[override_filename]"
-									id="_sirsc_imgseo_settings_override_filename"
-									<?php checked( true, $settings['override_filename'] ); ?>>
-
-								<span>
-									<b><?php esc_html_e( 'Rename Files', 'sirsc' ); ?></b><br>
-									<?php esc_html_e( 'Enable this to rename the attachment files (also the image sizes generated).', 'sirsc' ); ?>
-								</span>
-							</label>
-						</div>
-						<div>
-							<?php $dis = empty( $settings['override_filename'] ) ? 'disabled="disabled"' : ''; ?>
-							<label class="settings sirsc-label wide" for="_sirsc_imgseo_settings_track_initial">
-								<input type="checkbox"
-									name="_sirsc_imgseo_settings[track_initial]"
-									id="_sirsc_imgseo_settings_track_initial"
-									<?php checked( true, $settings['track_initial'] ); ?>
-									<?php echo $dis; //phpcs:ignore ?>>
-								<span>
-									<b><?php esc_html_e( 'Track Initial File', 'sirsc' ); ?></b>
-									<br><?php esc_html_e( 'Enable this to keep a record of the initial filename if the file is renamed.', 'sirsc' ); ?>
-								</span>
-							</label>
-						</div>
-						<div>
-							<label class="settings sirsc-label wide" for="_sirsc_imgseo_settings_override_title">
-								<input type="checkbox"
-									name="_sirsc_imgseo_settings[override_title]"
-									id="_sirsc_imgseo_settings_override_title"
-									<?php checked( true, $settings['override_title'] ); ?>>
-								<span>
-									<b><?php esc_html_e( 'Override Title', 'sirsc' ); ?></b>
-									<br><?php esc_html_e( 'Enable this to override the attachment title with the inherited title.', 'sirsc' ); ?>
-								</span>
-							</label>
-						</div>
-						<div>
-							<label class="settings sirsc-label wide" for="_sirsc_imgseo_settings_override_alt">
-								<input type="checkbox"
-									name="_sirsc_imgseo_settings[override_alt]"
-									id="_sirsc_imgseo_settings_override_alt"
-									<?php checked( true, $settings['override_alt'] ); ?>>
-								<span>
-									<b><?php esc_html_e( 'Override Alternative', 'sirsc' ); ?></b>
-									<br><?php esc_html_e( 'Enable this to override the attachment alternative text with the inherited title.', 'sirsc' ); ?>
-								</span>
-							</label>
-						</div>
-						<div>
-							<label class="settings sirsc-label wide" for="_sirsc_imgseo_settings_override_permalink">
-								<input type="checkbox"
-									name="_sirsc_imgseo_settings[override_permalink]"
-									id="_sirsc_imgseo_settings_override_permalink"
-									<?php checked( true, $settings['override_permalink'] ); ?>>
-								<span>
-									<b><?php esc_html_e( 'Override Permalink', 'sirsc' ); ?></b>
-									<br><?php esc_html_e( 'Enable this to override the attachment permalink with the inherited title.', 'sirsc' ); ?>
-								</span>
-							</label>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="rows bg-secondary has-gaps breakable">
-				<div class="span4">
-					<h2><span class="dashicons dashicons-feedback"></span> <?php esc_html_e( 'Show rename button', 'sirsc' ); ?></h2>
-					<p><?php esc_html_e( 'For the selected post types there will be shown a meta box with the button to rename the associated files.', 'sirsc' ); ?></p>
-
-					<div class="rows three-columns mini-gaps bg-trans no-shadow breakable">
-						<?php if ( ! empty( $types ) ) : ?>
-							<?php
-							foreach ( $types as $type => $name ) :
-								if ( 'product_variation' === $type ) {
-									continue;
-								}
-								?>
-								<label class="settings sirsc-label"
-									for="_sirsc_imgseo_settings_types_<?php echo esc_attr( $type ); ?>">
-									<input type="checkbox"
-										name="_sirsc_imgseo_settings[types][<?php echo esc_attr( $type ); ?>]"
-										id="_sirsc_imgseo_settings_types_<?php echo esc_attr( $type ); ?>"
-										<?php checked( true, in_array( $type, $settings['types'], true ) ); ?>>
-									<?php echo esc_html( $name ); ?>
-								</label>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</div>
-				</div>
-
-				<div class="span4">
-					<h2><span class="dashicons dashicons-upload"></span> <?php esc_html_e( 'Rename images on upload', 'sirsc' ); ?></h2>
-					<p><?php esc_html_e( 'Attempt to automatically rename the files on upload to these post types (these post parent types).', 'sirsc' ); ?></p>
-
-					<div class="rows three-columns mini-gaps bg-trans no-shadow breakable">
-						<?php unset( $types['attachment'] ); ?>
-						<?php foreach ( $types as $type => $name ) : ?>
-							<label class="settings sirsc-label" for="_sirsc_imgseo_settings_upload_<?php echo esc_attr( $type ); ?>">
-								<input type="checkbox"
-									name="_sirsc_imgseo_settings[upload][<?php echo esc_attr( $type ); ?>]"
-									id="_sirsc_imgseo_settings_upload_<?php echo esc_attr( $type ); ?>"
-									<?php checked( true, in_array( $type, $settings['upload'], true ) ); ?>>
-								<?php echo esc_html( $name ); ?>
-							</label>
-						<?php endforeach; ?>
-					</div>
-				</div>
-
-				<div class="span4">
-					<h2><span class="dashicons dashicons-format-gallery"></span> <?php esc_html_e( 'Bulk rename images for types', 'sirsc' ); ?></h2>
-					<p><?php esc_html_e( 'These will be the post types that will be available to select in the bulk rename process.', 'sirsc' ); ?></p>
-
-					<div class="rows three-columns mini-gaps bg-trans no-shadow breakable">
-						<?php foreach ( $types as $type => $name ) : ?>
-							<label class="settings sirsc-label" for="_sirsc_imgseo_settings_bulk_<?php echo esc_attr( $type ); ?>">
-								<input type="checkbox"
-									name="_sirsc_imgseo_settings[bulk][<?php echo esc_attr( $type ); ?>]"
-									id="_sirsc_imgseo_settings_bulk_<?php echo esc_attr( $type ); ?>"
-									<?php checked( true, in_array( $type, $settings['bulk'], true ) ); ?>>
-								<?php echo esc_html( $name ); ?>
-							</label>
-						<?php endforeach; ?>
-					</div>
-				</div>
-			</div>
-
-			<div class="rows bg-secondary">
-				<div class="span12">
-					<?php esc_html_e( 'Please note that any of the rename process options (on upload, manual rename, bulk rename) will take into account the currently enabled settings, this will not apply retroactively.', 'sirsc' ); ?>
-					<br><br>
-					<?php
-					submit_button( __( 'Save Settings', 'sirsc' ), 'primary', '', false, [
-						'onclick' => 'sirscToggleProcesing( \'js-sirsc_imgseo-frm-settings\' );',
-					] );
-					?>
-				</div>
-			</div>
+			<?php require_once __DIR__ . '/parts/settings.php'; ?>
 		</form>
 		<?php
 	}
 
 	/**
 	 * Outputs the bulk rename form.
-	 *
-	 * @return void
 	 */
 	public static function form_bulk_rename_output() {
 		$settings = self::$settings;
@@ -752,53 +571,13 @@ class SIRSC_Adons_Images_SEO {
 		?>
 		<form action="" method="post" autocomplete="off">
 			<?php wp_nonce_field( '_sirsc_imgseo_bulk_action', '_sirsc_imgseo_bulk_nonce' ); ?>
-
-			<div class="rows bg-secondary no-top">
-				<div class="span12">
-					<?php echo wp_kses_post( __( 'The bulk rename process is targeting images set as <b>featured image</b> (for all post types selected that support the featured image feature) or attached as <b>media</b> (uploaded to that posts as children).', 'sirsc' ) ); ?>
-					<?php if ( in_array( 'product', $types, true ) ) : ?>
-						<?php echo wp_kses_post( __( 'For products, the rename will include also the <b>gallery images</b>.', 'sirsc' ) ); ?>
-					<?php endif; ?>
-					<?php esc_html_e( 'Please note that any of the rename process options (on upload, manual rename, bulk rename) will override the attachment attributes based on the images SEO settings you made.', 'sirsc' ); ?>
-				</div>
-			</div>
-
-			<div class="rows bg-secondary no-shadow has-gaps breakable">
-				<div class="span3">
-					<h2><span class="dashicons dashicons-format-gallery"></span> <?php esc_html_e( 'Bulk Rename Images', 'sirsc' ); ?></h2>
-
-					<p>
-						<?php \SIRSC\Iterator\button_display( 'sirsc-is-rename' ); ?>
-						<?php esc_html_e( 'If you want to start the bulk rename of images, you have to select at least one post type, then click the bulk rename button.', 'sirsc' ); ?>
-					</p>
-
-					<div class="rows three-columns mini-gaps bg-trans no-shadow breakable">
-						<?php foreach ( $types as $type ) : ?>
-							<?php $type_on = ( ! empty( $types[ $type ] ) ) ? 'on' : ''; ?>
-							<label class="settings sirsc-label" class="sirsc_imgseo-label-<?php echo esc_attr( $type ); ?>"
-								for="_sirsc_imgseo_bulk_update_<?php echo esc_attr( $type ); ?>">
-								<input type="checkbox"
-									name="_sirsc_imgseo_bulk_update[<?php echo esc_attr( $type ); ?>]"
-									id="_sirsc_imgseo_bulk_update_<?php echo esc_attr( $type ); ?>"
-									value="<?php echo esc_attr( $type ); ?>"
-									<?php checked( 'on', $type_on ); ?>> <?php echo esc_html( self::$post_types[ $type ] ); ?>
-							</label>
-						<?php endforeach; ?>
-					</div>
-				</div>
-				<div class="span9" id="sirsc-listing-wrap">
-					<?php self::maybe_rename_form_execute(); ?>
-					<?php self::maybe_bulk_rename_form_execute(); ?>
-				</div>
-			</div>
+			<?php require_once __DIR__ . '/parts/bulk-rename-output.php'; ?>
 		</form>
 		<?php
 	}
 
 	/**
 	 * Maybe run the individual rename.
-	 *
-	 * @return void
 	 */
 	public static function maybe_rename_form_execute() {
 		$rename = filter_input( INPUT_POST, '_sirsc_imgseo_dorename_nonce', FILTER_DEFAULT );
@@ -812,16 +591,17 @@ class SIRSC_Adons_Images_SEO {
 					if ( 'attachment' === $type ) {
 						?>
 						<hr>
-						<h2><?php esc_html_e( 'Attachment Rename Result', 'sirsc' ); ?></h3>
-						<div id="sirsc_imgseo-images-process-wrap" class="rows has-padd has-top two-columns">
+						<h2><?php esc_html_e( 'Rename result', 'sirsc' ); ?></h3>
+						<div id="sirsc_imgseo-images-process-wrap" class="as-row">
 							<?php self::rename_image_filename( $id, $title, 0, $type ); ?>
 						</div>
 						<?php
 					} else {
 						?>
 						<hr>
-						<h2><?php esc_html_e( 'Images Attached to the Post Rename Result', 'sirsc' ); ?></h2>
-						<div id="sirsc_imgseo-images-process-wrap" class="rows has-padd has-top two-columns">
+						<h2><?php esc_html_e( 'Rename result', 'sirsc' ); ?>
+						</h2>
+						<div id="sirsc_imgseo-images-process-wrap" class="as-row columns-2">
 							<?php self::regenerate_filenames_by_post( $id, $title ); ?>
 						</div>
 						<?php
@@ -835,8 +615,6 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Maybe initiate the bulk rename process.
-	 *
-	 * @return void
 	 */
 	public static function maybe_bulk_rename_form_execute() {
 		$bulk = filter_input( INPUT_GET, '_sirsc_imgseo_bulk_update', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
@@ -849,8 +627,8 @@ class SIRSC_Adons_Images_SEO {
 			<p>
 				<?php esc_html_e( 'If you have a large set of files, we recommend using the command line tools for performance and speed reasons. If you can run commands from the terminal, you could use the wp-cli command. When you run the command it will prompt for you to enter the site id (or 1 if you are not using a multi-site) and the post type for which you want to bulk rename the files (if multiple, then separate these with commas).', 'sirsc' ); ?>
 				<em><?php esc_html_e( 'Ex: wp sirsc seorename 1 product,product_variation --content-replace=each', 'sirsc' ); ?></em>
-				<pre class="code sirsc-wpcli">wp sirsc seorename</pre>
 			</p>
+			<pre class="code sirsc-wpcli">wp sirsc seorename</pre>
 			<p><?php esc_html_e( 'Make sure you back up your files and database before running any bulk action, some changes cannot be reverted from the browser.', 'sirsc' ); ?></p>
 			<?php
 		}
@@ -858,8 +636,6 @@ class SIRSC_Adons_Images_SEO {
 
 	/**
 	 * Execute the processing of each items batch rename.
-	 *
-	 * @return void
 	 */
 	public static function execute_bulk_rename() {
 		\SIRSC\Iterator\is_valid_ajax();
@@ -868,9 +644,9 @@ class SIRSC_Adons_Images_SEO {
 		$iterator  = filter_input( INPUT_GET, 'iterator', FILTER_DEFAULT );
 		if ( empty( $bulk_type ) ) {
 			?>
-			<p class="sirsc-message warning"><?php esc_html_e( 'If you want to start the bulk rename of images, you have to select at least one post type.', 'sirsc' ); ?></p>
+			<p class="sirsc-message warning"><?php esc_html_e( 'If you want to start the bulk rename of images, you have to select at least one post type, then click the bulk rename button.', 'sirsc' ); ?></p>
 			<?php
-			echo \SIRSC\Helper\document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'reset' ) ); //phpcs:ignore
+			\SIRSC\Helper\the_document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'reset' ) );
 
 			wp_die();
 			die();
@@ -891,7 +667,7 @@ class SIRSC_Adons_Images_SEO {
 					?>
 					<p class="sirsc-message warning"><?php esc_html_e( 'Nothing to be processed.', 'sirsc' ); ?></p>
 					<?php
-					echo \SIRSC\Helper\document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'reset' ) ); //phpcs:ignore
+					\SIRSC\Helper\the_document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'reset' ) );
 
 					wp_die();
 					die();
@@ -900,20 +676,16 @@ class SIRSC_Adons_Images_SEO {
 
 			$option = get_option( 'sirsc_adons_is_bulk_rename', [] );
 			?>
-			<div class="rows bg-trans no-shadow no-top">
-				<h2 class="span3">
-					<?php esc_html_e( 'Bulk renaming files', 'sirsc' ); ?>
-				</h2>
-				<div class="span9">
-					<?php
-					$percent = 0;
-					if ( ! empty( $option['total'] ) ) {
-						$percent = ceil( $option['processed'] * 100 / $option['total'] );
-					}
-					self::show_progress_bar( $option['processed'], $percent, $option['total'], false );
-					?>
-				</div>
+			<div class="label-row as-title">
+				<h2><?php esc_html_e( 'Bulk renaming files', 'sirsc' ); ?></h2>
 			</div>
+			<?php
+			$percent = 0;
+			if ( ! empty( $option['total'] ) ) {
+				$percent = ceil( $option['processed'] * 100 / $option['total'] );
+			}
+			self::show_progress_bar( $option['processed'], $percent, $option['total'], false );
+			?>
 
 			<?php
 			if ( 'finish' === $iterator || 'cancel' === $iterator ) {
@@ -926,7 +698,7 @@ class SIRSC_Adons_Images_SEO {
 			}
 			?>
 
-			<div id="sirsc-feature-files-renamed" class="rows two-columns has-top has-padd breakable">
+			<div id="sirsc-feature-files-renamed" class="as-row no-margin">
 				<?php
 				if ( ! empty( $option['total'] ) ) {
 					$rows = $wpdb->get_results( self::rename_get_query( $option['types'], $option['last_id'] ) ); // phpcs:ignore
@@ -946,14 +718,14 @@ class SIRSC_Adons_Images_SEO {
 				}
 				?>
 			</div>
-			<?php
 
+			<?php
 			if ( ! empty( $option['total'] ) && (int) $option['total'] === (int) $option['processed'] ) {
-				echo \SIRSC\Helper\document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'finish' ) . ' sirscIsBulkRenameFinish(\'' . __( 'The identified images were renamed.', 'sirsc' ) . '\');', true ); //phpcs:ignore
+				\SIRSC\Helper\the_document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'finish' ) . ' sirscIsBulkRenameFinish(\'' . __( 'The identified images were renamed.', 'sirsc' ) . '\');', true );
 				wp_die();
 				die();
 			} else {
-				echo \SIRSC\Helper\document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'continue' ), true ); //phpcs:ignore
+				\SIRSC\Helper\the_document_ready_js( \SIRSC\Iterator\button_callback( 'sirsc-is-rename', 'continue' ), true );
 			}
 		}
 
@@ -964,12 +736,12 @@ class SIRSC_Adons_Images_SEO {
 	/**
 	 * Compute the rename query.
 	 *
-	 * @param  string  $type     The post types list.
-	 * @param  integer $prev     A previous processed attachment/post ID.
-	 * @param  boolean $is_count The query is for count.
+	 * @param  string $type     The post types list.
+	 * @param  int    $prev     A previous processed attachment/post ID.
+	 * @param  bool   $is_count The query is for count.
 	 * @return string
 	 */
-	public static function rename_get_query( $type, $prev = 0, $is_count = false ) { //phpcs:ignore
+	public static function rename_get_query( $type, $prev = 0, $is_count = false ) { // phpcs:ignore
 		global $wpdb;
 
 		$types        = explode( ',', $type );
@@ -1086,13 +858,12 @@ class SIRSC_Adons_Images_SEO {
 	/**
 	 * Show a progress bar.
 	 *
-	 * @param integer $items_proc The total items processed.
-	 * @param integer $processed  The percent processed.
-	 * @param integer $total      The total.
-	 * @param integer $batch      The current batch count.
-	 * @return void
+	 * @param int $items_proc The total items processed.
+	 * @param int $processed  The percent processed.
+	 * @param int $total      The total.
+	 * @param int $batch      The current batch count.
 	 */
-	public static function show_progress_bar( $items_proc = 0, $processed = 0, $total = 0, $batch = 0 ) { //phpcs:ignore
+	public static function show_progress_bar( $items_proc = 0, $processed = 0, $total = 0, $batch = 0 ) { // phpcs:ignore
 		$text = esc_html( sprintf(
 			// Translators: %1$d - count products, %2$d - total.
 			__( 'Processed the filename replacement for %1$d items of %2$d.', 'sirsc' ),
@@ -1110,12 +881,12 @@ class SIRSC_Adons_Images_SEO {
 	 * @param  string $type Query post type.
 	 * @return string
 	 */
-	public static function assess_attachment_title( $row, $type ) { //phpcs:ignore
+	public static function assess_attachment_title( $row, $type ) { // phpcs:ignore
 		// Assess in the order of priority.
 		$query_args = [
 			'post_type'   => explode( ',', $type ),
 			'post_status' => 'any',
-			'meta_query'  => [ //phpcs:ignore
+			'meta_query'  => [ // phpcs:ignore
 				[
 					'key'   => '_thumbnail_id',
 					'value' => $row->ID,
@@ -1139,7 +910,7 @@ class SIRSC_Adons_Images_SEO {
 		$query_args = [
 			'post_type'   => explode( ',', $type ),
 			'post_status' => 'any',
-			'meta_query'  => [ //phpcs:ignore
+			'meta_query'  => [ // phpcs:ignore
 				[
 					'key'     => '_product_image_gallery',
 					'value'   => $row->ID,
@@ -1200,19 +971,21 @@ class SIRSC_Adons_Images_SEO {
 	/**
 	 * Attempt to generate a unique filename.
 	 *
-	 * @param  string  $dir     Base directory.
-	 * @param  string  $title   Parent title.
-	 * @param  string  $type    Attachment mime type.
-	 * @param  integer $count   A potential suffix.
-	 * @param  string  $initial The initial filename (with the path too).
+	 * @param  string $dir     Base directory.
+	 * @param  string $title   Parent title.
+	 * @param  string $type    Attachment mime type.
+	 * @param  int    $count   A potential suffix.
+	 * @param  string $initial The initial filename (with the path too).
 	 * @return string
 	 */
-	public static function generate_filename( $dir, $title, $type, $count = 0, $initial = '' ) { //phpcs:ignore
+	public static function generate_filename( $dir, $title, $type, $count = 0, $initial = '' ) { // phpcs:ignore
 		$new_filename = '';
 		while ( '' === $new_filename ) {
-			$suffix   = ( ! empty( $count ) ? '-' . $count : '' );
+			$suffix   = ! empty( $count ) ? '-' . $count : '';
 			$maxlen   = 80 - strlen( $suffix . '.' . $type ) - 1;
-			$filename = substr( sanitize_title( $title ), 0, $maxlen ) . $suffix;
+			$filename = substr( sanitize_file_name( $title ), 0, $maxlen ) . $suffix;
+			$filename = preg_replace( '/[^\x00-\x7F]/u', '', $filename ); // Remove non-unicode.
+			$filename = trim( mb_strtolower( sanitize_title( $filename ) ) );
 
 			if ( $dir . $filename . '.' . $type === $initial ) {
 				$new_filename = $filename;
@@ -1229,113 +1002,58 @@ class SIRSC_Adons_Images_SEO {
 	/**
 	 * Outputs the rename form.
 	 *
-	 * @param  integer $id Post ID.
-	 * @return void
+	 * @param int $id Post ID.
 	 */
-	public static function form_rename_output( $id ) { //phpcs:ignore
+	public static function form_rename_output( $id ) { // phpcs:ignore
+		$post = get_post( $id );
+		if ( ! ( $post instanceof WP_Post ) ) {
+			?>
+			<div class="as-box bg-secondary no-gap">
+				<?php esc_html_e( 'No target selected.', 'sirsc' ); ?>
+			</div>
+			<?php
+			return;
+		}
 		?>
 		<form action="" method="post" autocomplete="off">
 			<?php wp_nonce_field( '_sirsc_imgseo_dorename_action', '_sirsc_imgseo_dorename_nonce' ); ?>
-			<?php $post = get_post( $id ); ?>
-			<?php if ( $post instanceof WP_Post ) : ?>
-				<input type="hidden" name="sirsc_imgseo_type" value="<?php echo esc_attr( $post->post_type ); ?>">
-				<input type="hidden" name="sirsc_imgseo_id" value="<?php echo (int) $id; ?>">
+			<input type="hidden" name="sirsc_imgseo_type" value="<?php echo esc_attr( $post->post_type ); ?>">
+			<input type="hidden" name="sirsc_imgseo_id" value="<?php echo (int) $id; ?>">
 
-				<div class="rows no-top bg-secondary">
-					<div>
-						<?php esc_html_e( 'Please note that any of the rename process options (on upload, manual rename, bulk rename) will override the attachment attributes based on the images SEO settings you made.', 'sirsc' ); ?>
-					</div>
-				</div>
+			<p><?php esc_html_e( 'Please note that any of the rename process options (on upload, manual rename, bulk rename) will override the attachment attributes based on the images SEO settings you made.', 'sirsc' ); ?></p>
 
-				<?php if ( 'attachment' === $post->post_type ) : ?>
-					<div id="sirsc-is-rename-wrap" class="rows bg-secondary has-gaps breakable">
-						<div class="span4">
-							<h2><span class="dashicons dashicons-image-rotate-right"></span> <?php esc_html_e( 'Rename Attachment File', 'sirsc' ); ?></h2>
-
-							<p><?php esc_html_e( 'You can change the title below, then click the button to rename the attachment file, and the generated image sizes.', 'sirsc' ); ?></p>
-
-							<div class="rows bg-trans unbreakable">
-								<div class="span8">
-									<input type="text" name="sirsc_imgseo-renamefile-title" id="sirsc_imgseo-renamefile-title" value="<?php echo esc_attr( $post->post_title ); ?>">
-								</div>
-								<div class="span4">
-									<div>
-										<button type="submit" class="sirsc-button-icon button-primary auto f-right" onclick="sirscToggleProcesing( 'sirsc-is-rename-wrap' );"><span class="dashicons dashicons-image-rotate-right"></span> <span><?php esc_attr_e( 'Rename', 'sirsc' ); ?></span></button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="span8">
-							<?php $atts = self::get_attachments_by_id( $id ); ?>
-							<?php if ( ! empty( $atts ) ) : ?>
-								<h2><?php esc_html_e( 'Attachment Image', 'sirsc' ); ?></h2>
-								<hr>
-								<ul>
-									<?php foreach ( $atts as $att ) : ?>
-										<li>
-											<?php esc_html_e( 'Go to', 'sirsc' ); ?> <a href="<?php echo esc_url( admin_url( 'post.php?post=' . $att['id'] . '&action=edit' ) ); ?>"><em><?php echo esc_attr( $att['id'] ); ?></em></a>
-											| <?php echo esc_html( $att['type'] ); ?>
-											| <b><?php echo esc_html( $att['filename'] ); ?></b>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							<?php endif; ?>
-							<?php esc_html_e( 'Go to', 'sirsc' ); ?> <a href="<?php echo esc_url( admin_url( 'post.php?post=' . $id . '&action=edit' ) ); ?>"><em><?php echo esc_attr( $post->post_title ); ?></em></a>
-							<?php self::maybe_rename_form_execute(); ?>
-						</div>
-					</div>
-				<?php else : ?>
-					<div id="sirsc-is-rename-wrap" class="rows bg-secondary has-gaps breakable">
-						<div class="span4">
-							<h2><span class="dashicons dashicons-image-rotate-right"></span> <?php esc_html_e( 'Rename images attached to the post', 'sirsc' ); ?></h2>
-
-							<p><?php esc_html_e( 'You can change the title below, then click the button to rename the identifies images associated with this post, and their generated image sizes.', 'sirsc' ); ?></p>
-
-							<div class="rows bg-trans unbreakable">
-								<div class="span8">
-									<input type="text" name="sirsc_imgseo-renamefile-title" id="sirsc_imgseo-renamefile-title" value="<?php echo esc_attr( $post->post_title ); ?>">
-								</div>
-								<div class="span4">
-									<div>
-										<button type="submit" class="sirsc-button-icon button-primary" onclick="sirscToggleProcesing( 'sirsc-is-rename-wrap' );"><span class="dashicons dashicons-image-rotate-right"></span> <span><?php esc_attr_e( 'Rename', 'sirsc' ); ?></span></button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="span8">
-							<?php $atts = self::get_attachments_by_post( $id ); ?>
-							<?php if ( ! empty( $atts ) ) : ?>
-								<h2><?php esc_html_e( 'Images Attached to the post', 'sirsc' ); ?></h2>
-
-								<ul>
-									<?php foreach ( $atts as $att ) : ?>
-										<li>
-											<b>▪</b>
-											<?php esc_html_e( 'Go to', 'sirsc' ); ?> <a href="<?php echo esc_url( admin_url( 'post.php?post=' . $att['id'] . '&action=edit' ) ); ?>"><em><?php echo esc_attr( $att['id'] ); ?></em></a>
-											| <?php echo esc_html( $att['type'] ); ?>
-											| <b><?php echo esc_html( $att['filename'] ); ?></b>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							<?php endif; ?>
-							<b>▪</b> <?php esc_html_e( 'Go to', 'sirsc' ); ?> <a href="<?php echo esc_url( admin_url( 'post.php?post=' . $id . '&action=edit' ) ); ?>"><em><?php echo esc_attr( $post->post_title ); ?></em></a>
-							<?php self::maybe_rename_form_execute(); ?>
-						</div>
-					</div>
-				<?php endif; ?>
-
-			<?php endif; ?>
+			<?php
+			if ( 'attachment' === $post->post_type ) {
+				require_once __DIR__ . '/parts/rename-attachment.php';
+			} else {
+				require_once __DIR__ . '/parts/rename-other.php';
+			}
+			?>
 		</form>
 		<?php
 	}
 
 	/**
-	 * Identify the attachment filenames by post parent.
+	 * Filters arguments used to retrieve media attached to the given post.
 	 *
-	 * @param  integer $id Post ID.
+	 * @param  array   $args Post query arguments.
+	 * @param  string  $type Mime type of the desired media.
+	 * @param  WP_Post $post Post object.
 	 * @return array
 	 */
-	public static function get_attachments_by_post( $id ) { //phpcs:ignore
+	public static function get_attached_media_sorted( $args, $type, $post ) { // phpcs:ignore
+		$args['orderby'] = 'ID';
+
+		return $args;
+	}
+
+	/**
+	 * Identify the attachment filenames by post parent.
+	 *
+	 * @param  int $id Post ID.
+	 * @return array
+	 */
+	public static function get_attachments_by_post( $id ) { // phpcs:ignore
 		$all   = [];
 		$upls  = wp_upload_dir();
 		$base  = trailingslashit( $upls['baseurl'] );
@@ -1349,7 +1067,7 @@ class SIRSC_Adons_Images_SEO {
 				'id'        => (int) $meta,
 				'count'     => 0,
 				'new_title' => $title,
-				'filename'  => ( ! empty( $filename[0] ) ) ? str_replace( $base, '', $filename[0] ) : '',
+				'filename'  => ! empty( $filename[0] ) ? str_replace( $base, '', $filename[0] ) : '',
 			];
 
 			$all[] = (int) $meta;
@@ -1368,7 +1086,7 @@ class SIRSC_Adons_Images_SEO {
 						'id'        => $iid,
 						'count'     => ++$count,
 						'new_title' => $title,
-						'filename'  => ( ! empty( $filename[0] ) ) ? str_replace( $base, '', $filename[0] ) : '',
+						'filename'  => ! empty( $filename[0] ) ? str_replace( $base, '', $filename[0] ) : '',
 					];
 
 					$all[] = $iid;
@@ -1387,7 +1105,7 @@ class SIRSC_Adons_Images_SEO {
 						'id'        => $iid,
 						'count'     => ++$count,
 						'new_title' => $title,
-						'filename'  => ( ! empty( $filename[0] ) ) ? str_replace( $base, '', $filename[0] ) : '',
+						'filename'  => ! empty( $filename[0] ) ? str_replace( $base, '', $filename[0] ) : '',
 					];
 
 					$all[] = $iid;
@@ -1395,16 +1113,24 @@ class SIRSC_Adons_Images_SEO {
 			}
 		}
 
-		return $items;
+		$list = [];
+		foreach ( $items as $item ) {
+			if ( ! empty( $item['filename'] ) ) {
+				$list[] = $item;
+			}
+		}
+
+		uasort( $list, fn( $a, $b ) => $a['id'] <=> $b['id'] );
+		return $list;
 	}
 
 	/**
 	 * Identify filenames by post attachment id.
 	 *
-	 * @param  integer $id Attachment ID.
+	 * @param  int $id Attachment ID.
 	 * @return array
 	 */
-	public static function get_attachments_by_id( $id ) { //phpcs:ignore
+	public static function get_attachments_by_id( $id ) { // phpcs:ignore
 		if ( ! empty( $id ) ) {
 			$upls     = wp_upload_dir();
 			$base     = trailingslashit( $upls['baseurl'] );
@@ -1416,7 +1142,7 @@ class SIRSC_Adons_Images_SEO {
 				'id'        => (int) $id,
 				'count'     => 0,
 				'new_title' => $title,
-				'filename'  => ( ! empty( $filename[0] ) ) ? str_replace( $base, '', $filename[0] ) : '',
+				'filename'  => ! empty( $filename[0] ) ? str_replace( $base, '', $filename[0] ) : '',
 			];
 		}
 
@@ -1426,12 +1152,11 @@ class SIRSC_Adons_Images_SEO {
 	/**
 	 * Regenerate attachment filenames by post parent.
 	 *
-	 * @param  integer $id    Post ID.
-	 * @param  string  $title The expected title.
-	 * @return void
+	 * @param int    $id    Post ID.
+	 * @param string $title The expected title.
 	 */
-	public static function regenerate_filenames_by_post( $id, $title = '' ) { //phpcs:ignore
-		$title = ( empty( $title ) ) ? get_the_title( $id ) : $title;
+	public static function regenerate_filenames_by_post( $id, $title = '' ) { // phpcs:ignore
+		$title = empty( $title ) ? get_the_title( $id ) : $title;
 		$type  = get_post_type( $id );
 		$items = self::get_attachments_by_post( $id );
 		if ( ! empty( $items ) ) {
@@ -1444,12 +1169,11 @@ class SIRSC_Adons_Images_SEO {
 	/**
 	 * Trace filenames changes.
 	 *
-	 * @param  int   $id       Attachment ID.
-	 * @param  array $old_meta Initial meta.
-	 * @param  array $new_meta Meta after rename.
-	 * @return void
+	 * @param int   $id       Attachment ID.
+	 * @param array $old_meta Initial meta.
+	 * @param array $new_meta Meta after rename.
 	 */
-	public static function trace_rename_changes( $id, $old_meta, $new_meta ) { //phpcs:ignore
+	public static function trace_rename_changes( $id, $old_meta, $new_meta ) { // phpcs:ignore
 		if ( ! empty( $old_meta ) && ! empty( $new_meta ) ) {
 			if ( isset( $old_meta['file'] ) && isset( $new_meta['file'] )
 				&& $old_meta['file'] !== $new_meta['file'] ) {

@@ -6,7 +6,6 @@
  */
 
 declare( strict_types=1 );
-
 namespace SIRSC\Action;
 
 /**
@@ -15,7 +14,7 @@ namespace SIRSC\Action;
  * @param  array $meta Image metadata.
  * @return array
  */
-function compute_original_list_from_meta( $meta = [] ) { //phpcs:ignore
+function compute_original_list_from_meta( $meta = [] ) { // phpcs:ignore
 	$result = [
 		'source'    => '',
 		'folder'    => '',
@@ -42,33 +41,32 @@ function compute_original_list_from_meta( $meta = [] ) { //phpcs:ignore
 /**
  * Handle cleanup removable file.
  *
- * @param  int    $id        Attachment ID.
- * @param  string $removable File to be removed.
- * @param  bool   $wpcli   WP-CLI running.
- * @param  bool   $verbose WP-CLI verbose.
- * @return void
+ * @param int    $id        Attachment ID.
+ * @param string $removable File to be removed.
+ * @param bool   $wpcli   WP-CLI running.
+ * @param bool   $verbose WP-CLI verbose.
  */
-function handle_cleanup_removable_file( $id, $removable, $wpcli = false, $verbose = false ) { //phpcs:ignore
+function handle_cleanup_removable_file( $id, $removable, $wpcli = false, $verbose = false ) { // phpcs:ignore
 	if ( empty( $removable ) || is_dir( $removable ) ) {
 		return;
 	}
 
 	if ( file_exists( $removable ) ) {
-		@unlink( $removable ); //phpcs:ignore
+		@unlink( $removable ); // phpcs:ignore
 
 		if ( $wpcli && $verbose ) {
-			\WP_CLI::success( $removable . ' ' . esc_html__( 'was removed', 'sirsc' ) );
+			\WP_CLI::success( $removable . ' ' . \esc_html__( 'was removed', 'sirsc' ) );
 		}
 
 		// Notify other scripts that the file was deleted.
 		\do_action( 'sirsc_image_file_deleted', $id, $removable );
 	} else {
-		$text = $removable . ' <em>' . esc_html__( 'Could not remove', 'sirsc' ) . '. ' . esc_html__( 'The image is missing or it is the original file.', 'sirsc' ) . '</em>';
+		$text = $removable . ' <em>' . \esc_html__( 'Could not remove', 'sirsc' ) . '. ' . \esc_html__( 'The image is missing or it is the original file.', 'sirsc' ) . '</em>';
 
 		if ( $wpcli ) {
 			if ( $verbose ) {
 				// Translators: %d - the attachment id.
-				\WP_CLI::success( sprintf( esc_html__( 'METADATA cleanup performed for %d.', 'sirsc' ), $id ) );
+				\WP_CLI::success( sprintf( \esc_html__( 'METADATA cleanup performed for %d.', 'sirsc' ), $id ) );
 			}
 			\SIRSC\Debug\bulk_log_write( 'WP-CLI * ' . $text );
 			\WP_CLI::line( \wp_strip_all_tags( $text ) );
@@ -79,12 +77,11 @@ function handle_cleanup_removable_file( $id, $removable, $wpcli = false, $verbos
 /**
  * Cleanup attachment all sizes.
  *
- * @param  int  $id      Attachment ID.
- * @param  bool $wpcli   WP-CLI running.
- * @param  bool $verbose WP-CLI verbose.
- * @return void
+ * @param int  $id      Attachment ID.
+ * @param bool $wpcli   WP-CLI running.
+ * @param bool $verbose WP-CLI verbose.
  */
-function cleanup_attachment_all_sizes( $id, $wpcli = false, $verbose = false ) { //phpcs:ignore
+function cleanup_attachment_all_sizes( $id, $wpcli = false, $verbose = false ) { // phpcs:ignore
 	if ( empty( $id ) ) {
 		return;
 	}
@@ -123,13 +120,12 @@ function cleanup_attachment_all_sizes( $id, $wpcli = false, $verbose = false ) {
 /**
  * Cleanup attachment all sizes.
  *
- * @param  int    $id      Attachment ID.
- * @param  string $size    Image size name.
- * @param  bool   $wpcli   WP-CLI running.
- * @param  bool   $verbose WP-CLI verbose.
- * @return void
+ * @param int    $id      Attachment ID.
+ * @param string $size    Image size name.
+ * @param bool   $wpcli   WP-CLI running.
+ * @param bool   $verbose WP-CLI verbose.
  */
-function cleanup_attachment_one_size( $id, $size, $wpcli = false, $verbose = false ) { //phpcs:ignore
+function cleanup_attachment_one_size( $id, $size, $wpcli = false, $verbose = false ) { // phpcs:ignore
 	if ( empty( $id ) || empty( $size ) ) {
 		return;
 	}
@@ -164,12 +160,11 @@ function cleanup_attachment_one_size( $id, $size, $wpcli = false, $verbose = fal
 /**
  * Cleanup attachment all sizes.
  *
- * @param  int    $id      Attachment ID.
- * @param  string $size    Image size name.
- * @param  string $fname   Filename.
- * @return void
+ * @param int    $id      Attachment ID.
+ * @param string $size    Image size name.
+ * @param string $fname   Filename.
  */
-function cleanup_attachment_one_size_file( $id, $size, $fname = '' ) { //phpcs:ignore
+function cleanup_attachment_one_size_file( $id, $size, $fname = '' ) { // phpcs:ignore
 	if ( empty( $id ) || empty( $size ) || empty( $fname ) ) {
 		return;
 	}

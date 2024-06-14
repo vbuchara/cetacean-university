@@ -6,7 +6,6 @@
  */
 
 declare( strict_types=1 );
-
 namespace SIRSC\AJAX;
 
 \add_action( 'wp_ajax_sirsc_single_details', __NAMESPACE__ . '\\single_details' );
@@ -23,14 +22,12 @@ namespace SIRSC\AJAX;
 \add_action( 'wp_ajax_sirsc_refresh_log', __NAMESPACE__ . '\\refresh_log' );
 \add_action( 'wp_ajax_sirsc_reset_log', __NAMESPACE__ . '\\reset_log' );
 \add_action( 'wp_ajax_sirsc_cancel_cron_task', __NAMESPACE__ . '\\cancel_cron_task' );
-\add_action( 'wp_ajax_sirsc_refresh_placeholder', __NAMESPACE__ . '\\refresh_placeholder' );
 
 /**
  * End the AJAX request.
- *
- * @return void
  */
 function sirsc_call_end() {
+	echo '<script>sirsrcAssessButtonsClicks()</script>';
 	\wp_die();
 	die();
 }
@@ -38,10 +35,9 @@ function sirsc_call_end() {
 /**
  * Verify that the AJAX call is legit for options managers.
  *
- * @param  string $type      Type of request (get|post).
- * @param  string $condition Type of role condition (full|user).
- * @param  string $verify    Which nonce to verify.
- * @return void
+ * @param string $type      Type of request (get|post).
+ * @param string $condition Type of role condition (full|user).
+ * @param string $verify    Which nonce to verify.
  */
 function verify_ajax_call_nonce( string $type = 'get', string $condition = 'full', string $verify = 'sirsc-ajax-actions' ) {
 	$nonce = 'get' === $type
@@ -159,8 +155,8 @@ function single_cleanup() {
 	$id = filter_input( INPUT_GET, 'post-id', FILTER_VALIDATE_INT );
 	if ( ! empty( $id ) ) {
 		\SIRSC\Helper\single_attachment_raw_cleanup( $id );
-		echo \SIRSC\Helper\make_buttons( $id, true ); //phpcs:ignore
-		echo \SIRSC\Helper\document_ready_js( 'sirscRefreshSummary( \'' . $id . '\' );' ); //phpcs:ignore
+		echo \SIRSC\Helper\make_buttons( $id, true ); // phpcs:ignore
+		\SIRSC\Helper\the_document_ready_js( 'sirscRefreshSummary( \'' . $id . '\' );' );
 	}
 	sirsc_call_end();
 }
@@ -179,11 +175,11 @@ function single_regenerate() {
 	if ( ! empty( $id ) ) {
 		\SIRSC\Helper\process_image_sizes_on_request( $id, $size, $pos, $quality );
 		if ( 'all' === $size ) {
-			echo \SIRSC\Helper\make_buttons( $id, true ); //phpcs:ignore
-			echo \SIRSC\Helper\document_ready_js( 'sirscRefreshSummary( \'' . $id . '\' );' ); //phpcs:ignore
+			echo \SIRSC\Helper\make_buttons( $id, true ); // phpcs:ignore
+			\SIRSC\Helper\the_document_ready_js( 'sirscRefreshSummary( \'' . $id . '\' );' );
 		} else {
 			\SIRSC\Helper\show_image_single_size_info( $id, $size, '', [], $count );
-			echo \SIRSC\Helper\document_ready_js( 'sirscRefreshSrc( \'' . $id . '\', \'' . $size . '\' ); sirscRefreshSummary( \'' . $id . '\' );' ); //phpcs:ignore
+			\SIRSC\Helper\the_document_ready_js( 'sirscRefreshSrc( \'' . $id . '\', \'' . $size . '\' ); sirscRefreshSummary( \'' . $id . '\' );' );
 		}
 	}
 	sirsc_call_end();
@@ -211,8 +207,6 @@ function refresh_summary() {
 
 /**
  * AJAX handler for deleting an image size for an attachment.
- *
- * @return void
  */
 function delete_image_size() {
 	verify_ajax_call_nonce();
@@ -223,15 +217,14 @@ function delete_image_size() {
 	if ( ! empty( $id ) ) {
 		\SIRSC\Helper\delete_image_sizes_on_request( $id, $size );
 		\SIRSC\Helper\show_image_single_size_info( $id, $size, '', [], $count );
-		echo \SIRSC\Helper\document_ready_js( 'sirscRefreshSummary( \'' . $id . '\' );' ); //phpcs:ignore
+		\SIRSC\Helper\the_document_ready_js( 'sirscRefreshSummary( \'' . $id . '\' );' );
 	}
+
 	sirsc_call_end();
 }
 
 /**
  * AJAX handler for deleting an image size for an attachment.
- *
- * @return void
  */
 function delete_image_file() {
 	verify_ajax_call_nonce();
@@ -244,19 +237,18 @@ function delete_image_file() {
 	if ( ! empty( $id ) ) {
 		\SIRSC\Helper\delete_image_file_on_request( $id, $filename, $size, $wrap );
 		if ( substr_count( $size, ',' ) ) {
-			echo \SIRSC\Helper\document_ready_js( 'sirscExecuteGetRequest( \'action=sirsc_single_details&post-id=' . $id . '\', \'sirsc-lightbox\' );' ); //phpcs:ignore
+			\SIRSC\Helper\the_document_ready_js( 'sirscExecuteGetRequest( \'action=sirsc_single_details&post-id=' . $id . '\', \'sirsc-lightbox\' );' );
 		} else {
 			\SIRSC\Helper\show_image_single_size_info( $id, $size, '', [], $count );
-			echo \SIRSC\Helper\document_ready_js( 'sirscRefreshSummary( \'' . $id . '\', \'' . $wrap . '\' );' ); //phpcs:ignore
+			\SIRSC\Helper\the_document_ready_js( 'sirscRefreshSummary( \'' . $id . '\', \'' . $wrap . '\' );', true );
 		}
 	}
+
 	sirsc_call_end();
 }
 
 /**
  * AJAX handler for showing an image size for an attachment.
- *
- * @return void
  */
 function get_image_single_size_info() {
 	verify_ajax_call_nonce( 'get', 'user' );
@@ -264,16 +256,24 @@ function get_image_single_size_info() {
 	$id    = filter_input( INPUT_GET, 'post-id', FILTER_VALIDATE_INT );
 	$size  = filter_input( INPUT_GET, 'size', FILTER_DEFAULT );
 	$count = filter_input( INPUT_GET, 'count', FILTER_VALIDATE_INT );
+
 	if ( ! empty( $id ) && ! empty( $size ) ) {
 		\SIRSC\Helper\show_image_single_size_info( $id, $size, '', [], $count );
+	} else {
+		\SIRSC\Helper\the_document_ready_js( 'sirscExecuteGetRequest( \'action=sirsc_single_details&post-id=' . $id . '\', \'sirsc-lightbox\' );' );
 	}
+
+	if ( ! empty( \SIRSC\Helper\sirsc_analyse_error() ) ) {
+		\SIRSC\Helper\the_document_ready_js( 'sirscExecuteGetRequest( \'action=sirsc_single_details&post-id=' . $id . '\', \'sirsc-lightbox\' );' );
+
+		\SIRSC\Helper\the_document_ready_js( 'sirscScrollToFreshSummary( \'' . $id . '\', \'sirsc-lightbox\' );', true );
+	}
+
 	sirsc_call_end();
 }
 
 /**
  * AJAX handler for real time logs view.
- *
- * @return void
  */
 function refresh_log() {
 	verify_ajax_call_nonce();
@@ -281,14 +281,14 @@ function refresh_log() {
 	$type  = filter_input( INPUT_GET, 'type', FILTER_DEFAULT );
 	$level = filter_input( INPUT_GET, 'level', FILTER_DEFAULT );
 	if ( ! empty( $level ) ) {
-		$settings = get_option( 'sirsc_settings' );
+		$settings = \get_option( 'sirsc_settings' );
 		if ( 'on' === $level ) {
 			$settings['disable_verbose_log'] = true;
 		} else {
 			$settings['disable_verbose_log'] = false;
 		}
-		update_option( 'sirsc_settings', $settings ); //phpcs:ignore
-		update_option( 'sirsc_settings_updated', current_time( 'timestamp' ) ); //phpcs:ignore
+		\update_option( 'sirsc_settings', $settings ); // phpcs:ignore
+		\Sirsc\mark_updated_settings();
 		\SIRSC\Debug\log_delete( $type );
 	}
 
@@ -299,13 +299,12 @@ function refresh_log() {
 			echo \wp_kses_post( '<ol>' . \SIRSC\Debug\log_read( $type ) . '<ol>' );
 		}
 	}
+
 	sirsc_call_end();
 }
 
 /**
  * AJAX handler for resetting the logs.
- *
- * @return void
  */
 function reset_log() {
 	verify_ajax_call_nonce();
@@ -314,21 +313,5 @@ function reset_log() {
 	if ( ! empty( $type ) ) {
 		\SIRSC\Debug\log_delete( $type );
 	}
-	sirsc_call_end();
-}
-
-/**
- * Refresh image size placeholder.
- *
- * @return void
- */
-function refresh_placeholder() {
-	verify_ajax_call_nonce();
-
-	$size = filter_input( INPUT_GET, 'size', FILTER_DEFAULT );
-	if ( ! empty( $size ) ) {
-		\SIRSC\Helper\placeholder_preview( $size, true );
-	}
-
 	sirsc_call_end();
 }

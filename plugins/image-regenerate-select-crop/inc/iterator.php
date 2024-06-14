@@ -6,7 +6,6 @@
  */
 
 declare( strict_types=1 );
-
 namespace SIRSC\Iterator;
 
 \add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_assets', 20 );
@@ -23,7 +22,7 @@ function prepare_button( array $button ): array {
 	$default = [
 		'name'       => $name,
 		'icons'      => '',
-		'text'       => __( 'Button', 'sirsc' ) . ' ' . $name,
+		'text'       => \__( 'Button', 'sirsc' ) . ' ' . $name,
 		'callback'   => '',
 		'attributes' => [],
 		'buttons'    => [],
@@ -37,9 +36,8 @@ function prepare_button( array $button ): array {
 /**
  * Setup buttons.
  *
- * @param  string $source   Button source.
- * @param  array  $var_list List of variations.
- * @return void
+ * @param string $source   Button source.
+ * @param array  $var_list List of variations.
  */
 function setup_buttons( string $source, array $var_list ) {
 	$option = \get_option( 'sirsc-iterator-buttons', [] );
@@ -65,13 +63,12 @@ function setup_buttons( string $source, array $var_list ) {
 /**
  * Button display.
  *
- * @param  string $name Button name.
- * @return void
+ * @param string $name Button name.
  */
 function button_display( string $name ) {
 	$option = \get_option( 'sirsc-iterator-buttons', [] );
 	if ( ! empty( $option[ $name ] ) ) {
-		echo $option[ $name ]['text']; //phpcs:ignore
+		echo $option[ $name ]['text']; // phpcs:ignore
 	}
 }
 
@@ -93,32 +90,25 @@ function button_callback( string $name, string $action ): string {
  * Enqueue the css and javascript files
  */
 function load_assets() {
-	$uri = $_SERVER['REQUEST_URI']; //phpcs:ignore
+	$uri = $_SERVER['REQUEST_URI']; // phpcs:ignore
 
-	if ( ! substr_count( $uri, 'post.php' ) && ! substr_count( $uri, 'upload.php' )
+	if ( ! substr_count( $uri, 'post-new.php' )
+		&& ! substr_count( $uri, 'post.php' )
+		&& ! substr_count( $uri, 'upload.php' )
 		&& ! substr_count( $uri, 'admin.php?page=image-regenerate-select-crop-settings' )
-		&& ! substr_count( $uri, 'admin.php?page=sirsc-' ) && ! substr_count( $uri, 'options-media.php' ) ) {
+		&& ! substr_count( $uri, 'admin.php?page=sirsc-' )
+		&& ! substr_count( $uri, 'options-media.php' ) ) {
 		// Fail-fast, the assets should not be loaded.
 		return;
 	}
 
-	if ( file_exists( SIRSC_PLUGIN_DIR . 'build/iterator.js' ) ) {
-		\wp_register_script(
-			'sirsc-iterator',
-			SIRSC_PLUGIN_URL . 'build/iterator.js',
-			[],
-			filemtime( SIRSC_PLUGIN_DIR . 'build/iterator.js' ),
-			false
-		);
-		\wp_localize_script(
-			'sirsc-iterator',
-			'sirscIteratorSettings',
-			[
-				'ajaxurl' => \admin_url( 'admin-ajax.php' ),
-				'delay'   => 500,
-				'verify'  => \wp_create_nonce( 'sirsc-iterator-ajax' ),
-			]
-		);
+	if ( file_exists( SIRSC_DIR . 'build/iterator.js' ) ) {
+		\wp_register_script( 'sirsc-iterator', SIRSC_URL . 'build/iterator.js', [], \SIRSC\get_build_ver(), false );
+		\wp_localize_script( 'sirsc-iterator', 'sirscIteratorSettings', [
+			'ajaxurl' => \admin_url( 'admin-ajax.php' ),
+			'delay'   => 500,
+			'verify'  => \wp_create_nonce( 'sirsc-iterator-ajax' ),
+		] );
 		\wp_enqueue_script( 'sirsc-iterator' );
 	}
 }
@@ -152,7 +142,7 @@ function button_id( string $text, string $callback = '' ): string {
  * @param  void  $return True to return insted of output.
  * @return void|string
  */
-function generate_button( array $attr, bool $return = false ) { //phpcs:ignore
+function generate_button( array $attr, bool $return = false ) { // phpcs:ignore
 	if ( true === $return ) {
 		ob_start();
 	}
@@ -165,9 +155,7 @@ function generate_button( array $attr, bool $return = false ) { //phpcs:ignore
 	$class      = $attr['class'];
 	$id         = button_id( $text, $callback );
 	?>
-	<span id="<?php echo \esc_attr( $id ); ?>"
-		class="sirsc-iterator-wrap button button-primary sirsc-button-icon <?php echo \esc_attr( $class ); ?>"
-		data-callback="<?php echo \esc_js( stripslashes( $callback ) ); ?>"
+	<button id="<?php echo \esc_attr( $id ); ?>" class="label-row sirsc-iterator-wrap button has-icon button-primary <?php echo \esc_attr( $class ); ?>" data-callback="<?php echo \esc_js( stripslashes( $callback ) ); ?>"
 		<?php
 		if ( ! empty( $attributes ) ) {
 			foreach ( $attributes as $key => $value ) {
@@ -179,36 +167,30 @@ function generate_button( array $attr, bool $return = false ) { //phpcs:ignore
 		?>
 		>
 		<?php echo \wp_kses_post( $icon ); ?>
-		<span id="<?php echo \esc_attr( $id ); ?>-start"
-			title="<?php esc_attr_e( 'Start', 'sirsc' ); ?>"
+		<span id="<?php echo \esc_attr( $id ); ?>-start" title="<?php \esc_attr_e( 'Start', 'sirsc' ); ?>"
 			class="sirsc-iterator sirsc-iterator-start">
 			<?php echo \wp_kses_post( $text ); ?>
 		</span>
-
 		<?php if ( in_array( 'stop', $buttons, true ) ) : ?>
-			<span id="<?php echo \esc_attr( $id ); ?>-stop"
-				title="<?php esc_attr_e( 'Stop', 'sirsc' ); ?>"
+			<span id="<?php echo \esc_attr( $id ); ?>-stop" title="<?php \esc_attr_e( 'Stop', 'sirsc' ); ?>"
 				class="dashicons dashicons-controls-pause sirsc-iterator sirsc-iterator-stop hidden"></span>
 		<?php endif; ?>
 
 		<?php if ( in_array( 'resume', $buttons, true ) ) : ?>
-			<span id="<?php echo \esc_attr( $id ); ?>-resume"
-				title="<?php esc_attr_e( 'Resume', 'sirsc' ); ?>"
+			<span id="<?php echo \esc_attr( $id ); ?>-resume" title="<?php \esc_attr_e( 'Resume', 'sirsc' ); ?>"
 				class="dashicons dashicons-controls-play sirsc-iterator sirsc-iterator-resume hidden"></span>
 		<?php endif; ?>
 
 		<?php if ( in_array( 'cancel', $buttons, true ) ) : ?>
-			<span id="<?php echo \esc_attr( $id ); ?>-cancel"
-				title="<?php esc_attr_e( 'Cancel', 'sirsc' ); ?>"
+			<span id="<?php echo \esc_attr( $id ); ?>-cancel" title="<?php \esc_attr_e( 'Cancel', 'sirsc' ); ?>"
 				class="dashicons dashicons-dismiss sirsc-iterator sirsc-iterator-cancel hidden"></span>
 		<?php endif; ?>
 
 		<?php if ( in_array( 'finish', $buttons, true ) ) : ?>
-			<span id="<?php echo \esc_attr( $id ); ?>-finish"
-				title="<?php esc_attr_e( 'Finish', 'sirsc' ); ?>"
+			<span id="<?php echo \esc_attr( $id ); ?>-finish" title="<?php \esc_attr_e( 'Finish', 'sirsc' ); ?>"
 				class="dashicons dashicons-yes-alt sirsc-iterator sirsc-iterator-finish hidden"></span>
 		<?php endif; ?>
-	</span>
+	</button>
 
 	<?php
 	if ( true === $return ) {

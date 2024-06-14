@@ -6,7 +6,6 @@
  */
 
 declare( strict_types=1 );
-
 namespace SIRSC\Debug;
 
 \add_action( 'admin_init', __NAMESPACE__ . '\\check_log_prefix' );
@@ -37,16 +36,14 @@ function log_prefix() {
 function log_root(): string {
 	$uploads = \wp_upload_dir();
 	return ! empty( $uploads['basedir'] )
-		? trailingslashit( $uploads['basedir'] ) . 'sirsc-logs'
-		: SIRSC_PLUGIN_DIR . 'log';
+		? \trailingslashit( $uploads['basedir'] ) . 'sirsc-logs'
+		: SIRSC_DIR . 'log';
 }
 
 /**
  * Check the current log prefix and attempt to create the initial index file in
  * the logs folder, then rename the existing files for security of already
  * created log files.
- *
- * @return void
  */
 function check_log_prefix() {
 	if ( \apply_filters( 'sirsc_bypass_logs', false ) ) {
@@ -56,7 +53,7 @@ function check_log_prefix() {
 
 	$ver = \get_option( 'sirsc_version', 0 );
 	if ( empty( $ver ) || $ver < 7.32 ) {
-		\update_option( 'sirsc_version', SIRSC_PLUGIN_VER );
+		\update_option( 'sirsc_version', SIRSC_VER );
 		ensure_index();
 	}
 
@@ -96,15 +93,13 @@ function check_log_prefix() {
 
 /**
  * Add the debug menu.
- *
- * @return void
  */
 function admin_menu() {
 	if ( ! empty( \SIRSC::$settings['enable_debug_log'] ) ) {
 		\add_submenu_page(
 			'image-regenerate-select-crop-settings',
-			__( 'Debug', 'sirsc' ),
-			'<span class="dashicons dashicons-admin-generic"></span>' . __( 'Debug', 'sirsc' ),
+			\__( 'Debug', 'sirsc' ),
+			\__( 'Debug', 'sirsc' ),
 			'manage_options',
 			'sirsc-debug',
 			__NAMESPACE__ . '\\sirsc_debug'
@@ -114,78 +109,82 @@ function admin_menu() {
 
 /**
  * Debug screen content.
- *
- * @return void
  */
 function sirsc_debug() {
 	if ( ! \current_user_can( 'manage_options' ) ) {
 		// Verify user capabilities in order to deny the access if the user does not have the capabilities.
-		\wp_die( esc_html__( 'Action not allowed.', 'sirsc' ) );
+		\wp_die( \esc_html__( 'Action not allowed.', 'sirsc' ) );
 	}
 
+	ensure_index();
 	?>
 	<div class="wrap sirsc-settings-wrap sirsc-feature">
 		<?php \SIRSC\Admin\show_plugin_top_info(); ?>
 		<?php \SIRSC\Admin\maybe_all_features_tab(); ?>
+
 		<div class="sirsc-tabbed-menu-content">
-			<div class="rows bg-secondary no-top">
-				<div>
-					<?php esc_html_e( 'You will see here the information collected while executing regenerate and cleanup actions. Please reset the logs periodically.', 'sirsc' ); ?>
-				</div>
+			<p><?php \esc_html_e( 'You will see here the information collected while executing regenerate and cleanup actions. Please reset the logs periodically.', 'sirsc' ); ?></p>
+
+			<div class="as-row">
+				<?php
+				if ( should_handle_logs() ) {
+					?>
+					<div class="as-box bg-secondary">
+						<div class="label-row">
+							<button class="button has-icon tiny button-primary" onclick="refreshLog( 'bulk' )"><span class="dashicons dashicons-update-alt"></span></button>
+							<h2><?php \esc_html_e( 'Bulk actions log', 'sirsc' ); ?></h2>
+							<button class="button button-neutral" onclick="resetLog( 'bulk' )"><?php \esc_html_e( 'Reset log', 'sirsc' ); ?></button>
+						</div>
+						<p><?php \esc_html_e( 'The bulk actions execution results can be seen below, the most recent actions are shown at the top of the list.', 'sirsc' ); ?></p>
+						<div id="sirsc-log-bulk" class="code">
+							<ol><?php echo \wp_kses_post( log_read( 'bulk' ) ); ?></ol>
+						</div>
+					</div>
+
+					<div class="as-box bg-secondary">
+						<div class="label-row">
+							<button class="button has-icon tiny button-primary" onclick="refreshLog( 'tracer' )"><span class="dashicons dashicons-update-alt"></span></button>
+							<h2><?php \esc_html_e( 'Tracer log', 'sirsc' ); ?></h2>
+							<button class="button button-neutral" onclick="resetLog( 'tracer' )"><?php \esc_html_e( 'Reset log', 'sirsc' ); ?></button>
+						</div>
+						<p><?php \esc_html_e( 'The tracer log can be seen below, the most recent events are shown at the top of the list.', 'sirsc' ); ?></p>
+						<div id="sirsc-log-tracer" class="code">
+							<ol><?php echo \wp_kses_post( log_read( 'tracer' ) ); ?></ol>
+						</div>
+						<p>
+							<label class="label-row settings" onclick="refreshLogLevel( 'tracer' )">
+								<input type="checkbox" name="sirsc[disable_verbose_log]"
+									id="sirsc_disable_verbose_log"
+									<?php \checked( true, ! empty( \SIRSC::$settings['disable_verbose_log'] ) ); ?>>
+								<?php \esc_html_e( 'disable verbose mode', 'sirsc' ); ?>
+							</label>
+							<em>(<?php \esc_html_e( 'when enabling/disabling verbose mode, the current log will be reset', 'sirsc' ); ?>)</em>
+						</p>
+					</div>
+					<?php
+				} else {
+					?>
+					<div class="as-box bg-secondary small">
+						<div class="label-row as-title">
+							<h2><?php \esc_html_e( 'Actions log', 'sirsc' ); ?></h2>
+						</div>
+						<p class="sirsc-message warning"><?php \esc_html_e( 'The custom debug log for monitoring the events execution is not available currently, because your site configuration does not allow for writting files.', 'sirsc' ); ?></p>
+					</div>
+					<?php
+				}
+				?>
+
+				<?php status(); ?>
 			</div>
 		</div>
 
-		<div class="rows three-columns bg-secondary has-gaps breakable">
-			<?php
-			if ( ! \apply_filters( 'sirsc_bypass_logs', false ) ) {
-				?>
-				<div>
-					<a class="button button-neutral f-right" onclick="resetLog( 'bulk' )"><?php esc_html_e( 'Reset log', 'sirsc' ); ?></a>
-					<h2>
-						<a class="button sirsc-button-icon tiny button-primary" onclick="refreshLog( 'bulk' )"><span class="dashicons dashicons-update-alt"></span></a>
-						<?php esc_html_e( 'Bulk Actions Log', 'sirsc' ); ?>
-					</h2>
-					<p><?php esc_html_e( 'The bulk actions execution results can be seen below, the most recent actions are shown at the top of the list.', 'sirsc' ); ?></p>
-					<div id="sirsc-log-bulk" class="code">
-						<ol><?php echo \wp_kses_post( log_read( 'bulk' ) ); ?></ol>
-					</div>
-				</div>
-
-				<div>
-					<a class="button button-neutral f-right" onclick="resetLog( 'tracer' )"><?php esc_html_e( 'Reset log', 'sirsc' ); ?></a>
-					<h2>
-						<a class="button sirsc-button-icon tiny button-primary" onclick="refreshLog( 'tracer' )"><span class="dashicons dashicons-update-alt"></span></a>
-						<?php esc_html_e( 'Tracer log', 'sirsc' ); ?>
-					</h2>
-					<p><?php esc_html_e( 'The tracer log can be seen below, the most recent events are shown at the top of the list.', 'sirsc' ); ?></p>
-					<div id="sirsc-log-tracer" class="code">
-						<ol><?php echo \wp_kses_post( log_read( 'tracer' ) ); ?></ol>
-					</div>
-
-					<p>
-						<label class="settings" onclick="refreshLogLevel( 'tracer' )">
-							<input type="checkbox" name="sirsc[disable_verbose_log]"
-								id="sirsc_disable_verbose_log"
-								<?php \checked( true, ! empty( \SIRSC::$settings['disable_verbose_log'] ) ); ?>>
-							<?php esc_html_e( 'disable verbose mode', 'sirsc' ); ?>
-						</label>
-						<em>(<?php esc_html_e( 'when enabling/disabling verbose mode, the current log will be reset', 'sirsc' ); ?>)</em>
-					</p>
-				</div>
-				<?php
-			}
-			?>
-
-			<?php status(); ?>
-		</div>
+		<?php \SIRSC\admin\show_donate_text(); ?>
 	</div>
 	<?php
 }
 
 /**
  * Outputs the system status.
- *
- * @return void
  */
 function status() {
 	if ( ! class_exists( 'WP_Debug_Data' ) && file_exists( ABSPATH . 'wp-admin/includes/class-wp-debug-data.php' ) ) {
@@ -226,7 +225,7 @@ function status() {
 						if ( is_scalar( $item['fields'][ $key ]['value'] ) ) {
 							$details .= \esc_html( $item['fields'][ $key ]['value'] );
 						} else {
-							$details .= \esc_html( print_r( $item['fields'][ $key ]['value'], true ) ); //phpcs:ignore
+							$details .= \esc_html( print_r( $item['fields'][ $key ]['value'], true ) ); // phpcs:ignore
 						}
 					}
 				}
@@ -241,10 +240,12 @@ function status() {
 
 	if ( ! empty( $details ) ) {
 		?>
-		<div class="span6">
-			<h2><?php esc_html_e( 'Status/Debug', 'sirsc' ); ?></h2>
-			<p><?php esc_html_e( 'Here are some details about your current instance and the services versions. These are useful for troubleshooting.', 'sirsc' ); ?></p>
-			<textarea id="sirsc-sistem-status" class="code"><?php echo $details; //phpcs:ignore ?></textarea>
+		<div class="as-box bg-secondary">
+			<div class="label-row as-title">
+				<h2><?php \esc_html_e( 'Status/Debug', 'sirsc' ); ?></h2>
+			</div>
+			<p><?php \esc_html_e( 'Here are some details about your current instance and the services versions. These are useful for troubleshooting.', 'sirsc' ); ?></p>
+			<textarea id="sirsc-sistem-status" class="code"><?php echo $details; // phpcs:ignore ?></textarea>
 		</div>
 		<?php
 	}
@@ -253,21 +254,19 @@ function status() {
 /**
  * Debug action.
  *
- * @param  int $id Attachment id.
- * @return void
+ * @param int $id Attachment id.
  */
-function debug_sirsc_action_after_image_delete( $id ) { //phpcs:ignore
+function debug_sirsc_action_after_image_delete( $id ) { // phpcs:ignore
 	tracer_log_write( 'DO ACTION <b>sirsc_action_after_image_delete</b> ( ' . (int) $id . ' )' );
 }
 
 /**
  * Debug action.
  *
- * @param  array $meta Attachment meta.
- * @param  int   $id   Attachment ID.
- * @return void
+ * @param array $meta Attachment meta.
+ * @param int   $id   Attachment ID.
  */
-function debug_sirsc_attachment_images_ready( $meta, $id ) { //phpcs:ignore
+function debug_sirsc_attachment_images_ready( $meta, $id ) { // phpcs:ignore
 	tracer_log_write( 'DO ACTION <b>sirsc_attachment_images_ready</b> ( ' . \wp_json_encode( [
 		'meta' => '...',
 		'id'   => $id,
@@ -277,11 +276,10 @@ function debug_sirsc_attachment_images_ready( $meta, $id ) { //phpcs:ignore
 /**
  * Debug action.
  *
- * @param  array $meta Attachment meta.
- * @param  int   $id   Attachment ID.
- * @return void
+ * @param array $meta Attachment meta.
+ * @param int   $id   Attachment ID.
  */
-function debug_sirsc_attachment_images_processed( $meta, $id ) { //phpcs:ignore
+function debug_sirsc_attachment_images_processed( $meta, $id ) { // phpcs:ignore
 	tracer_log_write( 'DO ACTION <b>sirsc_attachment_images_processed</b> ( ' . \wp_json_encode( [
 		'meta' => '...',
 		'id'   => $id,
@@ -291,10 +289,9 @@ function debug_sirsc_attachment_images_processed( $meta, $id ) { //phpcs:ignore
 /**
  * Debug action.
  *
- * @param  mixed $extra Extra info.
- * @return void
+ * @param mixed $extra Extra info.
  */
-function debug_sirsc_doing_sirsc( $extra ) { //phpcs:ignore
+function debug_sirsc_doing_sirsc( $extra ) { // phpcs:ignore
 	if ( ! empty( $extra ) ) {
 		tracer_log_write( 'DO ACTION <b>sirsc_doing_sirsc</b> ( ' . \wp_json_encode( $extra ) . ' )' );
 	} else {
@@ -305,11 +302,10 @@ function debug_sirsc_doing_sirsc( $extra ) { //phpcs:ignore
 /**
  * Debug action.
  *
- * @param  int    $id   Attachment ID.
- * @param  string $file Attachment file.
- * @return void
+ * @param int    $id   Attachment ID.
+ * @param string $file Attachment file.
  */
-function debug_sirsc_image_file_deleted( $id, $file ) { //phpcs:ignore
+function debug_sirsc_image_file_deleted( $id, $file ) { // phpcs:ignore
 	tracer_log_write( 'DO ACTION <b>sirsc_image_file_deleted</b> ( ' . \wp_json_encode( [
 		'id'   => $id,
 		'file' => $file,
@@ -319,11 +315,10 @@ function debug_sirsc_image_file_deleted( $id, $file ) { //phpcs:ignore
 /**
  * Debug action.
  *
- * @param  int    $id        Attachment ID.
- * @param  string $size_name Image size name.
- * @return void
+ * @param int    $id        Attachment ID.
+ * @param string $size_name Image size name.
  */
-function debug_sirsc_image_processed( $id, $size_name ) { //phpcs:ignore
+function debug_sirsc_image_processed( $id, $size_name ) { // phpcs:ignore
 	tracer_log_write( 'DO ACTION <b>sirsc_image_processed</b> ( ' . \wp_json_encode( [
 		'id'        => $id,
 		'size_name' => $size_name,
@@ -340,7 +335,7 @@ function debug_sirsc_image_processed( $id, $size_name ) { //phpcs:ignore
  * @param  string $parent_type Parent type.
  * @return array
  */
-function debug_sirsc_custom_upload_rule( $settings, $id, $type, $parent_id, $parent_type ) { //phpcs:ignore
+function debug_sirsc_custom_upload_rule( $settings, $id, $type, $parent_id, $parent_type ) { // phpcs:ignore
 	tracer_log_write( 'APPLY FILTER <strong>sirsc_custom_upload_rule</strong> ( ' . \wp_json_encode( [
 		'settings'    => '...',
 		'id'          => $id,
@@ -359,7 +354,7 @@ function debug_sirsc_custom_upload_rule( $settings, $id, $type, $parent_id, $par
  * @param  int   $id   Attachment ID.
  * @return array
  */
-function debug_sirsc_computed_metadata_after_upload( $meta, $id ) { //phpcs:ignore
+function debug_sirsc_computed_metadata_after_upload( $meta, $id ) { // phpcs:ignore
 	tracer_log_write( 'APPLY FILTER <strong>sirsc_computed_metadata_after_upload</strong> ( ' . \wp_json_encode( [
 		'meta' => '...',
 		'id'   => $id,
@@ -372,7 +367,7 @@ function debug_sirsc_computed_metadata_after_upload( $meta, $id ) { //phpcs:igno
  *
  * @return object
  */
-function fs() { //phpcs:ignore
+function fs() { // phpcs:ignore
 	global $wp_filesystem;
 	require_once ABSPATH . '/wp-admin/includes/file.php';
 	\WP_Filesystem();
@@ -380,13 +375,28 @@ function fs() { //phpcs:ignore
 }
 
 /**
- * Attempt to create the index file in the logs folder.
+ * Returns true if the logs can be handle.
  *
- * @return void
+ * @return bool
  */
-function ensure_index() {
+function should_handle_logs() {
 	if ( \apply_filters( 'sirsc_bypass_logs', false ) ) {
 		// Short-circuit the logic.
+		return false;
+	}
+
+	if ( defined( 'FS_METHOD' ) && \FS_METHOD !== 'direct' ) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Attempt to create the index file in the logs folder.
+ */
+function ensure_index() {
+	if ( ! should_handle_logs() ) {
 		return;
 	}
 
@@ -417,9 +427,9 @@ function ensure_index() {
 		}
 	}
 
-	if ( SIRSC_PLUGIN_DIR . 'log' !== $path && $fs->is_dir( SIRSC_PLUGIN_DIR . 'log' ) ) {
+	if ( SIRSC_DIR . 'log' !== $path && $fs->is_dir( SIRSC_DIR . 'log' ) ) {
 		// Remove the legacy log folder.
-		$fs->rmdir( SIRSC_PLUGIN_DIR . 'log', true );
+		$fs->rmdir( SIRSC_DIR . 'log', true );
 	}
 }
 
@@ -427,7 +437,6 @@ function ensure_index() {
  * Init a log file.
  *
  * @param  string $name Log type.
- * @return void
  */
 function log_init( string $name = 'tracer' ): void {
 	$fs     = fs();
@@ -500,7 +509,6 @@ function log_read_last( string $log = 'bulk' ): string {
  *
  * @param  string $log  Log name.
  * @param  string $text Text to log.
- * @return void
  */
 function log_write_last( string $log = 'bulk', string $text = '' ) {
 	if ( ! empty( $text ) ) {
@@ -514,13 +522,17 @@ function log_write_last( string $log = 'bulk', string $text = '' ) {
 /**
  * Generic log write.
  *
- * @param  string  $log     Log name.
- * @param  mixed   $ob      Item to trace.
- * @param  boolean $prepend Prepend to the log file.
- * @return void
+ * @param string $log     Log name.
+ * @param mixed  $ob      Item to trace.
+ * @param bol    $prepend Prepend to the log file.
  */
 function generic_log_write( $log = 'bulk', $ob = '', $prepend = true ) {
-	if ( \apply_filters( 'sirsc_bypass_logs', false ) ) {
+	if ( ! should_handle_logs() ) {
+		// Short-circuit the logic.
+		return;
+	}
+
+	if ( empty( \SIRSC::$settings['enable_debug_log'] ) ) {
 		// Short-circuit the logic.
 		return;
 	}
@@ -582,7 +594,7 @@ function log_prepare_content( $ob, bool $no_changes = false ) { // phpcs:ignore
 			$ob_text = $ob . PHP_EOL;
 		} else {
 			$ob_text  = '<li><em>' . gmdate( 'Y-m-d H:i:s' ) . '</em>' . PHP_EOL;
-			$ob_text .= ( ! is_scalar( $ob ) ) ? \wp_json_encode( $ob ) : $ob; //phpcs:ignore
+			$ob_text .= ( ! is_scalar( $ob ) ) ? \wp_json_encode( $ob ) : $ob; // phpcs:ignore
 			$ob_text .= '</li>' . PHP_EOL;
 			$ob_text  = str_replace( '|', ' | ', $ob_text );
 			$ob_text  = str_replace( '\/', '/', $ob_text );
@@ -599,7 +611,7 @@ function log_prepare_content( $ob, bool $no_changes = false ) { // phpcs:ignore
  *
  * @param mixed $ob Content to be put to log.
  */
-function main_log_write( $ob ) { //phpcs:ignore
+function main_log_write( $ob ) { // phpcs:ignore
 	generic_log_write( 'main', $ob );
 }
 
@@ -608,7 +620,7 @@ function main_log_write( $ob ) { //phpcs:ignore
  *
  * @param mixed $ob Content to be put to log.
  */
-function bulk_log_write( $ob ) { //phpcs:ignore
+function bulk_log_write( $ob ) { // phpcs:ignore
 	generic_log_write( 'bulk', $ob );
 }
 
@@ -617,7 +629,7 @@ function bulk_log_write( $ob ) { //phpcs:ignore
  *
  * @param mixed $ob Content to be put to log.
  */
-function tracer_log_write( $ob ) { //phpcs:ignore
+function tracer_log_write( $ob ) { // phpcs:ignore
 	generic_log_write( 'tracer', $ob );
 }
 
@@ -626,7 +638,7 @@ function tracer_log_write( $ob ) { //phpcs:ignore
  *
  * @param mixed $ob Content to be put to log.
  */
-function bulk_rename_log_write( $ob ) { //phpcs:ignore
+function bulk_rename_log_write( $ob ) { // phpcs:ignore
 	generic_log_write( 'seo-images', $ob, false );
 }
 
