@@ -1,0 +1,33 @@
+/* Customize Login Screen */
+body.login {
+  background-color: $secondary-color;
+
+  :is(#nav, #backtoblog), :is(#nav, #backtoblog) a{
+    color: $primary-color;
+  }
+
+  .button-primary:is(.button-primary, #priority) {
+    @extend .btn--primary;
+
+    transition: all 0.3s ease-in-out;
+  }
+
+  h1 a {
+    color: $primary-color;
+    font-size: 30px;
+    font-weight: 300;
+    background-image: none;
+    width: auto;
+    height: auto;
+    text-indent: 0;
+  }
+
+  a {
+    text-decoration: none;
+    
+    &:is(:hover, :focus, #priority#priority2) {
+      color: $primary-color;
+      text-decoration: underline;
+    }
+  }
+}

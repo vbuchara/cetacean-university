@@ -1,0 +1,38 @@
+{
+  "name": "cetacean-university-block-theme",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/uuid": "^9.0.8",
+    "@types/voca": "^1.4.5",
+    "@types/wordpress__block-editor": "^11.5.14",
+    "@types/wordpress__blocks": "^12.5.14",
+    "@types/wordpress__editor": "^13.6.8",
+    "@wordpress/scripts": "^27.9.0",
+    "type-fest": "^4.20.1"
+  },
+  "dependencies": {
+    "@glidejs/glide": "^3.4.1",
+    "@wordpress/api-fetch": "^7.1.0",
+    "@wordpress/components": "^28.1.0",
+    "@wordpress/core-data": "^7.0.0",
+    "@wordpress/data": "^10.0.0",
+    "@wordpress/editor": "^14.0.0",
+    "@wordpress/icons": "^10.1.0",
+    "@wordpress/react-i18n": "^4.0.0",
+    "fp-ts": "^2.16.6",
+    "glob": "^10.4.1",
+    "normalize.css": "^8.0.1",
+    "polished": "^4.3.1",
+    "react-use": "^17.5.0",
+    "string-strip-html": "^13.4.8",
+    "uuid": "^9.0.1",
+    "voca": "^1.4.1"
+  }
+}
