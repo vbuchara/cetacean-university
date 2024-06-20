@@ -12,5 +12,5 @@ $black: #000;
 $dark-gray: #333;
 $light-gray: #ddd;
 
-$primary-color: var(--university-theme-primary-color, $whales-tale);
-$secondary-color: var(--university-theme-secondary-color, $dolphin);
+$primary-color: var(--wp--preset--color--primary, $whales-tale);
+$secondary-color: var(--wp--preset--color--secondary, $dolphin);

@@ -95,9 +95,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.Heading, {
-  title: "Cetacean University Heading",
+  title: "Heading",
   icon: "heading",
-  category: "common",
+  category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.BlockCategory,
   attributes: {
     text: {
       type: "string"
@@ -158,6 +158,8 @@ class CetaceanUniversityBlocks {
   static Banner = `${this.DomainName}/banner`;
   static Heading = `${this.DomainName}/heading`;
   static Button = `${this.DomainName}/button`;
+  static EventsAndPosts = `${this.DomainName}/events-and-posts`;
+  static BlockCategory = "cetacean-university";
 }
 ;
 

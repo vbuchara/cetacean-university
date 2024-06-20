@@ -39,6 +39,9 @@ const link = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Button: () => (/* reexport safe */ _save__WEBPACK_IMPORTED_MODULE_2__.SaveComponent)
+/* harmony export */ });
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./src/blocks/button/edit.tsx");
@@ -51,9 +54,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.Button, {
-  title: "Cetacean University Button",
+  title: "Button",
   icon: "button",
-  category: "common",
+  category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.BlockCategory,
   attributes: {
     text: {
       type: "string"
@@ -82,6 +85,7 @@ __webpack_require__.r(__webpack_exports__);
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__.EditComponent,
   save: _save__WEBPACK_IMPORTED_MODULE_2__.SaveComponent
 });
+
 
 /***/ }),
 
@@ -180,15 +184,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/link.js");
+/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/link.js");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _color_button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./color-button */ "./src/blocks/button/components/color-button.tsx");
-/* harmony import */ var _src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @src/classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
-/* harmony import */ var _color_palette_popover__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./color-palette-popover */ "./src/blocks/button/components/color-palette-popover.tsx");
-
+/* harmony import */ var _color_palette_popover__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./color-palette-popover */ "./src/blocks/button/components/color-palette-popover.tsx");
 
 
 
@@ -211,14 +213,6 @@ function ButtonInspectorControls({
     });
   }
   ;
-  function getColorValue(color) {
-    const cssVarRegex = /var\((.*?)\)/gm;
-    const regexResult = cssVarRegex.exec(color);
-    if (!regexResult) return color;
-    const [_, cssVar] = Array.from(regexResult);
-    if (!cssVar) return color;
-    return _src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__.WordpressColorsPresets.getColor(cssVar) || color;
-  }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, {
     group: "styles"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
@@ -231,22 +225,22 @@ function ButtonInspectorControls({
       flex: 1
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_color_button__WEBPACK_IMPORTED_MODULE_3__.ColorButton, {
-    colorValue: getColorValue(attributes.backgroundColor),
+    colorValue: attributes.backgroundColor,
     onClick: () => setIsBackgroundColorPaletteVisible(prev => !prev),
     style: {
       borderBottom: 0
     }
   }, "Background"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_color_button__WEBPACK_IMPORTED_MODULE_3__.ColorButton, {
-    colorValue: getColorValue(attributes.color),
+    colorValue: attributes.color,
     onClick: () => setIsColorPaletteVisible(prev => !prev)
-  }, "Text"))), !isBackgroundColorPaletteVisible ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_color_palette_popover__WEBPACK_IMPORTED_MODULE_5__.ColorPalettePopover, {
-    value: getColorValue(attributes.backgroundColor),
+  }, "Text"))), !isBackgroundColorPaletteVisible ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_color_palette_popover__WEBPACK_IMPORTED_MODULE_4__.ColorPalettePopover, {
+    value: attributes.backgroundColor,
     onChange: color => setAttributes({
       backgroundColor: color
     }),
     onClose: () => setIsBackgroundColorPaletteVisible(false)
-  }), !isColorPaletteVisible ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_color_palette_popover__WEBPACK_IMPORTED_MODULE_5__.ColorPalettePopover, {
-    value: getColorValue(attributes.color),
+  }), !isColorPaletteVisible ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_color_palette_popover__WEBPACK_IMPORTED_MODULE_4__.ColorPalettePopover, {
+    value: attributes.color,
     onChange: color => setAttributes({
       color: color
     }),
@@ -299,7 +293,7 @@ function ButtonBlockControls({
   }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.BlockControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     onClick: onLinkButtonClick,
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_6__["default"]
+    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"]
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     isPressed: isSizeButtonPressed("large"),
     onClick: getOnSizeButtonPressed("large")
@@ -366,7 +360,7 @@ function EditComponent(props) {
   const [buttonClassNames, setButtonClassNames] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(new Set(["btn"]));
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setButtonClassNames(classNames => {
-      const sizeClassName = buttonSizeClasses.get(attributes.size);
+      const sizeClassName = attributes.size ? buttonSizeClasses.get(attributes.size) : undefined;
       const animationOnHoverClassName = buttonAnimationsOnHoverClasses.get(attributes.animations.onHover);
       if (sizeClassName) {
         buttonSizeClasses.forEach(className => {
@@ -420,15 +414,24 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function SaveComponent(props) {
-  const buttonClassNames = new Set(["btn", _edit__WEBPACK_IMPORTED_MODULE_1__.buttonSizeClasses.get(props.attributes.size) || "", _edit__WEBPACK_IMPORTED_MODULE_1__.buttonAnimationsOnHoverClasses.get(props.attributes.animations.onHover) || ""]);
+  const {
+    attributes
+  } = props;
+  const buttonLink = attributes.linkObject?.url ? attributes.linkObject?.url : undefined;
+  const buttonClassNames = new Set(["btn", attributes.size ? _edit__WEBPACK_IMPORTED_MODULE_1__.buttonSizeClasses.get(attributes.size) || "" : "", _edit__WEBPACK_IMPORTED_MODULE_1__.buttonAnimationsOnHoverClasses.get(attributes.animations.onHover) || ""]);
+  function cancelRedirect(event) {
+    event.preventDefault();
+  }
+  console.log(buttonLink);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: props.attributes.linkObject?.url,
+    href: buttonLink,
+    onClick: !buttonLink ? cancelRedirect : undefined,
     className: Array.from(buttonClassNames).join(" "),
     style: {
-      "--background-color": props.attributes.backgroundColor,
-      "--color": props.attributes.color
+      "--background-color": attributes.backgroundColor,
+      "--color": attributes.color
     }
-  }, props.attributes.text);
+  }, attributes.text);
 }
 
 /***/ }),
@@ -448,6 +451,8 @@ class CetaceanUniversityBlocks {
   static Banner = `${this.DomainName}/banner`;
   static Heading = `${this.DomainName}/heading`;
   static Button = `${this.DomainName}/button`;
+  static EventsAndPosts = `${this.DomainName}/events-and-posts`;
+  static BlockCategory = "cetacean-university";
 }
 ;
 
@@ -483,53 +488,52 @@ class WordpressColorsPresets {
   // Cetacean University Theme
   static Primary = `${this.PresetPrefix}--primary`;
   static Secondary = `${this.PresetPrefix}--secondary`;
-  static ColorsMap = new Map([[this.Black, "#000000"], [this.CyanBluishGray, "#abb8c3"], [this.White, "#ffffff"], [this.PalePink, "#f78da7"], [this.VividRed, "#cf2e2e"], [this.LuminousVividOrange, "#ff6900"], [this.LuminousVividAmber, "#fcb900"], [this.LightGreenCyan, "#7bdcb5"], [this.VividGreenCyan, "#00d084"], [this.PaleCyanBlue, "#8ed1fc"], [this.VividCyanBlue, "#0693e3"], [this.VividPurple, "#9b51e0"], [this.Primary, "#115a82"], [this.Secondary, "#86c4da"]]);
-  static getColor(name) {
-    return this.ColorsMap.get(name);
+  static getColorFromVar(name) {
+    return getComputedStyle(document.body).getPropertyValue(name);
   }
   static getColorsList() {
     return [{
       name: "Primary",
-      color: this.getColor(this.Primary)
+      color: `var(${this.Primary})`
     }, {
       name: "Secondary",
-      color: this.getColor(this.Secondary)
+      color: `var(${this.Secondary})`
     }, {
       name: "Black",
-      color: this.getColor(this.Black)
+      color: `var(${this.Black})`
     }, {
       name: "White",
-      color: this.getColor(this.White)
+      color: `var(${this.White})`
     }, {
       name: "Cyan Bluish Gray",
-      color: this.getColor(this.CyanBluishGray)
+      color: `var(${this.CyanBluishGray})`
     }, {
       name: "Pale Pink",
-      color: this.getColor(this.PalePink)
+      color: `var(${this.PalePink})`
     }, {
       name: "Vivid Red",
-      color: this.getColor(this.VividRed)
+      color: `var(${this.VividRed})`
     }, {
       name: "Luminous Vivid Orange",
-      color: this.getColor(this.LuminousVividOrange)
+      color: `var(${this.LuminousVividOrange})`
     }, {
       name: "Luminous Vivid Amber",
-      color: this.getColor(this.LuminousVividAmber)
+      color: `var(${this.LuminousVividAmber})`
     }, {
       name: "Light Green Cyan",
-      color: this.getColor(this.LightGreenCyan)
+      color: `var(${this.LightGreenCyan})`
     }, {
       name: "Vivid Green Cyan",
-      color: this.getColor(this.VividGreenCyan)
+      color: `var(${this.VividGreenCyan})`
     }, {
       name: "Pale Cyan Blue",
-      color: this.getColor(this.PaleCyanBlue)
+      color: `var(${this.PaleCyanBlue})`
     }, {
       name: "Vivid Cyan Blue",
-      color: this.getColor(this.VividCyanBlue)
+      color: `var(${this.VividCyanBlue})`
     }, {
       name: "Vivid Purple",
-      color: this.getColor(this.VividPurple)
+      color: `var(${this.VividPurple})`
     }];
   }
 }
@@ -2021,6 +2025,9 @@ var __webpack_exports__ = {};
   !*** ./src/blocks/button/index.ts ***!
   \************************************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Button: () => (/* reexport safe */ _button__WEBPACK_IMPORTED_MODULE_0__.Button)
+/* harmony export */ });
 /* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./button */ "./src/blocks/button/button.tsx");
 
 /******/ })()

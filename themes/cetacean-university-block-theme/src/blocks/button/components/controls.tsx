@@ -42,19 +42,6 @@ export function ButtonInspectorControls({
         });
     };
 
-    function getColorValue(color: string){
-        const cssVarRegex = /var\((.*?)\)/gm;
-        const regexResult = cssVarRegex.exec(color);
-        
-        if(!regexResult) return color;
-        
-        const [_, cssVar] = Array.from(regexResult);
-
-        if(!cssVar) return color;
-
-        return WordpressColorsPresets.getColor(cssVar) || color;
-    }
-
     return (
     <>
         <InspectorControls
@@ -71,14 +58,14 @@ export function ButtonInspectorControls({
                         style={{ flex: 1 }}
                     >
                         <ColorButton
-                            colorValue={getColorValue(attributes.backgroundColor)}
+                            colorValue={attributes.backgroundColor}
                             onClick={() => setIsBackgroundColorPaletteVisible((prev) => !prev)}
                             style={{ borderBottom: 0 }}
                         >
                             Background
                         </ColorButton>
                         <ColorButton
-                            colorValue={getColorValue(attributes.color)}
+                            colorValue={attributes.color}
                             onClick={() => setIsColorPaletteVisible((prev) => !prev)}
                         >
                             Text
@@ -87,14 +74,14 @@ export function ButtonInspectorControls({
                 </PanelRow>
                 {!isBackgroundColorPaletteVisible ? "" : (
                 <ColorPalettePopover
-                    value={getColorValue(attributes.backgroundColor)}
+                    value={attributes.backgroundColor}
                     onChange={(color) => setAttributes({ backgroundColor: color })}
                     onClose={() => setIsBackgroundColorPaletteVisible(false)}
                 />
                 )}
                 {!isColorPaletteVisible ? "" : (
                 <ColorPalettePopover
-                    value={getColorValue(attributes.color)}
+                    value={attributes.color}
                     onChange={(color) => setAttributes({ color: color })}
                     onClose={() => setIsColorPaletteVisible(false)}
                 />

@@ -1,6 +1,7 @@
 import { 
     useEffect,
     useState,
+    type MouseEvent
 } from "react";
 import { 
     RichText 
@@ -35,7 +36,7 @@ export function EditComponent(props: ButtonEditComponentProps){
 
     useEffect(() => {
         setButtonClassNames((classNames) => {
-            const sizeClassName = buttonSizeClasses.get(attributes.size);
+            const sizeClassName = attributes.size ? buttonSizeClasses.get(attributes.size) : undefined;
             const animationOnHoverClassName = buttonAnimationsOnHoverClasses.get(attributes.animations.onHover);
 
             if(sizeClassName){

@@ -22,87 +22,67 @@ export class WordpressColorsPresets {
     public static readonly Primary = `${this.PresetPrefix}--primary` as const;
     public static readonly Secondary = `${this.PresetPrefix}--secondary` as const;
 
-    private static readonly ColorsMap = new Map<string, string>([
-        [this.Black, "#000000"],
-        [this.CyanBluishGray, "#abb8c3"],
-        [this.White, "#ffffff"],
-        [this.PalePink, "#f78da7"],
-        [this.VividRed, "#cf2e2e"],
-        [this.LuminousVividOrange, "#ff6900"],
-        [this.LuminousVividAmber, "#fcb900"],
-        [this.LightGreenCyan, "#7bdcb5"],
-        [this.VividGreenCyan, "#00d084"],
-        [this.PaleCyanBlue, "#8ed1fc"],
-        [this.VividCyanBlue, "#0693e3"],
-        [this.VividPurple, "#9b51e0"],
-        [this.Primary, "#115a82"],
-        [this.Secondary, "#86c4da"],
-    ]);
-
-    public static getColor(name: WordpressColorsPresets.PresetVariables): string;
-    public static getColor(name: string): string | undefined;
-
-    public static getColor(name: string): string | undefined {
-        return this.ColorsMap.get(name);
+    public static getColorFromVar(name: WordpressColorsPresets.PresetVariables): string {
+        return getComputedStyle(document.body).getPropertyValue(name);
     }
 
     public static getColorsList(){
         return [
             {
                 name: "Primary",
-                color: this.getColor(this.Primary),
+                color: `var(${this.Primary})`,
             },
             {
                 name: "Secondary",
-                color: this.getColor(this.Secondary),
+                color: `var(${this.Secondary})`,
             },
             {
                 name: "Black",
-                color: this.getColor(this.Black)
+                color: `var(${this.Black})`
             },
             {
                 name: "White",
-                color: this.getColor(this.White),
+                color: `var(${this.White})`,
             },
             {
                 name: "Cyan Bluish Gray",
-                color: this.getColor(this.CyanBluishGray),
+                color: `var(${this.CyanBluishGray})`,
             },
             {
                 name: "Pale Pink",
-                color: this.getColor(this.PalePink),
+                color: `var(${this.PalePink})`,
             },
             {
                 name: "Vivid Red",
-                color: this.getColor(this.VividRed),
+                color: `var(${this.VividRed})`,
             },
             {
                 name: "Luminous Vivid Orange",
-                color: this.getColor(this.LuminousVividOrange),
+                color: `var(${this.LuminousVividOrange})`,
             },
             {
                 name: "Luminous Vivid Amber",
-                color: this.getColor(this.LuminousVividAmber),
+                color: `var(${this.LuminousVividAmber})`,
             },
             {
                 name: "Light Green Cyan",
-                color: this.getColor(this.LightGreenCyan),
+                color: `var(${this.LightGreenCyan})`,
             },
             {
                 name: "Vivid Green Cyan",
-                color: this.getColor(this.VividGreenCyan),
+                color: `var(${this.VividGreenCyan})`,
             },
             {
                 name: "Pale Cyan Blue",
-                color: this.getColor(this.PaleCyanBlue),
+                color: `var(${this.PaleCyanBlue})`,
             },
             {
                 name: "Vivid Cyan Blue",
-                color: this.getColor(this.VividCyanBlue),
+                color: `var(${this.VividCyanBlue})`,
             },
             {
                 name: "Vivid Purple",
-                color: this.getColor(this.VividPurple),
+                color: `var(${this.VividPurple})`,
             },
         ] as const satisfies ColorObject[];
     }

@@ -12,7 +12,7 @@ import { BannerInspectorControls } from './components/controls';
 export type BannerEditComponentProps = BlockEditProps<BannerAttributesType>;
 
 export function EditComponent(props: BannerEditComponentProps){
-    console.log(props.attributes.bannerImageUrl);
+
     return (
     <>
         <BannerInspectorControls

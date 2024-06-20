@@ -19,8 +19,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.Banner, {
-  title: "Cetacean University Banner",
-  category: "common",
+  title: "Banner",
+  category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.BlockCategory,
   icon: "cover-image",
   attributes: {
     bannerImageId: {
@@ -130,7 +130,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function EditComponent(props) {
-  console.log(props.attributes.bannerImageUrl);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_controls__WEBPACK_IMPORTED_MODULE_3__.BannerInspectorControls, {
     ...props
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -197,6 +196,8 @@ class CetaceanUniversityBlocks {
   static Banner = `${this.DomainName}/banner`;
   static Heading = `${this.DomainName}/heading`;
   static Button = `${this.DomainName}/button`;
+  static EventsAndPosts = `${this.DomainName}/events-and-posts`;
+  static BlockCategory = "cetacean-university";
 }
 ;
 

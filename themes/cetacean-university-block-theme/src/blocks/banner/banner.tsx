@@ -10,8 +10,8 @@ export type BannerAttributesType = {
 };
 
 registerBlockType<BannerAttributesType>(CetaceanUniversityBlocks.Banner, {
-    title: "Cetacean University Banner",
-    category: "common",
+    title: "Banner",
+    category: CetaceanUniversityBlocks.BlockCategory,
     icon: "cover-image",
     attributes: {
         bannerImageId: {

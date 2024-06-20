@@ -17,7 +17,7 @@ export type ButtonAnimationsObject = {
 
 export type ButtonAttributesType = {
     text: string,
-    size: ButtonSize,
+    size?: ButtonSize,
     backgroundColor: string,
     color: string,
     animations: ButtonAnimationsObject,
@@ -25,9 +25,9 @@ export type ButtonAttributesType = {
 };
 
 registerBlockType<ButtonAttributesType>(CetaceanUniversityBlocks.Button, {
-    title: "Cetacean University Button",
+    title: "Button",
     icon: "button",
-    category: "common",
+    category: CetaceanUniversityBlocks.BlockCategory,
     attributes: {
         text: {
             type: "string",
@@ -56,3 +56,7 @@ registerBlockType<ButtonAttributesType>(CetaceanUniversityBlocks.Button, {
     edit: EditComponent,
     save: SaveComponent
 });
+
+export {
+    SaveComponent as Button
+};

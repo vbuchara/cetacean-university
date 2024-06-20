@@ -21,13 +21,13 @@ class Cetacean_University_Blocks {
         }
     }
 
-    public function register_block_type(
+    private function register_block_type(
         string $blockName
     ){
         $blockAssetsFile = "/build/blocks/$blockName.asset.php";
         $blockScriptFile = "/build/blocks/$blockName.js";
 
-        if(!file_exists(get_theme_file_path($blockAssetsFile)) || !file_exists(get_theme_file_path($blockAssetsFile))) 
+        if(!file_exists(get_theme_file_path($blockAssetsFile)) || !file_exists(get_theme_file_path($blockScriptFile))) 
             return false;
 
         /** 
@@ -38,7 +38,7 @@ class Cetacean_University_Blocks {
          */
         $blockAssets = include get_theme_file_path($blockAssetsFile);
     
-        $scriptName = "cetacean_university_" . $blockName . "_block";
+        $scriptName = "cetacean-university-" . $blockName . "-block";
     
         wp_register_script(
             $scriptName, 
@@ -53,6 +53,8 @@ class Cetacean_University_Blocks {
                 "cetaceanUniversityData",
                 [
                     "theme_path" => get_theme_file_uri(),
+                    "events_archive_link" => get_post_type_archive_link("event"),
+                    "blog_link" => site_url("/blog")
                 ]
             );
         }
@@ -61,7 +63,61 @@ class Cetacean_University_Blocks {
             "cetacean-university-theme/$blockName",
             [
                 "editor_script" => $scriptName,
+                "render_callback" => $this->get_render_callback($blockName)
             ]
         );
+    }
+
+    private function get_render_callback(
+        string $blockName
+    ){
+        $blockRenderHTMLPath = "/src/blocks/$blockName/render.php";
+        $blockFrontendAssetsFile = "/build/blocks/$blockName-frontend.asset.php";
+        $blockFrontendScriptFile = "/build/blocks/$blockName-frontend.js";
+
+        if(!file_exists(get_theme_file_path($blockRenderHTMLPath))) return null;
+    
+        return function(
+            array $attributes,
+            string $content
+        ) use ($blockName, $blockFrontendAssetsFile, $blockFrontendScriptFile, $blockRenderHTMLPath) {
+            ob_start();
+
+            if(!is_admin() && $this->files_exist([$blockFrontendAssetsFile, $blockFrontendScriptFile])){
+                /** 
+                 * @var array{
+                 *  dependencies: array<string>,
+                 *  version: string
+                 * } 
+                 */
+                $blockFrontendAssets = include get_theme_file_path($blockFrontendAssetsFile);
+                $scriptName = "cetacean-university-" . $blockName . "-frontend-block";
+
+                wp_enqueue_script(
+                    $scriptName, 
+                    get_theme_file_uri($blockFrontendScriptFile),
+                    $blockFrontendAssets['dependencies'],
+                    $blockFrontendAssets['version'],
+                    true
+                );
+            }
+
+            require get_theme_file_path($blockRenderHTMLPath);
+
+            return ob_get_clean();
+        };
+    }
+
+    /**
+     * @param string[] $files
+     */
+    private function files_exist(
+        array $files
+    ){
+        foreach ($files as $file){
+            if(!file_exists(get_theme_file_path($file))) return false;
+        }
+
+        return true;
     }
 }

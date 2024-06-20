@@ -361,6 +361,18 @@ template {
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/styles/index.scss ***!
   \**********************************************************************************************************************************************************************************************************************************************/
 /* 3rd party packages */
+.cetacean-university-events-and-blogs-root {
+  --background-color: var(--wp--preset--color--secondary, #86c4da);
+  --height: 0px;
+  --width: 100%;
+  --opacity: 1;
+  position: relative;
+  height: var(--height);
+  width: var(--width);
+  overflow: hidden;
+  transition: height 0.7s ease-out, width 0.7s ease-out;
+}
+
 /* SASS and Global'ish Stuff */
 body {
   color: #333;
@@ -375,7 +387,7 @@ img {
 }
 
 a {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 
 a:hover {
@@ -541,11 +553,11 @@ li {
 }
 
 .text-color--primary-color {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 
 .text-color--secondary-color {
-  color: var(--university-theme-secondary-color, #86c4da);
+  color: var(--wp--preset--color--secondary, #86c4da);
 }
 
 /* BEM Blocks */
@@ -592,7 +604,7 @@ li {
 }
 .school-logo-text strong {
   font-weight: 400;
-  color: var(--university-theme-secondary-color, #86c4da);
+  color: var(--wp--preset--color--secondary, #86c4da);
 }
 .school-logo-text a {
   color: #fff;
@@ -602,10 +614,10 @@ li {
   color: #666;
 }
 .school-logo-text--alt-color a strong {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 .school-logo-text--alt-color a:hover {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   text-decoration: underline;
 }
 
@@ -632,7 +644,7 @@ li {
 }
 
 .c-blue {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 
 .c-white {
@@ -723,7 +735,7 @@ li {
 }
 
 .nav-list a:hover {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   text-decoration: underline;
 }
 
@@ -809,7 +821,7 @@ li {
   border: none;
   border-radius: 4px;
   outline: none;
-  background-color: var(--university-theme-primary-color, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
   font-family: "Roboto", sans-serif;
   padding: 0 20px;
   margin-right: 10px;
@@ -865,16 +877,16 @@ li {
 
 /* Customize Login Screen */
 body.login {
-  background-color: var(--university-theme-secondary-color, #86c4da);
+  background-color: var(--wp--preset--color--secondary, #86c4da);
 }
 body.login :is(#nav, #backtoblog), body.login :is(#nav, #backtoblog) a {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 body.login .button-primary:is(.button-primary, #priority) {
   transition: all 0.3s ease-in-out;
 }
 body.login h1 a {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   font-size: 30px;
   font-weight: 300;
   background-image: none;
@@ -886,7 +898,7 @@ body.login a {
   text-decoration: none;
 }
 body.login a:is(:hover, :focus, #priority#priority2) {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   text-decoration: underline;
 }
 
@@ -943,22 +955,14 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   position: relative;
 }
 .btn--primary, body.login .button-primary:is(.button-primary, #priority) {
-  background-color: var(--university-theme-primary-color, #115a82);
-  color: #fff;
-  border-color: var(--university-theme-primary-color, #115a82);
-}
-.btn--primary:hover, body.login .button-primary:hover:is(.button-primary, #priority) {
-  background-color: #fff;
-  color: var(--university-theme-primary-color, #115a82);
+  --background-color: var(--wp--preset--color--primary, #115a82);
+  --color: #fff;
+  --border-color: var(--wp--preset--color--primary, #115a82);
 }
 .btn--secondary {
-  background-color: var(--university-theme-secondary-color, #86c4da);
-  color: #fff;
-  border-color: var(--university-theme-secondary-color, #86c4da);
-}
-.btn--secondary:hover {
-  background-color: #fff;
-  color: var(--university-theme-secondary-color, #86c4da);
+  --background-color: var(--wp--preset--color--secondary, #86c4da);
+  --color: #fff;
+  --border-color: var(--wp--preset--color--secondary, #86c4da);
 }
 .btn--gray {
   background-color: #222;
@@ -1127,7 +1131,7 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   font-size: 1.85rem;
   font-family: "Roboto Condensed", sans-serif;
   font-weight: 300;
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   border: 1px solid transparent;
   padding: 7px;
   outline: none;
@@ -1247,7 +1251,7 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   width: 100%;
   height: 100%;
   opacity: 0.89;
-  background-color: var(--university-theme-primary-color, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
   z-index: -1;
   transition: visibility 0.3s ease-out;
 }
@@ -1458,10 +1462,10 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   }
 }
 .main-navigation a:hover {
-  color: var(--university-theme-secondary-color, #86c4da);
+  color: var(--wp--preset--color--secondary, #86c4da);
 }
 .main-navigation .current-menu-item a {
-  color: var(--university-theme-secondary-color, #86c4da);
+  color: var(--wp--preset--color--secondary, #86c4da);
 }
 
 .page-banner {
@@ -1664,7 +1668,7 @@ body.admin-bar .search-overlay {
 .search-overlay__icon {
   margin-left: 10px;
   font-size: 1.8rem;
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 @media (min-width: 960px) {
   .search-overlay__icon {
@@ -1679,7 +1683,7 @@ body.admin-bar .search-overlay {
 .search-overlay__section-title {
   margin: 30px 0 1px 0;
   font-weight: 400;
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   font-size: 2rem;
   padding: 15px 0;
   border-bottom: 1px solid #333;
@@ -1692,7 +1696,7 @@ body.admin-bar .search-overlay {
   cursor: pointer;
   transition: all 0.3s;
   background-color: #fff;
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   line-height: 0.7;
 }
 @media (min-width: 530px) {
@@ -1724,7 +1728,7 @@ body.admin-bar .search-overlay {
   font-size: 1rem;
   font-weight: 300;
   outline: none;
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 @media (min-width: 530px) {
   .search-term {
@@ -1755,7 +1759,7 @@ body.admin-bar .search-overlay {
   display: inline-block;
   width: 200px;
   margin-left: 15px;
-  background-color: var(--university-theme-secondary-color, #86c4da);
+  background-color: var(--wp--preset--color--secondary, #86c4da);
   overflow: hidden;
 }
 .search-overlay .professor-card {
@@ -1790,7 +1794,7 @@ body.admin-bar .search-overlay {
   bottom: 0;
   z-index: -1;
   transition: opacity 0.3s ease-in-out;
-  background-color: var(--university-theme-primary-color, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
   opacity: 0.9;
 }
 .professor-card:hover .professor-card__name::before {
@@ -1851,7 +1855,7 @@ body.admin-bar .search-overlay {
   margin-bottom: 0.25rem;
 }
 .headline--post-title a {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
   text-decoration: none;
 }
 .headline--post-title a:hover {
@@ -1950,7 +1954,7 @@ body.admin-bar .search-overlay {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-color: var(--university-theme-secondary-color, #86c4da);
+  background-color: var(--wp--preset--color--secondary, #86c4da);
   filter: opacity(0.5);
 }
 @media (min-width: 960px) {
@@ -1972,7 +1976,7 @@ body.admin-bar .search-overlay {
   margin-bottom: 20px;
 }
 .event-summary__title a {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 .event-summary__date {
   --transition: color 0.3s ease-in-out, scale 0.3s ease-in-out;
@@ -1986,9 +1990,11 @@ body.admin-bar .search-overlay {
   border-radius: 50%;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--university-theme-primary-color, #115a82);
-  background-color: var(--university-theme-primary-color, #115a82);
+  border-color: var(--wp--preset--color--primary, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
   width: 80px;
+  height: 80px;
+  box-sizing: border-box;
   color: #FFF;
   line-height: 1;
   text-decoration: none;
@@ -2010,17 +2016,22 @@ body.admin-bar .search-overlay {
   scale: 0 0;
 }
 .event-summary__date:hover {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 .event-summary__date:hover::after {
   scale: 1 1;
 }
+.event-summary__date--loading {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
 .event-summary__date--alt {
-  background-color: var(--university-theme-secondary-color, #86c4da);
-  border-color: var(--university-theme-secondary-color, #86c4da);
+  background-color: var(--wp--preset--color--secondary, #86c4da);
+  border-color: var(--wp--preset--color--secondary, #86c4da);
 }
 .event-summary__date--alt:hover {
-  color: var(--university-theme-secondary-color, #86c4da);
+  color: var(--wp--preset--color--secondary, #86c4da);
 }
 .event-summary__month {
   display: block;
@@ -2048,7 +2059,7 @@ body.admin-bar .search-overlay {
   left: 0;
   bottom: 0;
   z-index: -1;
-  background-color: var(--university-theme-secondary-color, #86c4da);
+  background-color: var(--wp--preset--color--secondary, #86c4da);
 }
 @media (min-width: 767px) {
   .page-links {
@@ -2062,23 +2073,23 @@ body.admin-bar .search-overlay {
   font-weight: normal;
   text-align: center;
   padding: 20px 0;
-  background-color: var(--university-theme-primary-color, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
   color: #fff;
 }
 .page-links__title a {
   color: #fff;
   text-decoration: none;
-  background-color: var(--university-theme-primary-color, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
 }
 .page-links ul {
   border-width: 1px;
   border-style: solid;
-  border-color: var(--university-theme-secondary-color, #86c4da);
+  border-color: var(--wp--preset--color--secondary, #86c4da);
   border-top: none;
 }
 .page-links li {
-  border-top: 1px solid var(--university-theme-primary-color, #115a82);
-  color: var(--university-theme-primary-color, #115a82);
+  border-top: 1px solid var(--wp--preset--color--primary, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 .page-links li:first-child {
   border-top: none;
@@ -2104,7 +2115,7 @@ body.admin-bar .search-overlay {
   color: #fff;
 }
 .page-links__active a:is(:hover, :focus), .page-links .current_page_item a:is(:hover, :focus) {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 .page-links__active::before, .page-links .current_page_item::before {
   content: "";
@@ -2114,7 +2125,7 @@ body.admin-bar .search-overlay {
   left: 0;
   bottom: 0;
   z-index: -1;
-  background-color: var(--university-theme-secondary-color, #86c4da);
+  background-color: var(--wp--preset--color--secondary, #86c4da);
   filter: brightness(0.9);
 }
 
@@ -2142,7 +2153,7 @@ body.admin-bar .search-overlay {
   border-bottom: none;
 }
 .link-list a {
-  color: var(--university-theme-primary-color, #115a82);
+  color: var(--wp--preset--color--primary, #115a82);
 }
 
 .metabox {
@@ -2164,7 +2175,7 @@ body.admin-bar .search-overlay {
   left: 0;
   bottom: 0;
   z-index: -1;
-  background-color: var(--university-theme-secondary-color, #86c4da);
+  background-color: var(--wp--preset--color--secondary, #86c4da);
 }
 .metabox--position-up {
   position: absolute;
@@ -2202,17 +2213,17 @@ body.admin-bar .search-overlay {
   align-items: center;
   gap: 5px;
   padding: 10px 15px;
-  background-color: var(--university-theme-primary-color, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
   color: #fff;
   font-weight: normal;
   border-radius: 0 3px 3px 0;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--university-theme-primary-color, #115a82);
+  border-color: var(--wp--preset--color--primary, #115a82);
 }
 .metabox .metabox__blog-home-link:hover {
   text-decoration: none;
-  background-color: var(--university-theme-primary-color, #115a82);
+  background-color: var(--wp--preset--color--primary, #115a82);
 }
 
 .post-item {
@@ -2228,3 +2239,63 @@ body.admin-bar .search-overlay {
 .goal-list li {
   margin-block: 0.5rem;
 }
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[2].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[2].use[2]!./node_modules/react-loading-skeleton/dist/skeleton.css ***!
+  \***********************************************************************************************************************************************************************************************************/
+@keyframes react-loading-skeleton {
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.react-loading-skeleton {
+  --base-color: #ebebeb;
+  --highlight-color: #f5f5f5;
+  --animation-duration: 1.5s;
+  --animation-direction: normal;
+  --pseudo-element-display: block; /* Enable animation */
+
+  background-color: var(--base-color);
+
+  width: 100%;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  line-height: 1;
+
+  position: relative;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  overflow: hidden;
+}
+
+.react-loading-skeleton::after {
+  content: ' ';
+  display: var(--pseudo-element-display);
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(
+    -90deg,
+    var(--base-color),
+    var(--highlight-color),
+    var(--base-color)
+  );
+  transform: translateX(100%);
+
+  animation-name: react-loading-skeleton;
+  animation-direction: var(--animation-direction);
+  animation-duration: var(--animation-duration);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@media (prefers-reduced-motion) {
+  .react-loading-skeleton {
+    --pseudo-element-display: none; /* Disable animation */
+  }
+}
+

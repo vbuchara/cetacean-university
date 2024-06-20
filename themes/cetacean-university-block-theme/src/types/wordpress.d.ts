@@ -36,22 +36,23 @@ declare module "wordpress-types" {
         authorName?: string;
         _links: Links;
         _embedded?: Embedded;
+        isPlaceholder?: boolean;
     }
 
     export interface Links {
-        self: About[];
-        collection: About[];
-        about: About[];
+        self: LinkObject[];
+        collection: LinkObject[];
+        about: LinkObject[];
         author: Author[];
         replies: Author[];
         "version-history": VersionHistory[];
         "predecessor-version": PredecessorVersion[];
-        "wp:attachment": About[];
+        "wp:attachment": LinkObject[];
         "wp:term": WpTerm[];
         curies: Cury[];
     }
 
-    export interface About {
+    export interface LinkObject {
         href: string;
     }
 
@@ -265,6 +266,19 @@ declare module "wordpress-types/professor"{
     }
 
     export interface ProfessorCustomFields {
+        related_programs: number[]
+    }
+}
+
+declare module "wordpress-types/event"{
+    import { WP_Post } from "wordpress-types";
+
+    export interface EventPost extends WP_Post {
+        acf: EventCustomFields;
+    }
+
+    export interface EventCustomFields {
+        event_date: string,
         related_programs: number[]
     }
 }

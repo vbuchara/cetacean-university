@@ -145,7 +145,10 @@ function cetacean_university_init_blocks(){
     new Cetacean_University_Blocks([
         'banner',
         'heading',
-        'button'
+        'button',
+        'events-and-posts',
+        'header',
+        'footer'
     ]);
 }
 
@@ -330,6 +333,35 @@ function university_notes_title_format(
     return $prepend;
 }
 
+function cetacean_university_blocks_category(array $categories){
+    $cetaceanUniversityCategory = [
+        'slug' => 'cetacean-university',
+        'title' => 'Cetacean University'
+    ];
+
+    return [$cetaceanUniversityCategory, ...$categories];
+}
+
+function cetacean_university_meta_query_support(array $args, WP_REST_Request $request){
+    $args += array(
+        'meta_key'   => $request['meta_key'],
+        'meta_value' => $request['meta_value'],
+        'meta_query' => [
+            'key' => $request['meta_query_key'],
+            'value' => $request['meta_query_value'],
+            'compare' => $request['meta_query_compare'],
+            'type' => $request['meta_query_type']
+        ],
+    );
+
+    return $args;
+}
+
+function cetacean_university_add_meta_value_to_orderby(array $params){
+    $params['orderby']['enum'][] = 'meta_value';
+	return $params;
+}
+
 // Filter for the function get_the_archive_title
 add_filter("get_the_archive_title", "cetacean_theme_get_the_archive_title", 10, 3);
 
@@ -350,3 +382,14 @@ add_filter('wp_insert_post_data', 'university_manipulate_note_data', 10, 4);
 
 // Remove "Private:" prepend from notes
 add_filter('private_title_format', 'university_notes_title_format', 10, 2);
+
+// Add Category for Cetacean University Blocks
+add_filter('block_categories_all', 'cetacean_university_blocks_category');
+
+// Filter to add Query Params to the rest api
+add_filter("rest_post_query", "cetacean_university_meta_query_support", 10, 2);
+add_filter("rest_event_query", "cetacean_university_meta_query_support", 10, 2);
+
+// Filter to add meta_value to orderby enum in the rest api
+add_filter('rest_post_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
+add_filter('rest_event_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);

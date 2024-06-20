@@ -1,0 +1,18 @@
+@use '../abstract/mixins' as *;
+@use '../base/variables' as *;
+
+.cetacean-university-events-and-blogs-root {
+    --background-color: #{$secondary-color};
+    --height: 0px;
+    --width: 100%;
+    --opacity: 1;
+
+    position: relative;
+
+    height: var(--height);
+    width: var(--width);
+
+    overflow: hidden;
+
+    transition: height 0.7s ease-out, width 0.7s ease-out;
+}

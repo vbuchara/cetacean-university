@@ -12,9 +12,9 @@ export type HeadingAttributesType = {
 };
 
 registerBlockType<HeadingAttributesType>(CetaceanUniversityBlocks.Heading, {
-    title: "Cetacean University Heading",
+    title: "Heading",
     icon: "heading",
-    category: "common",
+    category: CetaceanUniversityBlocks.BlockCategory,
     attributes: {
         text: {
             type: "string",

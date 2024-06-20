@@ -6,6 +6,7 @@ const glob = require("glob");
 const entries = glob.sync([
     "./src/index.ts",
     "./src/blocks/**/index.ts",
+    "./src/blocks/**/frontend.tsx"
 ], { 
     posix: true,
     dotRelative: true
@@ -13,11 +14,22 @@ const entries = glob.sync([
     const folderName = path.basename(path.dirname(file));
     const fileName = path.basename(file)
         .replace(/\.tsx|.ts$/gm, "");
-    const entryName = (folderName === "src") ? fileName : `blocks/${folderName}`;
+    
+    function getEntryName(){
+        if(folderName === "src"){
+            return fileName;
+        }
+
+        if(fileName === "frontend"){
+            return `blocks/${folderName}-frontend`;
+        }
+
+        return `blocks/${folderName}`;
+    }
 
     return {
         ...entry,
-        [entryName]: file,
+        [getEntryName()]: file,
     };
 }, {});
 
