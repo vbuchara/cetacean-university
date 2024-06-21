@@ -56,7 +56,3 @@ registerBlockType<ButtonAttributesType>(CetaceanUniversityBlocks.Button, {
     edit: EditComponent,
     save: SaveComponent
 });
-
-export {
-    SaveComponent as Button
-};

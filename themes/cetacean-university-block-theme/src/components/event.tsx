@@ -5,10 +5,11 @@ import {
 } from "react";
 import { format, parse } from "date-fns";
 import type { EventPost } from "wordpress-types/event";
+import Skeleton from "react-loading-skeleton";
 
+import { cancelRedirect } from "@src/utils/cancelRedirect";
 import { getTitle } from "@src/utils/getTitle";
 import { getExcerpt } from "@src/utils/getExcerpt";
-import Skeleton from "react-loading-skeleton";
 
 export type EventProps = {
     event: EventPost;
@@ -21,10 +22,6 @@ export function Event({
 }: EventProps){
     const eventDate = parse(event.acf.event_date, "yyyy-MM-dd HH:mm:ss", new Date());
     const eventLink = !isOnEditor ? event.link : "";
-
-    function cancelRedirect(event: MouseEvent<HTMLAnchorElement>){
-        event.preventDefault();
-    }
 
     const EventSummaryPlaceholder = useMemo(() => {
         return () => (

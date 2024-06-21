@@ -39,9 +39,6 @@ const link = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Button: () => (/* reexport safe */ _save__WEBPACK_IMPORTED_MODULE_2__.SaveComponent)
-/* harmony export */ });
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./src/blocks/button/edit.tsx");
@@ -85,7 +82,6 @@ __webpack_require__.r(__webpack_exports__);
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__.EditComponent,
   save: _save__WEBPACK_IMPORTED_MODULE_2__.SaveComponent
 });
-
 
 /***/ }),
 
@@ -410,7 +406,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./src/blocks/button/edit.tsx");
+/* harmony import */ var _src_utils_cancelRedirect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @src/utils/cancelRedirect */ "./src/utils/cancelRedirect.ts");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/blocks/button/edit.tsx");
+
 
 
 function SaveComponent(props) {
@@ -418,14 +416,10 @@ function SaveComponent(props) {
     attributes
   } = props;
   const buttonLink = attributes.linkObject?.url ? attributes.linkObject?.url : undefined;
-  const buttonClassNames = new Set(["btn", attributes.size ? _edit__WEBPACK_IMPORTED_MODULE_1__.buttonSizeClasses.get(attributes.size) || "" : "", _edit__WEBPACK_IMPORTED_MODULE_1__.buttonAnimationsOnHoverClasses.get(attributes.animations.onHover) || ""]);
-  function cancelRedirect(event) {
-    event.preventDefault();
-  }
-  console.log(buttonLink);
+  const buttonClassNames = new Set(["btn", attributes.size ? _edit__WEBPACK_IMPORTED_MODULE_2__.buttonSizeClasses.get(attributes.size) || "" : "", _edit__WEBPACK_IMPORTED_MODULE_2__.buttonAnimationsOnHoverClasses.get(attributes.animations.onHover) || ""]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: buttonLink,
-    onClick: !buttonLink ? cancelRedirect : undefined,
+    onClick: !buttonLink ? _src_utils_cancelRedirect__WEBPACK_IMPORTED_MODULE_1__.cancelRedirect : undefined,
     className: Array.from(buttonClassNames).join(" "),
     style: {
       "--background-color": attributes.backgroundColor,
@@ -452,6 +446,9 @@ class CetaceanUniversityBlocks {
   static Heading = `${this.DomainName}/heading`;
   static Button = `${this.DomainName}/button`;
   static EventsAndPosts = `${this.DomainName}/events-and-posts`;
+  static Header = `${this.DomainName}/header`;
+  static Footer = `${this.DomainName}/footer`;
+  static Menu = `${this.DomainName}/menu`;
   static BlockCategory = "cetacean-university";
 }
 ;
@@ -541,6 +538,22 @@ class WordpressColorsPresets {
 (function (_WordpressColorsPresets) {
   ;
 })(WordpressColorsPresets || (WordpressColorsPresets = {}));
+
+/***/ }),
+
+/***/ "./src/utils/cancelRedirect.ts":
+/*!*************************************!*\
+  !*** ./src/utils/cancelRedirect.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   cancelRedirect: () => (/* binding */ cancelRedirect)
+/* harmony export */ });
+function cancelRedirect(event) {
+  event.preventDefault();
+}
 
 /***/ }),
 
@@ -2025,9 +2038,6 @@ var __webpack_exports__ = {};
   !*** ./src/blocks/button/index.ts ***!
   \************************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Button: () => (/* reexport safe */ _button__WEBPACK_IMPORTED_MODULE_0__.Button)
-/* harmony export */ });
 /* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./button */ "./src/blocks/button/button.tsx");
 
 /******/ })()

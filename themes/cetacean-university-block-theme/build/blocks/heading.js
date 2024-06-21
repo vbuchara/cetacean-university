@@ -159,6 +159,9 @@ class CetaceanUniversityBlocks {
   static Heading = `${this.DomainName}/heading`;
   static Button = `${this.DomainName}/button`;
   static EventsAndPosts = `${this.DomainName}/events-and-posts`;
+  static Header = `${this.DomainName}/header`;
+  static Footer = `${this.DomainName}/footer`;
+  static Menu = `${this.DomainName}/menu`;
   static BlockCategory = "cetacean-university";
 }
 ;

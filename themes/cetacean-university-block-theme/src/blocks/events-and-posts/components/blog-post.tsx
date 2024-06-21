@@ -3,6 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { format } from "date-fns";
 import type { WP_Post } from "wordpress-types";
 
+import { cancelRedirect } from "@src/utils/cancelRedirect";
 import { getExcerpt } from "@src/utils/getExcerpt";
 import { getTitle } from "@src/utils/getTitle";
 
@@ -16,10 +17,6 @@ export function BlogPost({
     isOnEditor
 }: BlogPostProps){
     const postLink = !isOnEditor ? post.link : "";
-
-    function cancelRedirect(event: MouseEvent<HTMLAnchorElement>){
-        event.preventDefault();
-    }
 
     const EventSummaryPlaceholder = useMemo(() => {
         return () => (

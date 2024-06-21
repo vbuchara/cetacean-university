@@ -38,7 +38,7 @@ export function BannerInspectorControls({
     function onClickSetToDefault(){
         setAttributes({
             bannerImageId: 0,
-            bannerImageUrl: cetaceanUniversityData.theme_path + "/images/library-hero.jpg"
+            bannerImageUrl: CetaceanUniversityBannerData.theme_path + "/images/library-hero.jpg"
         });
     }
 

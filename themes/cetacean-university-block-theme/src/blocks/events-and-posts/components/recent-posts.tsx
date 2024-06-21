@@ -3,7 +3,7 @@ import { store as coreStore } from "@wordpress/core-data";
 import { useSelect } from "@wordpress/data";
 import type { WP_Post } from "wordpress-types";
 
-import { Button } from "@src/blocks/button";
+import { SaveComponent as Button } from "@src/blocks/button/save";
 import { Placeholders } from "@src/classes/Placeholders";
 import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
 

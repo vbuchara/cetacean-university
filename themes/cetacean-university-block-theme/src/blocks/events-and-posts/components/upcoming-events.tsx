@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { useEffect, useLayoutEffect } from "react";
 import type { EventPost } from "wordpress-types/event";
 
-import { Button } from "@src/blocks/button";
+import { SaveComponent as Button } from "@src/blocks/button/save";
 import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
 import { Event } from "@src/components/event";
 import Skeleton from "react-loading-skeleton";

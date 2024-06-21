@@ -2,10 +2,25 @@
 
 require_once get_theme_file_path('/helpers/Cetacean_University_Blocks.php');
 
+foreach (glob(get_theme_file_path("/restapi") . "/*.php") as $file){
+    if(is_file($file)){
+        require_once $file;
+    }
+};
+
 /**
  * Load the css and js scripts for the theme
  */
 function university_scripts() {
+    $jsAssetsPath = get_theme_file_path("/build/index.asset.php");
+    /** 
+     * @var array{
+     *  dependencies: array<string>,
+     *  version: string
+     * } 
+     */
+    $jsAssets = file_exists($jsAssetsPath) ? include $jsAssetsPath : [];
+
     wp_enqueue_style(
         "google-fonts",
         "https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i"
@@ -28,8 +43,8 @@ function university_scripts() {
     wp_enqueue_script(
         "cetacean_university_js",
         get_theme_file_uri("/build/index.js"),
-        ["jquery"],
-        "1.0",
+        isset($jsAssets['dependencies']) ? $jsAssets['dependencies'] : ['jquery'],
+        isset($jsAssets['version']) ? $jsAssets['version'] : "1.0",
         true
     );
 
@@ -142,14 +157,58 @@ function university_no_subscriber_admin_bar(){
 }
 
 function cetacean_university_init_blocks(){
-    new Cetacean_University_Blocks([
-        'banner',
-        'heading',
+    /** @var array<string, array{data: array}>|array<string> */
+    $blocks = [
         'button',
-        'events-and-posts',
-        'header',
-        'footer'
-    ]);
+        'heading',
+        'banner' => [
+            'data' => [
+                'theme_path' => get_theme_file_uri()
+            ]
+        ],
+        'events-and-posts' => [
+            'data' => [
+                "blog_link" => site_url("/blog"),
+                "events_archive_link" => get_post_type_archive_link("event"),
+            ]
+        ],
+        'header' => [
+            'data' => [
+                "search_link" => esc_url(site_url('/search')),
+                "site_name" => get_bloginfo("name"),
+                "site_url" => site_url(),
+            ]
+        ],
+        'menu' => [
+            'data' => [
+                'avatar_url' => get_avatar_url(get_current_user_id()),
+                "search_link" => esc_url(site_url('/search')),
+                "login_link" => wp_login_url(),
+                "register_link" => wp_registration_url(),
+                "logout_link" => wp_logout_url(),
+                "my_notes_link" => esc_url(site_url('/my-notes')),
+                "blog_link" => site_url("/blog"),
+                "events_archive_link" => get_post_type_archive_link("event"),
+                "program_archive_link" => get_post_type_archive_link("program"),
+                "campus_archive_link" => get_post_type_archive_link("campus"),
+                "about_us_link" => site_url("/about-us")
+            ]
+        ],
+        'footer' => [
+            'data' => [
+                "site_name" => get_bloginfo("name"),
+                "site_url" => site_url(),
+                "events_archive_link" => get_post_type_archive_link("event"),
+                "program_archive_link" => get_post_type_archive_link("program"),
+                "campus_archive_link" => get_post_type_archive_link("campus"),
+                "blog_link" => site_url("/blog"),
+                "about_us_link" => site_url("/about-us"),
+                "privacy_policy_link" => site_url("/privacy-policy"),
+            ]
+        ]
+    ];
+
+    new Cetacean_University_Blocks($blocks);
 }
 
 // Actions to load the CSS and JS scripts
@@ -234,7 +293,7 @@ function university_header_url() {
     return esc_url(site_url('/'));
 }
 
-function university_header_title(){
+function university_header_text(){
     return get_bloginfo('name');
 }
 
@@ -375,7 +434,7 @@ add_filter('posts_where', 'university_posts_query_where', 10, 2 );
 add_filter('login_headerurl', 'university_header_url');
 
 // Customize Login Screen Title
-add_filter('login_headertitle', 'university_header_title');
+add_filter('login_headertext', 'university_header_text');
 
 // Manipulates the data to create/update a note
 add_filter('wp_insert_post_data', 'university_manipulate_note_data', 10, 4);

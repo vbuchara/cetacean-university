@@ -405,7 +405,7 @@ li {
   line-height: 1.65;
 }
 
-.container {
+.container, .site-header__container {
   max-width: 1300px;
   margin: 0 auto;
   padding: 0 16px;
@@ -491,15 +491,16 @@ li {
   margin-right: 20px;
 }
 
-.container:before,
+.container:before, .site-header__container:before,
 .container:after,
+.site-header__container:after,
 .group:before,
 .group:after {
   content: " ";
   display: table;
 }
 
-.container:after,
+.container:after, .site-header__container:after,
 .group:after {
   clear: both;
 }
@@ -667,10 +668,12 @@ li {
   top: 1px;
   margin-left: 20px;
 }
+.search-trigger i {
+  font-size: 1.4rem;
+}
 @media (min-width: 960px) {
   .search-trigger {
     display: inline-block;
-    top: 6px;
   }
 }
 
@@ -679,23 +682,21 @@ li {
 }
 
 .social-icons-list {
+  display: grid;
+  grid-template-columns: repeat(5, 2rem);
+  grid-template-rows: 2rem;
+  gap: 0.5rem;
+}
+
+.social-media-icon {
   display: flex;
-  margin: 0 -8px;
-}
-
-.social-icons-list li {
-  flex: 1;
-  margin: 0 8px;
-}
-
-.social-icons-list li a {
-  display: block;
-  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   color: #fff;
-  font-size: 1.25rem;
+  border-radius: 2px;
 }
-
-.social-icons-list li a:hover {
+.social-media-icon:hover {
   opacity: 0.75;
 }
 
@@ -1218,6 +1219,18 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   right: 0;
   padding: 20px 0;
 }
+.site-header--editor {
+  --background-color: transparent;
+  position: relative;
+  background-color: var(--background-color);
+}
+.site-header__container {
+  display: flex;
+  justify-content: flex-start;
+}
+.site-header__container > :first-child {
+  margin-right: auto;
+}
 .site-header__avatar {
   position: absolute;
   top: 0;
@@ -1265,12 +1278,12 @@ body.login a:is(:hover, :focus, #priority#priority2) {
 }
 @media (min-width: 960px) {
   .site-header__menu {
+    display: flex;
     visibility: visible;
     opacity: 1;
     transform: translateY(0) scale(1);
     position: static;
     background-color: transparent;
-    float: right;
     padding-top: 0;
     padding-bottom: 0;
     top: 0;
@@ -1307,6 +1320,10 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   z-index: 10;
   top: 7px;
   right: 46px;
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
 }
 @media (min-width: 530px) {
   .site-header__menu-trigger {
@@ -1319,24 +1336,27 @@ body.login a:is(:hover, :focus, #priority#priority2) {
     display: none;
   }
 }
+.site-header__menu-trigger--closed .site-header__menu-trigger-close-icon {
+  display: none;
+  visibility: none;
+}
+.site-header__menu-trigger--open .site-header__menu-trigger-open-icon {
+  display: none;
+  visibility: none;
+}
 .site-header__util {
   padding: 0 0 0 20px;
+  display: flex;
+  align-items: center;
 }
 @media (min-width: 960px) {
   .site-header__util {
     padding: 0;
-    float: right;
   }
 }
 .site-header__btn {
   margin-right: 20px;
 }
-@media (min-width: 960px) {
-  .site-header__btn {
-    float: left;
-  }
-}
-
 .site-footer {
   padding: 2rem 0 3.5rem 0;
   background-image: linear-gradient(#fff, #ececec);
@@ -1359,6 +1379,22 @@ body.login a:is(:hover, :focus, #priority#priority2) {
 .site-footer__inner {
   border-top: 1px dotted #dedede;
   padding-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.site-footer__main-info {
+  display: grid;
+  grid-auto-rows: auto;
+  row-gap: 1rem;
+}
+@media (min-width: 960px) {
+  .site-footer__main-info {
+    grid-template-rows: 1fr;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    justify-content: stretch;
+    justify-items: center;
+  }
 }
 .site-footer__col-one {
   text-align: center;
@@ -1366,46 +1402,30 @@ body.login a:is(:hover, :focus, #priority#priority2) {
 @media (min-width: 960px) {
   .site-footer__col-one {
     text-align: left;
-    width: 33%;
-    float: left;
   }
 }
 .site-footer__col-two-three-group {
   text-align: center;
-  width: 85%;
   margin: 0 auto;
+  display: flex;
+  gap: 5rem;
 }
 @media (min-width: 960px) {
   .site-footer__col-two-three-group {
     text-align: left;
-    float: left;
-    width: 42%;
     margin: 0;
   }
 }
-.site-footer__col-two {
-  width: 50%;
-  float: left;
-}
-.site-footer__col-three {
-  width: 50%;
-  float: left;
-}
 .site-footer__col-four {
   padding-top: 20px;
-  width: 85%;
   margin: 0 auto;
-  clear: both;
   text-align: center;
 }
 @media (min-width: 960px) {
   .site-footer__col-four {
     padding-top: 0;
     margin: 0;
-    clear: none;
     text-align: left;
-    width: 25%;
-    float: right;
   }
 }
 .site-footer__copyright {

@@ -20,7 +20,7 @@ registerBlockType<BannerAttributesType>(CetaceanUniversityBlocks.Banner, {
         },
         bannerImageUrl: {
             type: "string",
-            default: cetaceanUniversityData.theme_path + "/images/library-hero.jpg"
+            default: CetaceanUniversityBannerData.theme_path + "/images/library-hero.jpg"
         }
     },
     edit: EditComponent,

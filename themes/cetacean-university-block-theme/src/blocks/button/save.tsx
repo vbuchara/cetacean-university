@@ -1,5 +1,6 @@
-import { MouseEvent } from "react";
 import { type BlockSaveProps } from "@wordpress/blocks";
+
+import { cancelRedirect } from "@src/utils/cancelRedirect";
 
 import { type ButtonAttributesType } from "./button";
 import { buttonAnimationsOnHoverClasses, buttonSizeClasses } from "./edit";
@@ -18,10 +19,6 @@ export function SaveComponent(props: ButtonSaveComponentProps){
         buttonAnimationsOnHoverClasses.get(attributes.animations.onHover) || "",
     ]);
 
-    function cancelRedirect(event: MouseEvent<HTMLAnchorElement>){
-        event.preventDefault();
-    }
-    console.log(buttonLink);
     return (
     <a
         href={buttonLink}

@@ -7,13 +7,17 @@ class Cetacean_University_Blocks {
     public $registeredBlocks = [];
 
     /**
-     * @param string[] $blockNames
+     * @param array<string, array{data: array}>|array<string> $blocks
      */
     public function __construct(
-        array $blockNames
+        array $blocks
     ){
-        foreach ($blockNames as $blockName) {
-            $registeredBlock = $this->register_block_type($blockName);
+        foreach ($blocks as $key => $value) {
+            /** @var string */
+            $blockName = is_string($value) ? $value : $key;
+            $blockOptions = is_array($value) ? $value : [];
+
+            $registeredBlock = $this->register_block_type($blockName, $blockOptions);
 
             if($registeredBlock instanceof WP_Block_Type) {
                 $this->registeredBlocks[$blockName] = $registeredBlock;
@@ -21,8 +25,13 @@ class Cetacean_University_Blocks {
         }
     }
 
+    /**
+     * @param string $blockName
+     * @param array{data: array} $blockOptions
+     */
     private function register_block_type(
-        string $blockName
+        string $blockName,
+        array $blockOptions = []
     ){
         $blockAssetsFile = "/build/blocks/$blockName.asset.php";
         $blockScriptFile = "/build/blocks/$blockName.js";
@@ -47,18 +56,16 @@ class Cetacean_University_Blocks {
             $blockAssets['version'],
         );
 
-        if(count($this->registeredBlocks) == 0) {
+        if(isset($blockOptions["data"])){
+            $objectName = $this->convertKebabToPascalCase("cetacean-university-" . $blockName);
+
             wp_localize_script(
                 $scriptName, 
-                "cetaceanUniversityData",
-                [
-                    "theme_path" => get_theme_file_uri(),
-                    "events_archive_link" => get_post_type_archive_link("event"),
-                    "blog_link" => site_url("/blog")
-                ]
+                $objectName . "Data",
+                $blockOptions["data"]
             );
         }
-    
+
         return register_block_type(
             "cetacean-university-theme/$blockName",
             [
@@ -119,5 +126,9 @@ class Cetacean_University_Blocks {
         }
 
         return true;
+    }
+
+    private function convertKebabToPascalCase(string $value){
+        return str_replace('-', '', ucwords($value, '-'));
     }
 }

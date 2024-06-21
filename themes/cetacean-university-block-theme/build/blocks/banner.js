@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     bannerImageUrl: {
       type: "string",
-      default: cetaceanUniversityData.theme_path + "/images/library-hero.jpg"
+      default: CetaceanUniversityBannerData.theme_path + "/images/library-hero.jpg"
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__.EditComponent,
@@ -84,7 +84,7 @@ function BannerInspectorControls({
   function onClickSetToDefault() {
     setAttributes({
       bannerImageId: 0,
-      bannerImageUrl: cetaceanUniversityData.theme_path + "/images/library-hero.jpg"
+      bannerImageUrl: CetaceanUniversityBannerData.theme_path + "/images/library-hero.jpg"
     });
   }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
@@ -197,6 +197,9 @@ class CetaceanUniversityBlocks {
   static Heading = `${this.DomainName}/heading`;
   static Button = `${this.DomainName}/button`;
   static EventsAndPosts = `${this.DomainName}/events-and-posts`;
+  static Header = `${this.DomainName}/header`;
+  static Footer = `${this.DomainName}/footer`;
+  static Menu = `${this.DomainName}/menu`;
   static BlockCategory = "cetacean-university";
 }
 ;
