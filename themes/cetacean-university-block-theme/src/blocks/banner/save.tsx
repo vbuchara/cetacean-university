@@ -10,16 +10,6 @@ export function SaveComponent({
     attributes
 }: BannerSaveComponentProps){
     return (
-    <div className="page-banner">
-        <div 
-            className="page-banner__bg-image" 
-            style={{
-                "--bg-image": `url(${attributes.bannerImageUrl})`
-            }}
-        ></div>
-        <div className="page-banner__content container t-center c-white">
-            <InnerBlocks.Content />
-        </div>
-    </div>
+    <InnerBlocks.Content />
     );
 }

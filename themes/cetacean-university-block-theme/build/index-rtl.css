@@ -694,6 +694,7 @@ li {
   align-items: center;
   height: 100%;
   color: #fff;
+  text-decoration: none;
   border-radius: 2px;
 }
 .social-media-icon:hover {

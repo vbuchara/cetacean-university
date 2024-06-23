@@ -76,7 +76,7 @@
             </a>
         <?php endif; ?>
         <a href="<?= esc_url(site_url('/search')) ?>" class="search-trigger js-search-trigger">
-            <i class="fa fa-search" aria-hidden="true"></i>
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
         </a>
     </div>
 </div>

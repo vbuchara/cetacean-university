@@ -7,10 +7,7 @@ import { SaveComponent } from "./save";
 import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
 
 export type HeaderAtributesType = {
-    siteAnchor: {
-        text: string;
-        href: string;
-    }
+    siteAnchor: string;
 };
 
 registerBlockType<HeaderAtributesType>(CetaceanUniversityBlocks.Header, {
@@ -19,11 +16,8 @@ registerBlockType<HeaderAtributesType>(CetaceanUniversityBlocks.Header, {
     icon: header,
     attributes: {
         siteAnchor: {
-            type: "object",
-            default: {
-                text: CetaceanUniversityHeaderData.site_name,
-                href: CetaceanUniversityHeaderData.site_url
-            }
+            type: "string",
+            default: CetaceanUniversityHeaderData.site_name
         }
     },
     edit: EditComponent,

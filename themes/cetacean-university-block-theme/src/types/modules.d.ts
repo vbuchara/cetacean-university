@@ -4,7 +4,6 @@ declare module "@wordpress/editor" {
     import {
         StoreDescriptor,  
         ReduxStoreConfig,
-        CurriedSelectorsOf,
     } from "@wordpress/data/build-types/types"
 
     type EditorStoreSelectors = AppendStateToSelectors<typeof import("@wordpress/editor/store/selectors")>;

@@ -1,4 +1,4 @@
-
+import { useEffect } from "react";
 import { InnerBlocks } from "@wordpress/block-editor";
 import { type BlockEditProps } from "@wordpress/blocks";
 
@@ -12,6 +12,9 @@ export type SlideEditComponentProps = BlockEditProps<SlideAttributeType>;
 
 export function EditComponent(props: SlideEditComponentProps){
     const { attributes, setAttributes } = props;
+    const imageUrl = attributes.imageUrl 
+        ? attributes.imageUrl 
+        : CetaceanUniversitySlideData.theme_path + attributes.imageDefault;
 
     return (
     <>
@@ -22,7 +25,7 @@ export function EditComponent(props: SlideEditComponentProps){
         <div 
             className="hero-slider__slide" 
             style={{
-                "--bg-image": `url(${attributes.imageUrl})`
+                "--bg-image": `url(${imageUrl})`
             }}
         >
             <div className="hero-slider__interior container">

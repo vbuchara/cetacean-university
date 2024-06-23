@@ -86,7 +86,8 @@ class Cetacean_University_Blocks {
     
         return function(
             array $attributes,
-            string $content
+            string $content,
+            WP_Block $block
         ) use ($blockName, $blockFrontendAssetsFile, $blockFrontendScriptFile, $blockRenderHTMLPath) {
             ob_start();
 

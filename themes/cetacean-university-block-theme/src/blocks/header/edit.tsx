@@ -35,15 +35,12 @@ export function EditComponent(props: HeaderEditComponentProps){
         <div className="site-header__container">
             <h1 className="school-logo-text">
                 <RichText
-                    href={siteAnchor.href}
+                    href={CetaceanUniversityHeaderData.site_url}
                     tagName={"a"}
                     allowedFormats={["core/bold", "core/italic"]}
-                    value={siteAnchor.text}
+                    value={siteAnchor}
                     onChange={(value) => setAttributes({ 
-                        siteAnchor: { 
-                            ...siteAnchor,
-                            text:  value
-                        } 
+                        siteAnchor: value
                     })}
                 />
             </h1>

@@ -27,7 +27,7 @@ function university_scripts() {
     );
     wp_enqueue_style(
         "font-awesome",
-        "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     );
     wp_enqueue_style(
         "cetacean_university_index",
@@ -164,7 +164,7 @@ function cetacean_university_init_blocks(){
         'slider',
         'slide' => [
             'data' => [
-                'theme_path' => get_theme_file_uri()
+                'theme_path' => get_theme_file_uri(),
             ]
         ],
         'banner' => [

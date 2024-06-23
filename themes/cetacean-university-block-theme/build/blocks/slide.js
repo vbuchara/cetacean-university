@@ -539,7 +539,7 @@ function SlideInspectorControls(props) {
   function onClickSetToDefault() {
     setAttributes({
       imageId: 0,
-      imageUrl: CetaceanUniversitySlideData.theme_path + "/images/boat.jpg"
+      imageUrl: CetaceanUniversitySlideData.theme_path + attributes.imageDefault
     });
   }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
@@ -590,13 +590,14 @@ function EditComponent(props) {
     attributes,
     setAttributes
   } = props;
+  const imageUrl = attributes.imageUrl ? attributes.imageUrl : CetaceanUniversitySlideData.theme_path + attributes.imageDefault;
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_controls__WEBPACK_IMPORTED_MODULE_3__.SlideInspectorControls, {
     attributes: attributes,
     setAttributes: setAttributes
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "hero-slider__slide",
     style: {
-      "--bg-image": `url(${attributes.imageUrl})`
+      "--bg-image": `url(${imageUrl})`
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "hero-slider__interior container"
@@ -626,20 +627,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
 
 
-function SaveComponent(props) {
-  const {
-    attributes
-  } = props;
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "hero-slider__slide",
-    style: {
-      "--bg-image": `url(${attributes.imageUrl})`
-    }
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "hero-slider__interior container"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "hero-slider__overlay t-center"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.Content, null))));
+function SaveComponent(_) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.Content, null);
 }
 
 /***/ }),
@@ -681,8 +670,11 @@ __webpack_require__.r(__webpack_exports__);
       default: 0
     },
     imageUrl: {
+      type: "string"
+    },
+    imageDefault: {
       type: "string",
-      default: CetaceanUniversitySlideData.theme_path + "/images/boat.jpg"
+      default: "/images/boat.jpg"
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_4__.EditComponent,

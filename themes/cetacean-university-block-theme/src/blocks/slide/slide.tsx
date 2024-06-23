@@ -10,7 +10,8 @@ import { SaveComponent } from "./save";
 
 export type SlideAttributeType = {
     imageId: number;
-    imageUrl: string;
+    imageUrl?: string;
+    imageDefault: string;
 };
 
 registerBlockType<SlideAttributeType>(CetaceanUniversityBlocks.Slide, {
@@ -25,9 +26,12 @@ registerBlockType<SlideAttributeType>(CetaceanUniversityBlocks.Slide, {
         },
         imageUrl: {
             type: "string",
-            default: CetaceanUniversitySlideData.theme_path + "/images/boat.jpg"
-        }
+        },
+        imageDefault: {
+            type: "string",
+            default: "/images/boat.jpg",
+        }  
     },
     edit: EditComponent,
-    save: SaveComponent
+    save: SaveComponent,
 });

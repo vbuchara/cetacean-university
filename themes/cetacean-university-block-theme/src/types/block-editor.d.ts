@@ -1,5 +1,12 @@
+import {
+    StoreDescriptor,  
+    ReduxStoreConfig,
+    CurriedSelectorsOf,
+    DataRegistry,
+    StoreInstance
+} from "@wordpress/data/build-types/types";
 declare module "@wordpress/block-editor"{
-
+    
     /** Default properties associated with a link control value. */
     export type WPLinkControlDefaultValue = {
         url: string;
@@ -101,6 +108,32 @@ declare module "@wordpress/block-editor"{
             orientation: string;
         }
     }
+
+    export type BlockEditorStoreSelectors = AppendStateToSelectors<typeof import("@wordpress/block-editor/store/selectors")>;
+
+    export type BlockEditorStoreActions = typeof import("@wordpress/block-editor/store/actions");
+
+    export interface BlockEditorStoreConfig extends ReduxStoreConfig<any, BlockEditorStoreActions, BlockEditorStoreSelectors>{
+        reducer: any;
+        dispatch: BlockEditorStoreActions;
+        selectors: BlockEditorStoreSelectors;
+        controls: any;
+    }
+
+    export interface BlockEditorStoreDescriptor {
+        name: "core/block-editor";
+        instantiate: ( registry: DataRegistry ) => StoreInstance<BlockEditorStoreConfig>;
+    }
+
+    type AppendStateToSelectors<
+        T extends Record<PropertyKey, (...args: any) => any>
+    > = {
+        [K in keyof T]: T[K] extends (...args: infer Args) => infer Return
+            ? (state: any, ...args: Args) => Return
+            : T[K];
+    }
+
+    type T1 = CurriedSelectorsOf<BlockEditorStoreDescriptor>;
 }
 
 export * from "@wordpress/block-editor";

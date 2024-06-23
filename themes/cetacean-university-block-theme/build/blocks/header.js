@@ -654,15 +654,12 @@ function EditComponent(props) {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
     className: "school-logo-text"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText, {
-    href: siteAnchor.href,
+    href: CetaceanUniversityHeaderData.site_url,
     tagName: "a",
     allowedFormats: ["core/bold", "core/italic"],
-    value: siteAnchor.text,
+    value: siteAnchor,
     onChange: value => setAttributes({
-      siteAnchor: {
-        ...siteAnchor,
-        text: value
-      }
+      siteAnchor: value
     })
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_editor_anchor__WEBPACK_IMPORTED_MODULE_3__.EditorAnchor, {
     href: CetaceanUniversityHeaderData.search_link,
@@ -718,11 +715,8 @@ __webpack_require__.r(__webpack_exports__);
   icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__["default"],
   attributes: {
     siteAnchor: {
-      type: "object",
-      default: {
-        text: CetaceanUniversityHeaderData.site_name,
-        href: CetaceanUniversityHeaderData.site_url
-      }
+      type: "string",
+      default: CetaceanUniversityHeaderData.site_name
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__.EditComponent,
@@ -746,53 +740,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons_faMagnifyingGlass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faMagnifyingGlass */ "./node_modules/@fortawesome/free-solid-svg-icons/faMagnifyingGlass.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons_faXmark__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faXmark */ "./node_modules/@fortawesome/free-solid-svg-icons/faXmark.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons_faBars__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faBars */ "./node_modules/@fortawesome/free-solid-svg-icons/faBars.js");
 
 
-
-
-
-
-function SaveComponent({
-  attributes
-}) {
-  const {
-    siteAnchor
-  } = attributes;
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("header", {
-    className: "site-header"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-header__container"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
-    className: "school-logo-text"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText.Content, {
-    href: siteAnchor.href,
-    tagName: "a",
-    value: siteAnchor.text
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: CetaceanUniversityHeaderData.search_link,
-    className: "js-search-trigger site-header__search-trigger"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__.FontAwesomeIcon, {
-    className: "site-header__search-trigger-icon",
-    icon: _fortawesome_free_solid_svg_icons_faMagnifyingGlass__WEBPACK_IMPORTED_MODULE_3__.faMagnifyingGlass,
-    width: "1.4rem",
-    height: "1.4rem"
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "site-header__menu-trigger site-header__menu-trigger--closed"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__.FontAwesomeIcon, {
-    className: "site-header__menu-trigger-open-icon",
-    icon: _fortawesome_free_solid_svg_icons_faBars__WEBPACK_IMPORTED_MODULE_4__.faBars,
-    width: "1.4rem",
-    height: "1.4rem"
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__.FontAwesomeIcon, {
-    className: "site-header__menu-trigger-close-icon",
-    icon: _fortawesome_free_solid_svg_icons_faXmark__WEBPACK_IMPORTED_MODULE_5__.faXmark,
-    width: "1.4rem",
-    height: "1.4rem"
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.Content, null)));
+function SaveComponent(_) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks.Content, null);
 }
 
 /***/ }),

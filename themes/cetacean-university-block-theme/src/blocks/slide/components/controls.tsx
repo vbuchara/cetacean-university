@@ -45,7 +45,7 @@ export function SlideInspectorControls(props: SlideInspectorControlsProps){
     function onClickSetToDefault(){
         setAttributes({
             imageId: 0,
-            imageUrl: CetaceanUniversitySlideData.theme_path + "/images/boat.jpg"
+            imageUrl: CetaceanUniversitySlideData.theme_path + attributes.imageDefault
         });
     }
 

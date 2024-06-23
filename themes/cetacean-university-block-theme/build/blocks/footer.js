@@ -1133,68 +1133,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   SaveComponent: () => (/* binding */ SaveComponent)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_explore_menu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/explore-menu */ "./src/blocks/footer/components/explore-menu.tsx");
-/* harmony import */ var _components_learn_menu__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/learn-menu */ "./src/blocks/footer/components/learn-menu.tsx");
-/* harmony import */ var _components_social_menu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/social-menu */ "./src/blocks/footer/components/social-menu.tsx");
-
-
-
-
-
-function SaveComponent({
-  attributes
-}) {
-  const {
-    siteAnchor,
-    siteAnchorWithLink,
-    phoneNumber,
-    links
-  } = attributes;
-  const hasSocialLinks = Object.entries(links).some(entry => {
-    const [key, value] = entry;
-    const socialMediaSet = new Set(_components_social_menu__WEBPACK_IMPORTED_MODULE_4__.socialMediaForMenu);
-    return socialMediaSet.has(key) && value;
-  });
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("footer", {
-    className: "site-footer"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__inner container container--narrow"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__main-info"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__col-one"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
-    className: "school-logo-text school-logo-text--alt-color"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.RichText.Content, {
-    href: siteAnchorWithLink ? CetaceanUniversityFooterData.site_url : undefined,
-    tagName: "a",
-    value: siteAnchor
-  })), !phoneNumber ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    className: "site-footer__link",
-    href: links.phoneNumber
-  }, phoneNumber))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__col-two-three-group"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__col-two"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-    className: "headline headline--small"
-  }, "Explore"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_explore_menu__WEBPACK_IMPORTED_MODULE_2__.ExploreMenu, null)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__col-three"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-    className: "headline headline--small"
-  }, "Learn"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_learn_menu__WEBPACK_IMPORTED_MODULE_3__.LearnMenu, null))), !hasSocialLinks ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__col-four"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-    className: "headline headline--small"
-  }, "Connect With Us"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_social_menu__WEBPACK_IMPORTED_MODULE_4__.SocialMenu, {
-    socialLinks: links
-  }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "site-footer__copyright"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Copyright \xA9 2001-2024 Cetacean University All Rights Reserved"))));
+function SaveComponent(_) {
+  return null;
 }
 
 /***/ }),
