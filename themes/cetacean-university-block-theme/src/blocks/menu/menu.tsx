@@ -13,6 +13,7 @@ registerBlockType<MenuAttributeType>(CetaceanUniversityBlocks.Menu, {
     title: "Menu",
     category: CetaceanUniversityBlocks.BlockCategory,
     icon: menu,
+    ancestor: [CetaceanUniversityBlocks.Header], 
     attributes: {},
     edit: EditComponent,
 });

@@ -1,8 +1,29 @@
 .hero-slider {
+  $hero-slider: &;
+
   position: relative;
 
   div {
     outline: none;
+  }
+
+  &--editor {
+    padding-block: 1rem;
+    background-color: #{$secondary-color};
+  }
+
+  &__notice {
+    color: #{$white};
+    margin: 0;
+    text-align: center;
+
+    #{$hero-slider} &:first-child {
+      margin-bottom: 1rem;
+    }
+
+    #{$hero-slider} &:last-child {
+      margin-top: 1rem;
+    }    
   }
 
   &__interior {
@@ -20,6 +41,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-image: var(--bg-image);
+    background-position: center;
   }
 
   &__overlay {
@@ -110,5 +132,11 @@
 
   button.glide__bullet--active {
     background-color: #fff;
+  }
+}
+
+.glide__slides--editor{
+  > * {
+    flex: 1;
   }
 }

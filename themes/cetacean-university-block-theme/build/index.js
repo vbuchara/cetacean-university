@@ -98,28 +98,32 @@ __webpack_require__.r(__webpack_exports__);
 
 class HeroSlider {
   constructor() {
-    if (document.querySelector(".hero-slider")) {
-      // count how many slides there are
-      const dotCount = document.querySelectorAll(".hero-slider__slide").length;
+    const sliders = document.querySelectorAll(".hero-slider");
+    if (!sliders) return;
+    sliders.forEach(slider => {
+      this.initGlide(slider);
+    });
+  }
+  initGlide(slider) {
+    // count how many slides there are
+    const slides = slider.querySelectorAll(".hero-slider__slide");
 
-      // Generate the HTML for the navigation dots
-      let dotHTML = "";
-      for (let i = 0; i < dotCount; i++) {
-        dotHTML += `<button class="slider__bullet glide__bullet" data-glide-dir="=${i}"></button>`;
-      }
+    // Generate the HTML for the navigation dots
+    const dotHTML = Array.from(slides).reduce((html, _, index) => {
+      return html + `<button class="slider__bullet glide__bullet" data-glide-dir="=${index}"></button>`;
+    }, "");
 
-      // Add the dots HTML to the DOM
-      const glideBullets = document.querySelector(".glide__bullets");
-      if (glideBullets) glideBullets.insertAdjacentHTML("beforeend", dotHTML);
+    // Add the dots HTML to the DOM
+    const glideBullets = slider.querySelector(".glide__bullets");
+    if (glideBullets) glideBullets.insertAdjacentHTML("beforeend", dotHTML);
 
-      // Actually initialize the glide / slider script
-      var glide = new _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__["default"](".hero-slider", {
-        type: "carousel",
-        perView: 1,
-        autoplay: 3000
-      });
-      glide.mount();
-    }
+    // Actually initialize the glide / slider script
+    const glide = new _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__["default"](slider, {
+      type: "carousel",
+      perView: 1,
+      autoplay: 3000
+    });
+    glide.mount();
   }
 }
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HeroSlider);

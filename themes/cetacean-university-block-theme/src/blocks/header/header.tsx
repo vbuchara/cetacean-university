@@ -1,5 +1,5 @@
 import { registerBlockType } from "@wordpress/blocks";
-import { code } from "@wordpress/icons";
+import { header } from "@wordpress/icons";
 
 import { EditComponent } from "./edit";
 import { SaveComponent } from "./save";
@@ -16,7 +16,7 @@ export type HeaderAtributesType = {
 registerBlockType<HeaderAtributesType>(CetaceanUniversityBlocks.Header, {
     title: "Header",
     category: CetaceanUniversityBlocks.BlockCategory,
-    icon: code,
+    icon: header,
     attributes: {
         siteAnchor: {
             type: "object",

@@ -736,6 +736,7 @@ __webpack_require__.r(__webpack_exports__);
   title: "Menu",
   category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__.CetaceanUniversityBlocks.BlockCategory,
   icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_3__["default"],
+  ancestor: [_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__.CetaceanUniversityBlocks.Header],
   attributes: {},
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__.EditComponent
 });
@@ -762,6 +763,8 @@ class CetaceanUniversityBlocks {
   static Header = `${this.DomainName}/header`;
   static Footer = `${this.DomainName}/footer`;
   static Menu = `${this.DomainName}/menu`;
+  static Slider = `${this.DomainName}/slider`;
+  static Slide = `${this.DomainName}/slide`;
   static BlockCategory = "cetacean-university";
 }
 ;

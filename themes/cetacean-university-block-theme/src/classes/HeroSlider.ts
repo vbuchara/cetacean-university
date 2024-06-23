@@ -1,31 +1,37 @@
 import Glide from "@glidejs/glide"
 
 class HeroSlider {
-  constructor() {
-    if (document.querySelector(".hero-slider")) {
-      // count how many slides there are
-      const dotCount = document.querySelectorAll(".hero-slider__slide").length
+	constructor() {
+		const sliders = document.querySelectorAll<HTMLDivElement>(".hero-slider");
+		if (!sliders) return;
 
-      // Generate the HTML for the navigation dots
-      let dotHTML = ""
-      for (let i = 0; i < dotCount; i++) {
-        dotHTML += `<button class="slider__bullet glide__bullet" data-glide-dir="=${i}"></button>`
-      }
+		sliders.forEach((slider) => {
+            this.initGlide(slider);
+        });
+	}
 
-      // Add the dots HTML to the DOM
-      const glideBullets = document.querySelector(".glide__bullets");
-      if(glideBullets) glideBullets.insertAdjacentHTML("beforeend", dotHTML);
+	public initGlide(slider: HTMLDivElement){
+		// count how many slides there are
+		const slides = slider.querySelectorAll<HTMLElement>(".hero-slider__slide");
 
-      // Actually initialize the glide / slider script
-      var glide = new Glide(".hero-slider", {
-        type: "carousel",
-        perView: 1,
-        autoplay: 3000
-      })
+		// Generate the HTML for the navigation dots
+		const dotHTML = Array.from(slides).reduce<string>((html, _, index) => {
+			return html + `<button class="slider__bullet glide__bullet" data-glide-dir="=${index}"></button>`;
+		}, "");
 
-      glide.mount()
-    }
-  }
+		// Add the dots HTML to the DOM
+		const glideBullets = slider.querySelector<HTMLElement>(".glide__bullets");
+		if (glideBullets) glideBullets.insertAdjacentHTML("beforeend", dotHTML);
+
+		// Actually initialize the glide / slider script
+		const glide = new Glide(slider, {
+			type: "carousel",
+			perView: 1,
+			autoplay: 3000
+		});
+
+		glide.mount();
+	}
 }
 
 export default HeroSlider

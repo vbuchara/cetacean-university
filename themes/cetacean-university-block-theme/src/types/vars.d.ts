@@ -42,3 +42,7 @@ declare var CetaceanUniversityFooterData: {
     about_us_link: string;
     privacy_policy_link: string;
 };
+
+declare var CetaceanUniversitySlideData: {
+    theme_path: string;
+};

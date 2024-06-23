@@ -19,6 +19,7 @@ export type ButtonEditComponentProps = BlockEditProps<ButtonAttributesType>;
 
 export const buttonSizeClasses = new Map<ButtonSize, string>([
     ["small", "btn--small"],
+    ["medium", "btn--medium"],
     ["large", "btn--large"],
 ]);
 

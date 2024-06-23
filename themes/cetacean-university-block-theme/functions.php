@@ -161,6 +161,12 @@ function cetacean_university_init_blocks(){
     $blocks = [
         'button',
         'heading',
+        'slider',
+        'slide' => [
+            'data' => [
+                'theme_path' => get_theme_file_uri()
+            ]
+        ],
         'banner' => [
             'data' => [
                 'theme_path' => get_theme_file_uri()

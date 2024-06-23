@@ -4,9 +4,10 @@ declare module "@wordpress/editor" {
     import {
         StoreDescriptor,  
         ReduxStoreConfig,
+        CurriedSelectorsOf,
     } from "@wordpress/data/build-types/types"
 
-    type EditorStoreSelectors = typeof import("@wordpress/editor/store/selectors");
+    type EditorStoreSelectors = AppendStateToSelectors<typeof import("@wordpress/editor/store/selectors")>;
 
     type EditorStoreActions = typeof import("@wordpress/editor/store/actions");
 
@@ -19,6 +20,14 @@ declare module "@wordpress/editor" {
 
     interface EditorStoreDescriptor extends StoreDescriptor<EditorStoreConfig> {
         name: "core/editor";
+    }
+
+    type AppendStateToSelectors<
+        T extends Record<PropertyKey, (...args: any) => any>
+    > = {
+        [K in keyof T]: T[K] extends (...args: infer Args) => infer Return
+            ? (state: any, ...args: Args) => Return
+            : T[K];
     }
 } 
 

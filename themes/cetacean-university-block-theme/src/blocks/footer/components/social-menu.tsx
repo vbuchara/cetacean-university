@@ -41,7 +41,6 @@ export function SocialMenu({
         return (
         <FontAwesomeIcon
             height="20px"
-            width="auto"
             {...props}
         />
         );
@@ -66,7 +65,9 @@ export function SocialMenu({
                 const [socialMedia, link] = entry;
 
                 return (
-                <li>
+                <li
+                    key={socialMedia}
+                >
                     <MenuAnchor 
                         href={link} 
                         className={`social-media-icon social-color-${socialMedia}`}

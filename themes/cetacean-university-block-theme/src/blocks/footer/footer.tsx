@@ -1,6 +1,7 @@
-import { code } from "@wordpress/icons";
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
 import { registerBlockType } from "@wordpress/blocks";
+import { footer } from "@wordpress/icons";
+
+import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
 
 import { EditComponent } from "./edit";
 import { SaveComponent } from "./save";
@@ -21,7 +22,7 @@ export type FooterAttributeType = {
 registerBlockType<FooterAttributeType>(CetaceanUniversityBlocks.Footer, {
     title: "Footer",
     category: CetaceanUniversityBlocks.BlockCategory,
-    icon: code,
+    icon: footer,
     attributes: {
         siteAnchor: {
             type: "string",

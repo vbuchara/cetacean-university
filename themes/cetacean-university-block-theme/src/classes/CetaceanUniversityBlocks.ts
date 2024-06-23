@@ -7,6 +7,8 @@ export class CetaceanUniversityBlocks{
     public static readonly Header = `${this.DomainName}/header` as const;
     public static readonly Footer = `${this.DomainName}/footer` as const;
     public static readonly Menu = `${this.DomainName}/menu` as const;
+    public static readonly Slider = `${this.DomainName}/slider` as const;
+    public static readonly Slide = `${this.DomainName}/slide` as const;
 
     public static readonly BlockCategory = "cetacean-university" as const;
 };

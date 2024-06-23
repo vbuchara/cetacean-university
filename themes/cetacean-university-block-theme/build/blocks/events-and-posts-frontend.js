@@ -241,6 +241,9 @@ function ButtonBlockControls({
     isPressed: isSizeButtonPressed("large"),
     onClick: getOnSizeButtonPressed("large")
   }, "Large"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
+    isPressed: isSizeButtonPressed("medium"),
+    onClick: getOnSizeButtonPressed("medium")
+  }, "Medium"), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
     isPressed: isSizeButtonPressed("small"),
     onClick: getOnSizeButtonPressed("small")
   }, "Small"))), !isLinkPickerVisible ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Popover, {
@@ -293,7 +296,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const buttonSizeClasses = new Map([["small", "btn--small"], ["large", "btn--large"]]);
+const buttonSizeClasses = new Map([["small", "btn--small"], ["medium", "btn--medium"], ["large", "btn--large"]]);
 const buttonAnimationsOnHoverClasses = new Map([["none", ""], ["slide-from-top", "btn--slide-from-top"], ["slide-from-bottom", "btn--slide-from-bottom"], ["slide-from-left", "btn--slide-from-left"], ["slide-from-right", "btn--slide-from-right"]]);
 function EditComponent(props) {
   const {

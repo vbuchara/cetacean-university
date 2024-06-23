@@ -7,7 +7,7 @@ import { SaveComponent } from "./save";
 import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
 import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
 
-export type ButtonSize = "large" | "small";
+export type ButtonSize = "large" | "medium" |"small";
 
 export type ButtonAnimation = "slide-from-top" | "slide-from-bottom" | "slide-from-left" | "slide-from-right" | "none";
 

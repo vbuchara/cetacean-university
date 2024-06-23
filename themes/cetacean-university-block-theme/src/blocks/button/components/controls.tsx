@@ -148,6 +148,12 @@ export function ButtonBlockControls({
                     Large
                 </ToolbarButton>
                 <ToolbarButton
+                    isPressed={isSizeButtonPressed("medium")}
+                    onClick={getOnSizeButtonPressed("medium")}
+                >
+                    Medium
+                </ToolbarButton>
+                <ToolbarButton
                     isPressed={isSizeButtonPressed("small")}
                     onClick={getOnSizeButtonPressed("small")}
                 >

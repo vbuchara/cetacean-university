@@ -1,6 +1,8 @@
 import { type BlockEditProps } from "@wordpress/blocks";
 import { RichText } from "@wordpress/block-editor";
 
+import { EditorAnchor } from "@src/components/editor-anchor";
+
 import { ExploreMenu } from "./components/explore-menu";
 import { LearnMenu } from "./components/learn-menu";
 import { SocialMenu, socialMediaForMenu } from "./components/social-menu";
@@ -50,12 +52,12 @@ export function EditComponent({
                         </h1>
                         {!phoneNumber ? "" : (
                         <p>
-                            <a 
+                            <EditorAnchor 
                                 className="site-footer__link" 
                                 href={links.phoneNumber}
                             >
                                 {phoneNumber}
-                            </a>
+                            </EditorAnchor>
                         </p>
                         )}
                     </div>
