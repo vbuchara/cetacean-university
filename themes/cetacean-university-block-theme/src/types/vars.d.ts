@@ -51,3 +51,7 @@ declare var CetaceanUniversityPostBannerData: {
     theme_path: string;
     blog_link: string;
 }
+
+declare var CetaceanUniversityPageBannerData: {
+    theme_path: string;
+}

@@ -35,7 +35,7 @@ declare module "wordpress-types" {
         acf: PostCustomFields;
         authorName?: string;
         _links: Links;
-        _embedded?: Embedded;
+        _embedded?: PostEmbedded;
         isPlaceholder?: boolean;
     }
 
@@ -99,7 +99,7 @@ declare module "wordpress-types" {
         footnotes: string;
     }
 
-    export interface Embedded {
+    export interface PostEmbedded {
         "wp:featuredmedia": WpFeaturedmedia[];
         author: [Author];
         "wp:term": [Category[], WpTerm[]];
@@ -220,6 +220,19 @@ declare module "wordpress-types" {
     export interface PostCustomFields {
         page_banner_subtitle?: string;
         page_banner_background_image?: number;
+    }
+
+    export interface WP_Page extends WP_Post {
+        parent: number;
+        _embedded?: PageEmbedded;
+        hasChildren?: boolean;
+    }
+
+    export interface PageEmbedded {
+        "wp:featuredmedia": WpFeaturedmedia[];
+        author: [Author];
+        up?: [WP_Page];
+        "wp:term": never;
     }
 
     export interface Note extends WP_Post {

@@ -30,7 +30,7 @@ export interface PostSelectOption extends BannerPostInfo{
     label: string;
 };
 
-type WP_PosWithEmbedded = SetRequired<WP_Post, "_embedded">;
+type WP_PostWithEmbedded = SetRequired<WP_Post, "_embedded">;
 
 export function PostBannerInspectorControls({
     postInfoPreview,
@@ -44,7 +44,7 @@ export function PostBannerInspectorControls({
                 per_page: -1,
                 _embed: true
             }
-        ) as WP_PosWithEmbedded[] | null;
+        ) as WP_PostWithEmbedded[] | null;
     }, []);
     const postOptions = posts?.map<PostSelectOption>(post => ({ 
         label: getTitle(post),

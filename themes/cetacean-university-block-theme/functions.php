@@ -158,68 +158,7 @@ function university_no_subscriber_admin_bar(){
 
 function cetacean_university_init_blocks(){
     /** @var array<string, array{data: array}>|array<string> */
-    $blocks = [
-        'button',
-        'heading',
-        'slider',
-        'post-banner' => [
-            'data' => [
-                'theme_path' => get_theme_file_uri(),
-                "blog_link" => site_url("/blog"),
-            ]
-        ],
-        'post-content',
-        'slide' => [
-            'data' => [
-                'theme_path' => get_theme_file_uri(),
-            ]
-        ],
-        'banner' => [
-            'data' => [
-                'theme_path' => get_theme_file_uri()
-            ]
-        ],
-        'events-and-posts' => [
-            'data' => [
-                "blog_link" => site_url("/blog"),
-                "events_archive_link" => get_post_type_archive_link("event"),
-            ]
-        ],
-        'header' => [
-            'data' => [
-                "search_link" => esc_url(site_url('/search')),
-                "site_name" => get_bloginfo("name"),
-                "site_url" => site_url(),
-            ]
-        ],
-        'menu' => [
-            'data' => [
-                'avatar_url' => get_avatar_url(get_current_user_id()),
-                "search_link" => esc_url(site_url('/search')),
-                "login_link" => wp_login_url(),
-                "register_link" => wp_registration_url(),
-                "logout_link" => wp_logout_url(),
-                "my_notes_link" => esc_url(site_url('/my-notes')),
-                "blog_link" => site_url("/blog"),
-                "events_archive_link" => get_post_type_archive_link("event"),
-                "program_archive_link" => get_post_type_archive_link("program"),
-                "campus_archive_link" => get_post_type_archive_link("campus"),
-                "about_us_link" => site_url("/about-us")
-            ]
-        ],
-        'footer' => [
-            'data' => [
-                "site_name" => get_bloginfo("name"),
-                "site_url" => site_url(),
-                "events_archive_link" => get_post_type_archive_link("event"),
-                "program_archive_link" => get_post_type_archive_link("program"),
-                "campus_archive_link" => get_post_type_archive_link("campus"),
-                "blog_link" => site_url("/blog"),
-                "about_us_link" => site_url("/about-us"),
-                "privacy_policy_link" => site_url("/privacy-policy"),
-            ]
-        ]
-    ];
+    $blocks = require get_theme_file_path("/helpers/blocksToRegister.php");
 
     new Cetacean_University_Blocks($blocks);
 }
@@ -434,6 +373,57 @@ function cetacean_university_add_meta_value_to_orderby(array $params){
 	return $params;
 }
 
+/**
+ * @param WP_REST_Response|WP_HTTP_Response|WP_Error $response
+ */
+function cetacean_university_add_has_children_to_page_response(
+    mixed $response, 
+    array $handler, 
+    WP_REST_Request $request
+){
+    if($response instanceof WP_REST_Response && !$response->is_error()){
+        if(get_post_type() !== "page") return $response;
+        if($request->get_method() !== "GET") return $response;
+        if(!$request->get_param("withHasChildren")) return $response;
+        /** @var array */
+        $pagesOrPage = $response->get_data();
+        $urlParams = $request->get_url_params();
+        $pages = !isset($urlParams["id"]) ? $pagesOrPage : null;
+        $singlePage = isset($urlParams["id"]) ? $pagesOrPage : null;
+        
+        if($pages) {
+            $newData = array_map(function(array $page){
+                $childrenPagesQuery = new WP_Query([
+                    'post_type' => 'page',
+                    'posts_per_page' => -1,
+                    'post_parent' => $page['id']
+                ]);
+
+                $page["hasChildren"] = $childrenPagesQuery->post_count > 0;
+
+                return $page;
+            }, $pages);
+
+            $response->set_data($newData);
+        }
+
+        if($singlePage){
+            $newData = [...$singlePage];
+            $childrenPagesQuery = new WP_Query([
+                'post_type' => 'page',
+                'posts_per_page' => -1,
+                'post_parent' => $singlePage['id']
+            ]);
+
+            $newData["hasChildren"] = $childrenPagesQuery->post_count > 0;
+
+            $response->set_data($newData);
+        }
+    }
+
+    return $response;
+}
+
 // Filter for the function get_the_archive_title
 add_filter("get_the_archive_title", "cetacean_theme_get_the_archive_title", 10, 3);
 
@@ -465,3 +455,5 @@ add_filter("rest_event_query", "cetacean_university_meta_query_support", 10, 2);
 // Filter to add meta_value to orderby enum in the rest api
 add_filter('rest_post_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
 add_filter('rest_event_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
+
+add_filter('rest_request_after_callbacks', 'cetacean_university_add_has_children_to_page_response', 10, 3);

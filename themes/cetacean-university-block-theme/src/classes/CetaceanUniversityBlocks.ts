@@ -9,8 +9,10 @@ export class CetaceanUniversityBlocks{
     public static readonly Menu = `${this.DomainName}/menu` as const;
     public static readonly Slider = `${this.DomainName}/slider` as const;
     public static readonly Slide = `${this.DomainName}/slide` as const;
-    public static readonly PostContent = `${this.DomainName}/post-content` as const;
     public static readonly PostBanner = `${this.DomainName}/post-banner` as const;
+    public static readonly PostContent = `${this.DomainName}/post-content` as const;
+    public static readonly PageBanner = `${this.DomainName}/page-banner` as const;
+    public static readonly PageContent = `${this.DomainName}/page-content` as const;
 
     public static readonly BlockCategory = "cetacean-university" as const;
 };
