@@ -4,7 +4,6 @@ import { footer } from "@wordpress/icons";
 import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
 
 import { EditComponent } from "./edit";
-import { SaveComponent } from "./save";
 
 import type { SocialLinks } from "./components/social-menu";
 
@@ -40,6 +39,5 @@ registerBlockType<FooterAttributeType>(CetaceanUniversityBlocks.Footer, {
             default: {}
         }
     },
-    edit: EditComponent,
-    save: SaveComponent
+    edit: EditComponent
 });

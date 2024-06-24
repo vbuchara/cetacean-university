@@ -765,6 +765,8 @@ class CetaceanUniversityBlocks {
   static Menu = `${this.DomainName}/menu`;
   static Slider = `${this.DomainName}/slider`;
   static Slide = `${this.DomainName}/slide`;
+  static PostContent = `${this.DomainName}/post-content`;
+  static PostBanner = `${this.DomainName}/post-banner`;
   static BlockCategory = "cetacean-university";
 }
 ;

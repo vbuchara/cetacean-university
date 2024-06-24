@@ -46,3 +46,8 @@ declare var CetaceanUniversityFooterData: {
 declare var CetaceanUniversitySlideData: {
     theme_path: string;
 };
+
+declare var CetaceanUniversityPostBannerData: {
+    theme_path: string;
+    blog_link: string;
+}

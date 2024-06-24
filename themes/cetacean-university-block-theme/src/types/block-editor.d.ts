@@ -45,8 +45,8 @@ declare module "@wordpress/block-editor"{
         suggestionsQuery?: any | undefined;
         noURLSuggestion?: boolean | undefined;
         hasTextControl?: boolean | undefined;
-        createSuggestionButtonText?: string | Function | undefined;
-        renderControlBottom: Function;
+        createSuggestionButtonText?: string | React.FunctionComponent | undefined;
+        renderControlBottom?: React.FunctionComponent;
     }
 
     export const __experimentalLinkControl: {

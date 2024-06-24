@@ -2202,26 +2202,28 @@ body.admin-bar .search-overlay {
   display: inline-block;
   background-color: transparent;
   max-width: 90vw;
-  border-radius: 3px;
   padding: 10px 15px;
-  margin-bottom: 30px;
-  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.07);
   overflow: hidden;
 }
-.metabox::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  background-color: var(--wp--preset--color--secondary, #86c4da);
+.metabox--editor {
+  z-index: 100;
 }
 .metabox--position-up {
   position: absolute;
   top: 0;
   transform: translateY(-50%);
+}
+.metabox--position-down {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(50%);
+}
+.metabox--align-with-post {
+  left: 0;
+  right: 0;
+  display: flex;
+  max-width: 960px;
+  margin-inline: auto;
 }
 .metabox--with-home-link {
   padding: 0;
@@ -2240,6 +2242,20 @@ body.admin-bar .search-overlay {
   margin: 0;
   font-size: 0.9rem;
   color: #fff;
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.07);
+}
+.metabox p::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: var(--wp--preset--color--secondary, #86c4da);
 }
 .metabox a {
   color: #fff;

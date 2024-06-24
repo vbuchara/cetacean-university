@@ -32,7 +32,7 @@ declare module "wordpress-types" {
         meta: Meta;
         categories: number[];
         tags: unknown[];
-        acf: unknown;
+        acf: PostCustomFields;
         authorName?: string;
         _links: Links;
         _embedded?: Embedded;
@@ -101,6 +101,8 @@ declare module "wordpress-types" {
 
     export interface Embedded {
         "wp:featuredmedia": WpFeaturedmedia[];
+        author: [Author];
+        "wp:term": [Category[], WpTerm[]];
     }
     
     export interface WpFeaturedmedia {
@@ -168,6 +170,56 @@ declare module "wordpress-types" {
         mime_type:  string;
         source_url: string;
         filesize?:  number;
+    }
+
+    export interface Author {
+        id:          number;
+        name:        string;
+        url:         string;
+        description: string;
+        link:        string;
+        slug:        string;
+        avatar_urls: { [key: string]: string };
+        acf:         any[];
+        _links:      AuthorLinks;
+    }
+    
+    export interface AuthorLinks {
+        self:       Collection[];
+        collection: Collection[];
+    }
+    
+    export interface Collection {
+        href: string;
+    }
+    
+    export interface Category {
+        id:       number;
+        link:     string;
+        name:     string;
+        slug:     string;
+        taxonomy: "category";
+        acf:      any[];
+        _links:   WpTermLinks;
+    }
+    
+    export interface WpTermLinks {
+        self:           Collection[];
+        collection:     Collection[];
+        about:          Collection[];
+        "wp:post_type": Collection[];
+        curies:         Cury[];
+    }
+    
+    export interface Cury {
+        name:      string;
+        href:      string;
+        templated: boolean;
+    }
+
+    export interface PostCustomFields {
+        page_banner_subtitle?: string;
+        page_banner_background_image?: number;
     }
 
     export interface Note extends WP_Post {
@@ -259,25 +311,25 @@ declare module "wordpress-types" {
 }
 
 declare module "wordpress-types/professor"{
-    import { WP_Post } from "wordpress-types";
+    import { WP_Post, PostCustomFields } from "wordpress-types";
 
     export interface ProfessorPost extends WP_Post {
         acf: ProfessorCustomFields;
     }
 
-    export interface ProfessorCustomFields {
+    export interface ProfessorCustomFields extends PostCustomFields{
         related_programs: number[]
     }
 }
 
 declare module "wordpress-types/event"{
-    import { WP_Post } from "wordpress-types";
+    import { WP_Post, PostCustomFields } from "wordpress-types";
 
     export interface EventPost extends WP_Post {
         acf: EventCustomFields;
     }
 
-    export interface EventCustomFields {
+    export interface EventCustomFields extends PostCustomFields {
         event_date: string,
         related_programs: number[]
     }
