@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array('jquery', 'lodash'), 'version' => '881c39bd3378906e52ea');
+<?php return array('dependencies' => array('jquery', 'lodash'), 'version' => '027f39b47ecf63354e3d');

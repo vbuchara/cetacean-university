@@ -39,6 +39,10 @@ declare module "wordpress-types" {
         isPlaceholder?: boolean;
     }
 
+    export interface WP_PostWithEmbedded extends WP_Post {
+        _embedded: PostEmbedded;
+    }
+
     export interface Links {
         self: LinkObject[];
         collection: LinkObject[];

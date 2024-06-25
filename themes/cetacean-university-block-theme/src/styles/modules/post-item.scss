@@ -7,4 +7,13 @@
     border-bottom: none;
     margin-bottom: 0;
   }
+
+  &__content--editor{
+    
+    &:is(*, #priority){
+      p {
+        margin-bottom: 1.65em;
+      }
+    }
+  }
 }

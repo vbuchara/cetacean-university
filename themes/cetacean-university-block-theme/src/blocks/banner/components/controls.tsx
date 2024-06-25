@@ -43,32 +43,32 @@ export function BannerInspectorControls({
     }
 
     return (
-        <InspectorControls>
-            <PanelBody
-                title='Background Image'
-                initialOpen={true}
-            >
-                <PanelRow>
-                    <Flex justify='flex-start'>
-                        <MediaUploadCheck>
-                            <MediaUpload
-                                onSelect={onSelectMedia}
-                                value={attributes.bannerImageId}
-                                render={({ open }) => (
-                                <>
-                                    <Button variant='primary' onClick={open}>
-                                        Choose Image
-                                    </Button>
-                                    <Button variant='secondary' onClick={onClickSetToDefault}>
-                                        Set to Default
-                                    </Button>
-                                </>
-                                )}
-                            />
-                        </MediaUploadCheck>
-                    </Flex>
-                </PanelRow>
-            </PanelBody>
-        </InspectorControls>
+    <InspectorControls>
+        <PanelBody
+            title='Background Image'
+            initialOpen={true}
+        >
+            <PanelRow>
+                <Flex justify='flex-start'>
+                    <MediaUploadCheck>
+                        <MediaUpload
+                            onSelect={onSelectMedia}
+                            value={attributes.bannerImageId}
+                            render={({ open }) => (
+                            <>
+                                <Button variant='primary' onClick={open}>
+                                    Choose Image
+                                </Button>
+                                <Button variant='secondary' onClick={onClickSetToDefault}>
+                                    Set to Default
+                                </Button>
+                            </>
+                            )}
+                        />
+                    </MediaUploadCheck>
+                </Flex>
+            </PanelRow>
+        </PanelBody>
+    </InspectorControls>
     );
 }

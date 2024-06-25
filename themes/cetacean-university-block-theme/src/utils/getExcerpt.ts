@@ -23,17 +23,20 @@ export function getExcerpt(
         stripTags,
         trimWords
     } = allOptions;
-
+    
     const excerpt = (post.excerpt && post.excerpt.rendered)
         ? post.excerpt.rendered
         : post.content.rendered;
     const stripHtmlTags = (value: string) => {
         return stripHtml(value).result;
     };
+    const truncate = (text: string) => {
+        return truncateWords(text, trimWords, "...");
+    };
 
     return pipe(
         excerpt,
         stripTags ? stripHtmlTags : (text) => text,
-        (text) => truncateWords(text, trimWords, "...")
+        truncate
     );
 }

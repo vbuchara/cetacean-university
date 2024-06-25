@@ -17,6 +17,16 @@ $blocks = [
         ]
     ],
     "page-content",
+    'blog-banner' => [
+        'data' => [
+            'theme_path' => get_theme_file_uri(),
+        ]
+    ],
+    'blog-content' => [
+        'data' => [
+            'posts_per_page' => get_option( 'posts_per_page' ),
+        ]
+    ],
     'slide' => [
         'data' => [
             'theme_path' => get_theme_file_uri(),

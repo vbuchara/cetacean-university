@@ -5,8 +5,8 @@ export function truncateWords(
     length: number,
     suffix: string = '...'
 ){
-    const allWords = v.words(text.trim());
-
+    const allWords = v.words(text.trim(), /[^\s]+/g);
+    
     if(length > allWords.length){
         return text;
     }

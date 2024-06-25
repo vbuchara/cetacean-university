@@ -55,3 +55,11 @@ declare var CetaceanUniversityPostBannerData: {
 declare var CetaceanUniversityPageBannerData: {
     theme_path: string;
 }
+
+declare var CetaceanUniversityBlogBannerData: {
+    theme_path: string;
+}
+
+declare var CetaceanUniversityBlogContentData: {
+    posts_per_page: string;
+}

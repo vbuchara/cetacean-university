@@ -2717,6 +2717,118 @@ var convertCurry = convert.bind(null, (react__WEBPACK_IMPORTED_MODULE_1___defaul
 
 /***/ }),
 
+/***/ "./src/blocks/page-banner/components/block.tsx":
+/*!*****************************************************!*\
+  !*** ./src/blocks/page-banner/components/block.tsx ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   PageBannerBlock: () => (/* binding */ PageBannerBlock)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var _fortawesome_free_solid_svg_icons_faHome__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faHome */ "./node_modules/@fortawesome/free-solid-svg-icons/faHome.js");
+/* harmony import */ var _components_editor_anchor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/editor-anchor */ "./src/components/editor-anchor.tsx");
+
+
+
+
+
+
+function PageBannerBlock(props) {
+  const {
+    page,
+    defaultBannerImage,
+    renderMetabox: PropsMetabox,
+    renderTitle: PropsTitle,
+    renderSubtitle: PropsSubtitle
+  } = props;
+  const metaboxClasses = ["metabox", "metabox--position-down", "metabox--align-with-post", "metabox--with-home-link", "metabox--editor"];
+  const [bannerImage, setBannerImage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
+  const Title = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
+      className: "page-banner__title"
+    }, page.title);
+  }, [page.title]);
+  const Subtitle = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, !page.subtitle ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "page-banner__intro"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, page.subtitle)));
+  }, [page.subtitle]);
+  const Metabox = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    const {
+      title,
+      pageParent
+    } = page;
+    if (!pageParent) return () => "";
+    return ({
+      divClassName
+    }) => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: divClassName
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_editor_anchor__WEBPACK_IMPORTED_MODULE_3__.EditorAnchor, {
+      className: "metabox__blog-home-link",
+      href: pageParent.link
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__.FontAwesomeIcon, {
+      icon: _fortawesome_free_solid_svg_icons_faHome__WEBPACK_IMPORTED_MODULE_4__.faHome,
+      height: "1rem",
+      width: "1rem"
+    }), "Back to ", pageParent.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+      className: "metabox__main"
+    }, title)));
+  }, [page.pageParent?.title, page.pageParent?.link, page.title, PropsMetabox]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!page.bannerImageId) {
+      setBannerImage(defaultBannerImage);
+      return;
+    }
+    (async () => {
+      try {
+        const {
+          source_url,
+          media_details
+        } = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default()({
+          path: `/wp/v2/media/${page.bannerImageId}`
+        });
+        const pageBannerSize = media_details.sizes['page-banner'];
+        if (!pageBannerSize && !source_url) throw new Error("No image found.");
+        if (!pageBannerSize) return setBannerImage(source_url);
+        setBannerImage(pageBannerSize.source_url);
+      } catch (error) {
+        setBannerImage(defaultBannerImage);
+        console.error(error);
+      }
+    })();
+  }, [page.bannerImageId, defaultBannerImage]);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "page-banner"
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "page-banner__bg-image",
+    style: {
+      "--bg-image": `url(${bannerImage})`
+    }
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "page-banner__content container container--narrow"
+  }, PropsTitle ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PropsTitle, {
+    divClassName: "page-banner__title"
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Title, null), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "page-banner__intro"
+  }, PropsSubtitle ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PropsSubtitle, {
+    divClassName: ""
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Subtitle, null))), PropsMetabox ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PropsMetabox, {
+    divClassName: metaboxClasses.join(" ")
+  }) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Metabox, {
+    divClassName: metaboxClasses.join(" ")
+  }));
+}
+
+/***/ }),
+
 /***/ "./src/blocks/page-banner/components/controls.tsx":
 /*!********************************************************!*\
   !*** ./src/blocks/page-banner/components/controls.tsx ***!
@@ -2801,21 +2913,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons_faHome__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faHome */ "./node_modules/@fortawesome/free-solid-svg-icons/faHome.js");
-/* harmony import */ var _src_components_editor_anchor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @src/components/editor-anchor */ "./src/components/editor-anchor.tsx");
-/* harmony import */ var _components_controls__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/controls */ "./src/blocks/page-banner/components/controls.tsx");
-
-
-
+/* harmony import */ var _components_controls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/controls */ "./src/blocks/page-banner/components/controls.tsx");
+/* harmony import */ var _components_block__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/block */ "./src/blocks/page-banner/components/block.tsx");
 
 
 
 
 function EditComponent(props) {
-  const metaboxClasses = ["metabox", "metabox--position-down", "metabox--align-with-post", "metabox--with-home-link", "metabox--editor"];
   const defaultBannerImage = CetaceanUniversityPageBannerData.theme_path + "/images/ocean.jpg";
   const defaultPage = {
     title: "{Page Title}",
@@ -2826,71 +2930,18 @@ function EditComponent(props) {
       title: "{Page Parent}"
     }
   };
-  const [bannerImage, setBannerImage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
   const [pageInfoPreview, setPostInfoPreview] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
   const page = {
     ...defaultPage,
     ...pageInfoPreview
   };
-  const Metabox = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
-    const {
-      title,
-      pageParent
-    } = page;
-    if (!pageParent) return () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null);
-    return () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: metaboxClasses.join(" ")
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_src_components_editor_anchor__WEBPACK_IMPORTED_MODULE_3__.EditorAnchor, {
-      className: "metabox__blog-home-link",
-      href: pageParent.link
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__.FontAwesomeIcon, {
-      icon: _fortawesome_free_solid_svg_icons_faHome__WEBPACK_IMPORTED_MODULE_5__.faHome,
-      height: "1rem",
-      width: "1rem"
-    }), "Back to ", pageParent.title), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
-      className: "metabox__main"
-    }, title)));
-  }, [page.pageParent?.title, page.pageParent?.link, page.title]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (!page.bannerImageId) {
-      setBannerImage(defaultBannerImage);
-      return;
-    }
-    (async () => {
-      try {
-        const {
-          source_url,
-          media_details
-        } = await _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default()({
-          path: `/wp/v2/media/${page.bannerImageId}`
-        });
-        const pageBannerSize = media_details.sizes['page-banner'];
-        if (!pageBannerSize && !source_url) throw new Error("No image found.");
-        if (!pageBannerSize) return setBannerImage(source_url);
-        setBannerImage(pageBannerSize.source_url);
-      } catch (error) {
-        setBannerImage(defaultBannerImage);
-        console.error(error);
-      }
-    })();
-  }, [page.bannerImageId]);
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_controls__WEBPACK_IMPORTED_MODULE_4__.PageBannerInspectorControls, {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_controls__WEBPACK_IMPORTED_MODULE_1__.PageBannerInspectorControls, {
     pageInfoPreview: pageInfoPreview,
     setPageInfoPreview: setPostInfoPreview
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "page-banner"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "page-banner__bg-image",
-    style: {
-      "--bg-image": `url(${bannerImage})`
-    }
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "page-banner__content container container--narrow"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h1", {
-    className: "page-banner__title"
-  }, page.title), !page.subtitle ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "page-banner__intro"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, page.subtitle))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Metabox, null)));
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_block__WEBPACK_IMPORTED_MODULE_2__.PageBannerBlock, {
+    page: page,
+    defaultBannerImage: defaultBannerImage
+  }));
 }
 
 /***/ }),
@@ -2946,6 +2997,8 @@ class CetaceanUniversityBlocks {
   static PostContent = `${this.DomainName}/post-content`;
   static PageBanner = `${this.DomainName}/page-banner`;
   static PageContent = `${this.DomainName}/page-content`;
+  static BlogBanner = `${this.DomainName}/blog-banner`;
+  static BlogContent = `${this.DomainName}/blog-content`;
   static BlockCategory = "cetacean-university";
 }
 ;

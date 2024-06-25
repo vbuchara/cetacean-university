@@ -12,11 +12,11 @@ import { EditorAnchor } from "@src/components/editor-anchor";
 import { PostBannerInspectorControls } from "./components/controls";
 
 import type { BannerPostInfo, PostBannerAttributeType } from "./post-banner";
+import { PostBannerBlock } from "./components/block";
 
 export type PostBannerEditComponentProps = BlockEditProps<PostBannerAttributeType>;
 
-export function EditComponent(props: PostBannerEditComponentProps){
-    const { attributes, setAttributes } = props;
+export function EditComponent(_: PostBannerEditComponentProps){
     const metaboxClasses = [
         "metabox",
         "metabox--position-down",
@@ -115,49 +115,10 @@ export function EditComponent(props: PostBannerEditComponentProps){
             postInfoPreview={postInfoPreview}
             setPostInfoPreview={setPostInfoPreview}
         />
-        <div className="page-banner">
-            <div 
-                className="page-banner__bg-image" 
-                style={{
-                    "--bg-image": `url(${bannerImage})`
-                }}
-                >
-            </div>
-            <div className="page-banner__content container container--narrow">
-                <h1 className="page-banner__title">
-                    {post.title}
-                </h1>
-                {!post.subtitle ? "" : (
-                <div className="page-banner__intro">
-                    <p>
-                        {post.subtitle}
-                    </p>
-                </div>
-                )}
-            </div>
-            <div 
-                className={metaboxClasses.join(" ")}
-            >
-                <p>
-                    <EditorAnchor 
-                        className="metabox__blog-home-link" 
-                        href={CetaceanUniversityPostBannerData.blog_link}
-                    >
-                        <FontAwesomeIcon
-                            icon={faHome}
-                            height="1rem"
-                            width="1rem"
-                        />
-                        All Posts
-                    </EditorAnchor>
-                    <span className="metabox__main">
-                        Posted by <AutorLink/>{" "}
-                        on {post.date + " "}
-                        in <CategoryLinks/>
-                    </span>
-                </p>
-            </div>
-        </div>
+        <PostBannerBlock
+            post={post}
+            defaultBannerImage={defaultBannerImage}
+        />
     </>
     );
 }

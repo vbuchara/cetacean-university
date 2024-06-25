@@ -12,8 +12,7 @@ import {
 import { 
     store as coreStore 
 } from "@wordpress/core-data";
-import type { WP_Post } from "wordpress-types";
-import type { SetRequired } from "type-fest";
+import type { WP_PostWithEmbedded } from "wordpress-types";
 import { format } from "date-fns";
 
 import { getTitle } from "@src/utils/getTitle";
@@ -29,8 +28,6 @@ export interface PostSelectOption extends BannerPostInfo{
     value: number;
     label: string;
 };
-
-type WP_PostWithEmbedded = SetRequired<WP_Post, "_embedded">;
 
 export function PostBannerInspectorControls({
     postInfoPreview,

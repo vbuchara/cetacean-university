@@ -709,6 +709,8 @@ class CetaceanUniversityBlocks {
   static PostContent = `${this.DomainName}/post-content`;
   static PageBanner = `${this.DomainName}/page-banner`;
   static PageContent = `${this.DomainName}/page-content`;
+  static BlogBanner = `${this.DomainName}/blog-banner`;
+  static BlogContent = `${this.DomainName}/blog-content`;
   static BlockCategory = "cetacean-university";
 }
 ;
@@ -1017,7 +1019,10 @@ function getExcerpt(post, options = {}) {
   const stripHtmlTags = value => {
     return (0,string_strip_html__WEBPACK_IMPORTED_MODULE_1__.stripHtml)(value).result;
   };
-  return (0,fp_ts_lib_function__WEBPACK_IMPORTED_MODULE_2__.pipe)(excerpt, stripTags ? stripHtmlTags : text => text, text => (0,_truncateWords__WEBPACK_IMPORTED_MODULE_0__.truncateWords)(text, trimWords, "..."));
+  const truncate = text => {
+    return (0,_truncateWords__WEBPACK_IMPORTED_MODULE_0__.truncateWords)(text, trimWords, "...");
+  };
+  return (0,fp_ts_lib_function__WEBPACK_IMPORTED_MODULE_2__.pipe)(excerpt, stripTags ? stripHtmlTags : text => text, truncate);
 }
 
 /***/ }),
@@ -1066,7 +1071,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var voca__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! voca */ "./node_modules/voca/es/index.js");
 
 function truncateWords(text, length, suffix = '...') {
-  const allWords = voca__WEBPACK_IMPORTED_MODULE_0__["default"].words(text.trim());
+  const allWords = voca__WEBPACK_IMPORTED_MODULE_0__["default"].words(text.trim(), /[^\s]+/g);
   if (length > allWords.length) {
     return text;
   }
