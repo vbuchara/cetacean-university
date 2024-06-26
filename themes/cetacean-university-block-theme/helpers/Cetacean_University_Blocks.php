@@ -7,11 +7,18 @@ class Cetacean_University_Blocks {
     public $registeredBlocks = [];
 
     /**
+     * @var array<string, Closure(): string>
+     */
+    public $knownDependencies = [];
+
+    /**
      * @param array<string, array{data: array}>|array<string> $blocks
      */
     public function __construct(
         array $blocks
     ){
+        $this->register_known_dependencies();
+
         foreach ($blocks as $key => $value) {
             /** @var string */
             $blockName = is_string($value) ? $value : $key;
@@ -25,9 +32,24 @@ class Cetacean_University_Blocks {
         }
     }
 
+    private function register_known_dependencies(){
+        $this->knownDependencies['google-maps'] = function(){
+            $scriptName = "google_map_js";
+            wp_enqueue_script(
+                $scriptName,
+                "//maps.googleapis.com/maps/api/js?key=" . GOOGLE_MAPS_API_KEY,
+                [],
+                "1.0",
+                true
+            );
+
+            return $scriptName;
+        };
+    }
+
     /**
      * @param string $blockName
-     * @param array{data: array} $blockOptions
+     * @param array{data: array, deps: string[]} $blockOptions
      */
     private function register_block_type(
         string $blockName,
@@ -48,7 +70,19 @@ class Cetacean_University_Blocks {
         $blockAssets = include get_theme_file_path($blockAssetsFile);
     
         $scriptName = "cetacean-university-" . $blockName . "-block";
-    
+
+        if(isset($blockOptions["deps"]) && is_array($blockOptions["deps"])){
+            $knownDependenciesKeys = array_keys($this->knownDependencies);
+
+            foreach($blockOptions['deps'] as $dep){
+                if(in_array($dep, $knownDependenciesKeys)){
+                    $newDependencyName = $this->knownDependencies[$dep]();
+
+                    array_push($blockAssets['dependencies'], $newDependencyName);
+                }
+            }
+        }
+        
         wp_register_script(
             $scriptName, 
             get_theme_file_uri($blockScriptFile),

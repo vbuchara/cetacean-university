@@ -3003,6 +3003,7 @@ class CetaceanUniversityBlocks {
   static PageContent = `${this.DomainName}/page-content`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;
   static AllPrograms = `${this.DomainName}/all-programs`;
+  static CampusesMap = `${this.DomainName}/campuses-map`;
   static BlockCategory = "cetacean-university";
 }
 ;

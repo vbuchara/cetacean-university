@@ -45,13 +45,6 @@ $blocks = [
             "events_archive_link" => get_post_type_archive_link("event"),
         ]
     ],
-    'header' => [
-        'data' => [
-            "search_link" => esc_url(site_url('/search')),
-            "site_name" => get_bloginfo("name"),
-            "site_url" => site_url(),
-        ]
-    ],
     'upcoming-events' => [
         'data' => [
             "events_archive_link" => get_post_type_archive_link("event"),
@@ -59,6 +52,16 @@ $blocks = [
         ]
     ], 
     'all-programs',
+    'campuses-map' => [
+        'deps' => ["google-maps"]
+    ],
+    'header' => [
+        'data' => [
+            "search_link" => esc_url(site_url('/search')),
+            "site_name" => get_bloginfo("name"),
+            "site_url" => site_url(),
+        ]
+    ],
     'menu' => [
         'data' => [
             'avatar_url' => get_avatar_url(get_current_user_id()),

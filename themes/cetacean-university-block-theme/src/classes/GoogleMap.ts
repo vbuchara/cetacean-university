@@ -1,7 +1,7 @@
 declare global {
 	namespace google.maps {
         interface Map {
-            markers: Marker[];
+            markers?: Marker[];
         }
 
 		interface Marker {
@@ -23,10 +23,11 @@ class GMap {
 	public new_map($el: HTMLElement) {
 		var $markers = $el.querySelectorAll<HTMLElement>(".marker")
 
-		var args = {
+		var args: google.maps.MapOptions = {
 			zoom: 16,
 			center: new google.maps.LatLng(0, 0),
-			mapTypeId: google.maps.MapTypeId.ROADMAP
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			mapId: "CAMPUS_MAP_ID"
 		}
 
 		var map = new google.maps.Map($el, args)
@@ -53,7 +54,7 @@ class GMap {
 			map: map
 		})
 
-		map.markers.push(marker)
+		map.markers?.push(marker)
 
 		// if marker contains HTML, add it to an infoWindow
 		if ($marker.innerHTML) {
@@ -73,14 +74,14 @@ class GMap {
 		var bounds = new google.maps.LatLngBounds()
 
 		// loop through all markers and create bounds
-		map.markers.forEach(function (marker) {
+		map.markers?.forEach(function (marker) {
 			var latlng = new google.maps.LatLng(marker.position.lat(), marker.position.lng())
 
 			bounds.extend(latlng)
 		})
 
 		// only 1 marker?
-		if (map.markers.length == 1) {
+		if (map.markers?.length == 1) {
 			// set center of map
 			map.setCenter(bounds.getCenter())
 			map.setZoom(16)

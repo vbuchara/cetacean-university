@@ -117,7 +117,7 @@
                                 <li class="menu-item">
                                     <a 
                                         rel="privacy-policy" 
-                                        href="<?= site_url("/privacy-police") ?>"
+                                        href="<?= site_url("/privacy-policy") ?>"
                                     >
                                         Privacy Policy
                                     </a>

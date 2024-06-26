@@ -325,6 +325,8 @@ declare module "wordpress-types" {
     }
 
     export * from "wordpress-types/professor";
+    export * from "wordpress-types/event";
+    export * from "wordpress-types/campus";
 }
 
 declare module "wordpress-types/professor"{
@@ -349,5 +351,23 @@ declare module "wordpress-types/event"{
     export interface EventCustomFields extends PostCustomFields {
         event_date: string,
         related_programs: number[]
+    }
+}
+
+declare module "wordpress-types/campus"{
+    import { WP_Post, PostCustomFields } from "wordpress-types";
+
+    export interface CampusPost extends WP_Post {
+        acf: CampusCustomFields;
+    }
+
+    export interface CampusCustomFields extends PostCustomFields {
+        map_location: {
+            address: string,
+            lat: number,
+            lng: number,
+            zoom: number,
+            place_id: string
+        },
     }
 }

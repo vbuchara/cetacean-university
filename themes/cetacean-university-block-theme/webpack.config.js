@@ -1,5 +1,8 @@
 const defaultConfig = require("@wordpress/scripts/config/webpack.config");
+
 const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
+const Dotenv = require('dotenv-webpack');
+
 const path = require("path");
 const glob = require("glob");
 
@@ -68,6 +71,7 @@ module.exports = {
             requestToExternal(request) {
                 if(request === "@wordpress/react-i18n") return false;
             }
-		})
+		}),
+        new Dotenv()
     ]
 }
