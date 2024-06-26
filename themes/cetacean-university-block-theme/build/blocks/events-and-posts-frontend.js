@@ -900,7 +900,7 @@ function Event({
   isOnEditor
 }) {
   const eventDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_4__.parse)(event.acf.event_date, "yyyy-MM-dd HH:mm:ss", new Date());
-  const eventLink = !isOnEditor ? event.link : "";
+  const eventLink = event.link;
   const EventSummaryPlaceholder = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
     return () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react_loading_skeleton__WEBPACK_IMPORTED_MODULE_5__["default"], {
       containerClassName: "event-summary__date t-center event-summary__date--loading",
@@ -923,11 +923,11 @@ function Event({
     return props => {
       return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
         href: eventLink,
-        onClick: !eventLink ? _src_utils_cancelRedirect__WEBPACK_IMPORTED_MODULE_1__.cancelRedirect : undefined,
+        onClick: isOnEditor ? _src_utils_cancelRedirect__WEBPACK_IMPORTED_MODULE_1__.cancelRedirect : undefined,
         ...props
       }, props.children);
     };
-  }, [eventLink]);
+  }, [eventLink, isOnEditor]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "event-summary"
   }, event.isPlaceholder ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(EventSummaryPlaceholder, null) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(EventLink, {

@@ -52,14 +52,19 @@ declare var CetaceanUniversityPostBannerData: {
     blog_link: string;
 }
 
+declare var CetaceanUniversityBlogPostsData: {
+    posts_per_page: string;
+}
+
 declare var CetaceanUniversityPageBannerData: {
     theme_path: string;
 }
 
-declare var CetaceanUniversityBlogBannerData: {
+declare var CetaceanUniversityPageBannerGenericData: {
     theme_path: string;
 }
 
-declare var CetaceanUniversityBlogContentData: {
-    posts_per_page: string;
+declare var CetaceanUniversityUpcomingEventsData: {
+    theme_path: string;
+    past_events_link: string;
 }

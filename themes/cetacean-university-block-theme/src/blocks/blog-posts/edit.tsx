@@ -7,12 +7,12 @@ import type { WP_PostWithEmbedded } from "wordpress-types";
 
 import { Post } from "./components/post";
 
-export type BlogContentEditComponentProps = BlockEditProps<{}>;
+export type BlogPostsEditComponentProps = BlockEditProps<{}>;
 
-export function EditComponent(props: BlogContentEditComponentProps){
+export function EditComponent(props: BlogPostsEditComponentProps){
     const { attributes, setAttributes } = props;
 
-    const postsPerPage = Number(CetaceanUniversityBlogContentData.posts_per_page);
+    const postsPerPage = Number(CetaceanUniversityBlogPostsData.posts_per_page);
     const posts = useSelect((select) => {
         return select(coreStore).getEntityRecords(
             "postType",

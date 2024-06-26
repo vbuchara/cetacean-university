@@ -454,12 +454,15 @@ class CetaceanUniversityBlocks {
   static Menu = `${this.DomainName}/menu`;
   static Slider = `${this.DomainName}/slider`;
   static Slide = `${this.DomainName}/slide`;
+  static PageBannerTitle = `${this.DomainName}/page-banner-title`;
+  static PageBannerSubtitle = `${this.DomainName}/page-banner-subtitle`;
+  static PageBannerGeneric = `${this.DomainName}/page-banner-generic`;
   static PostBanner = `${this.DomainName}/post-banner`;
   static PostContent = `${this.DomainName}/post-content`;
+  static BlogPosts = `${this.DomainName}/blog-posts`;
   static PageBanner = `${this.DomainName}/page-banner`;
   static PageContent = `${this.DomainName}/page-content`;
-  static BlogBanner = `${this.DomainName}/blog-banner`;
-  static BlogContent = `${this.DomainName}/blog-content`;
+  static UpcomingEvents = `${this.DomainName}/upcoming-events`;
   static BlockCategory = "cetacean-university";
 }
 ;

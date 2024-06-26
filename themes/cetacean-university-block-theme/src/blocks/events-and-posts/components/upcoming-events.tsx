@@ -11,7 +11,6 @@ import type { EventPost } from "wordpress-types/event";
 import { SaveComponent as Button } from "@src/blocks/button/save";
 import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
 import { Event } from "@src/components/event";
-import Skeleton from "react-loading-skeleton";
 import { Placeholders } from "@src/classes/Placeholders";
 
 export type UpcomingEventsProps = {

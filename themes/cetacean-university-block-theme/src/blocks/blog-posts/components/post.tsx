@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { RawHTML } from "@wordpress/element";
 import type { WP_PostWithEmbedded } from "wordpress-types";
 
 import { EditorAnchor } from "@components/editor-anchor";
@@ -11,7 +10,6 @@ import { getDate } from "@utils/getDate";
 export type PostProps = {
     post: WP_PostWithEmbedded
 };
-
 
 export function Post({
     post

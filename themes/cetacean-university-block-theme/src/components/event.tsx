@@ -21,7 +21,7 @@ export function Event({
     isOnEditor,
 }: EventProps){
     const eventDate = parse(event.acf.event_date, "yyyy-MM-dd HH:mm:ss", new Date());
-    const eventLink = !isOnEditor ? event.link : "";
+    const eventLink = event.link;
 
     const EventSummaryPlaceholder = useMemo(() => {
         return () => (
@@ -51,14 +51,14 @@ export function Event({
             return (
             <a 
                 href={eventLink}
-                onClick={!eventLink ? cancelRedirect : undefined}
+                onClick={isOnEditor ? cancelRedirect : undefined}
                 {...props}
             >
                 {props.children}
             </a>
             );
         }
-    }, [eventLink]);
+    }, [eventLink, isOnEditor]);
 
     return (
     <div className="event-summary">

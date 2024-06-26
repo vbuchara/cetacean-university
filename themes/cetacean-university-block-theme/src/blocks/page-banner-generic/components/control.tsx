@@ -1,24 +1,26 @@
-import apiFetch from "@wordpress/api-fetch";
 import { 
-    InspectorControls, 
+    InspectorControls,
     MediaUpload, 
     MediaUploadCheck
 } from "@wordpress/block-editor";
-import { Button, Flex, PanelBody, PanelRow } from "@wordpress/components";
-import { WpFeaturedmedia } from "wordpress-types";
+import { 
+    Button, 
+    Flex, 
+    PanelBody, 
+    PanelRow 
+} from "@wordpress/components";
 
-import type { BlogBannerEditComponentProps } from "../edit";
+import type { PageBannerGenericEditComponentProps } from "../edit";
 
-export type BlogBannerInspectorControlsProps = Pick<
-    BlogBannerEditComponentProps,
-    "attributes" | "setAttributes"
+export type PageBannerGenericInspectorControlsProps = Pick<
+    PageBannerGenericEditComponentProps,
+    'attributes' | 'setAttributes'
 >;
 
-export function BlogBannerInspectorControls({
+export function PageBannerGenericInspectorControls({
     attributes,
     setAttributes
-}: BlogBannerInspectorControlsProps){
-    
+}: PageBannerGenericInspectorControlsProps){
     function onSelectMedia(media: MediaUpload.MediaSelected) {
         setAttributes({
             bannerImageId: media.id
@@ -60,4 +62,4 @@ export function BlogBannerInspectorControls({
         </PanelBody>
     </InspectorControls>
     );
-}
+};

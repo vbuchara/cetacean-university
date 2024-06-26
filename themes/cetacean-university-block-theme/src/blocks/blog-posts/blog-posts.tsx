@@ -3,12 +3,12 @@ import { EditComponent } from "./edit";
 
 import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
 
-export type BlogContentAttributeType = {};
+export type BlogPostsAttributeType = {};
 
-registerBlockType<BlogContentAttributeType>(CetaceanUniversityBlocks.BlogContent, {
-    title: "Blog Content",
+registerBlockType<BlogPostsAttributeType>(CetaceanUniversityBlocks.BlogPosts, {
+    title: "Blog Posts",
     category: CetaceanUniversityBlocks.BlockCategory,
-    icon: "archive",
+    icon: "admin-post",
     attributes: {},
     edit: EditComponent,
 });

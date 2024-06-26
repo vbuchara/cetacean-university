@@ -3,7 +3,24 @@
 $blocks = [
     'button',
     'heading',
+    'banner' => [
+        'data' => [
+            'theme_path' => get_theme_file_uri()
+        ]
+    ],
     'slider',
+    'slide' => [
+        'data' => [
+            'theme_path' => get_theme_file_uri(),
+        ]
+    ],
+    'page-banner-title',
+    'page-banner-subtitle',
+    'page-banner-generic' => [
+        'data' => [
+            'theme_path' => get_theme_file_uri(),
+        ]
+    ],
     'post-banner' => [
         'data' => [
             'theme_path' => get_theme_file_uri(),
@@ -11,32 +28,17 @@ $blocks = [
         ]
     ],
     'post-content',
+    'blog-posts' => [
+        'data' => [
+            'posts_per_page' => get_option( 'posts_per_page' ),
+        ]
+    ],
     "page-banner" => [
         'data' => [
             'theme_path' => get_theme_file_uri(),
         ]
     ],
     "page-content",
-    'blog-banner' => [
-        'data' => [
-            'theme_path' => get_theme_file_uri(),
-        ]
-    ],
-    'blog-content' => [
-        'data' => [
-            'posts_per_page' => get_option( 'posts_per_page' ),
-        ]
-    ],
-    'slide' => [
-        'data' => [
-            'theme_path' => get_theme_file_uri(),
-        ]
-    ],
-    'banner' => [
-        'data' => [
-            'theme_path' => get_theme_file_uri()
-        ]
-    ],
     'events-and-posts' => [
         'data' => [
             "blog_link" => site_url("/blog"),
@@ -50,6 +52,12 @@ $blocks = [
             "site_url" => site_url(),
         ]
     ],
+    'upcoming-events' => [
+        'data' => [
+            "events_archive_link" => get_post_type_archive_link("event"),
+            "past_events_link" => site_url("/past-events")
+        ]
+    ], 
     'menu' => [
         'data' => [
             'avatar_url' => get_avatar_url(get_current_user_id()),
