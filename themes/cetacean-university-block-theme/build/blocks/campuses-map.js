@@ -547,9 +547,18 @@ __webpack_require__.r(__webpack_exports__);
 
 const mapId = "CAMPUS_MAP_ID";
 function CampusMapComponent({
-  campuses
+  campuses,
+  isSingle
 }) {
   const campusMap = (0,_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_1__.useMap)();
+  const campusesBoundsDependency = campuses.reduce((result, campus) => {
+    const {
+      acf: {
+        map_location
+      }
+    } = campus;
+    return result + map_location.lat + map_location.lng;
+  }, "");
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (!campusMap || campuses.length === 0) return;
     const newBounds = new google.maps.LatLngBounds();
@@ -563,14 +572,15 @@ function CampusMapComponent({
     });
     if (campuses.length === 1) {
       campusMap.setCenter(newBounds.getCenter());
-      campusMap.setZoom(16);
+      campusMap.setZoom(4);
       return;
     }
     campusMap.fitBounds(newBounds);
-  }, [campusMap, campuses.length]);
+  }, [campusMap, campusesBoundsDependency]);
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (campuses || []).map(campus => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_campus_marker__WEBPACK_IMPORTED_MODULE_2__.CampusMarker, {
     campus: campus,
-    key: campus.id
+    key: campus.id,
+    withLink: !isSingle
   })));
 }
 function GoogleMapWrapper(props) {
@@ -631,7 +641,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function CampusMarkerComponent({
-  campus
+  campus,
+  withLink = true
 }, ref) {
   const {
     acf: {
@@ -655,7 +666,7 @@ function CampusMarkerComponent({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_1__.Pin, null)), !isInfoVisible ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_vis_gl_react_google_maps__WEBPACK_IMPORTED_MODULE_1__.InfoWindow, {
     anchor: markerRef.current,
     onClose: onCloseInfo
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_editor_anchor__WEBPACK_IMPORTED_MODULE_2__.EditorAnchor, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", null, !withLink ? (0,_utils_getTitle__WEBPACK_IMPORTED_MODULE_3__.getTitle)(campus) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_editor_anchor__WEBPACK_IMPORTED_MODULE_2__.EditorAnchor, {
     href: campus.link
   }, (0,_utils_getTitle__WEBPACK_IMPORTED_MODULE_3__.getTitle)(campus))), map_location.address));
 }
@@ -738,6 +749,8 @@ class CetaceanUniversityBlocks {
   static PostBanner = `${this.DomainName}/post-banner`;
   static PostContent = `${this.DomainName}/post-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
+  static CampusBanner = `${this.DomainName}/campus-banner`;
+  static CampusContent = `${this.DomainName}/campus-content`;
   static PageBanner = `${this.DomainName}/page-banner`;
   static PageContent = `${this.DomainName}/page-content`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;

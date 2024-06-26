@@ -5,13 +5,18 @@ import { truncateWords } from "./truncateWords";
 import type { WP_Post } from "wordpress-types";
 import { stripHtml } from "string-strip-html";
 
+export type PostExcerptInfo = Pick<
+    WP_Post,
+    "content" | "excerpt"
+>;
+
 export type GetExcerptOptions = {
     stripTags?: boolean,
     trimWords?: number
 };
 
 export function getExcerpt(
-    post: WP_Post,
+    post: PostExcerptInfo,
     options: GetExcerptOptions = {}
 ) {
     const allOptions = {

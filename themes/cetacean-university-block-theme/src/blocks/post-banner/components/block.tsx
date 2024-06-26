@@ -8,15 +8,19 @@ import { EditorAnchor } from "@components/editor-anchor";
 
 import type { BannerPostInfo } from "../post-banner";
 
+export type PostBannerBlockPropsRender = (props: { classNames: string }) => React.ReactNode;
+
 export type PostBannerBlockProps = {
     post: BannerPostInfo,
     defaultBannerImage: string,
+    renderMetabox?: PostBannerBlockPropsRender
 };
 
 export function PostBannerBlock(props: PostBannerBlockProps){
     const {
         post,
-        defaultBannerImage
+        defaultBannerImage,
+        renderMetabox: PropsMetabox
     } = props;
     
     const metaboxClasses = [
@@ -29,24 +33,30 @@ export function PostBannerBlock(props: PostBannerBlockProps){
 
     const [bannerImage, setBannerImage] = useState("");
 
-    const categoriesDependency = post.category.reduce((result, { id, link, name }) => result + id + link + name, "");
+    const categoriesDependency = post.category?.reduce((result, { id, link, name }) => result + id + link + name, "");
 
     const AutorLink = useMemo(() => {
+        const { autor } = post;
+        if(!autor) return () => <></>;
+
         return () => (
         <EditorAnchor 
-            href={post.autor.link}
-            title={`Posted by ${post.autor.name}`}
+            href={autor.link}
+            title={`Posted by ${autor.name}`}
             rel="author"
         >
-            {post.autor.name}
+            {autor.name}
         </EditorAnchor>
         );
-    }, [post.autor.name, post.autor.link]);
+    }, [post.autor?.name, post.autor?.link]);
 
     const CategoryLinks = useMemo(() => {
+        const { category } = post;
+        if(!category) return () => <></>;
+
         return () => (
         <>
-            {post.category.reduce<React.ReactNode>((CategoriesLinks, category) => {
+            {category.reduce<React.ReactNode>((CategoriesLinks, category) => {
                 return (
                 <>
                     {CategoriesLinks}
@@ -110,6 +120,7 @@ export function PostBannerBlock(props: PostBannerBlockProps){
             </div>
             )}
         </div>
+        {PropsMetabox ? (<PropsMetabox classNames={metaboxClasses.join(" ")} />) : (
         <div 
             className={metaboxClasses.join(" ")}
         >
@@ -132,6 +143,7 @@ export function PostBannerBlock(props: PostBannerBlockProps){
                 </span>
             </p>
         </div>
+        )}
     </div>
     );
 }

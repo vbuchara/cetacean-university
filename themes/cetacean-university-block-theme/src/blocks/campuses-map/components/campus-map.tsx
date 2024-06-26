@@ -11,16 +11,29 @@ import type { CampusPost } from "wordpress-types";
 import { getTitle } from "@utils/getTitle";
 import { CampusMarker, CampusMarkerRef } from "./campus-marker";
 
+export type CampusMapInfo = Pick<
+    CampusPost,
+    "title"  | "acf" | "id" | "link"
+>;
+
 export type CampusMapProps = {
-    campuses: CampusPost[]
+    campuses: CampusMapInfo[];
+    isSingle?: boolean;
 };
 
 export const mapId = "CAMPUS_MAP_ID";
 
 function CampusMapComponent({
-    campuses
+    campuses,
+    isSingle
 }: CampusMapProps){
     const campusMap = useMap();
+
+    const campusesBoundsDependency = campuses.reduce((result, campus) => {
+        const { acf: { map_location } } = campus;
+
+        return result + map_location.lat + map_location.lng;
+    }, "");
 
     useEffect(() => {
         if(!campusMap || campuses.length === 0) return;
@@ -37,12 +50,12 @@ function CampusMapComponent({
 
         if(campuses.length === 1){
             campusMap.setCenter(newBounds.getCenter());
-            campusMap.setZoom(16);
+            campusMap.setZoom(4);
             return;
         }
 
         campusMap.fitBounds(newBounds);
-    }, [campusMap, campuses.length]);
+    }, [campusMap, campusesBoundsDependency]);
 
     return (
     <>
@@ -50,6 +63,7 @@ function CampusMapComponent({
         <CampusMarker 
             campus={campus}
             key={campus.id} 
+            withLink={!isSingle}
         />
         ))}
     </>

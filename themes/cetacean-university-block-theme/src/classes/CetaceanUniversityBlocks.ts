@@ -18,6 +18,9 @@ export class CetaceanUniversityBlocks{
     public static readonly PostBanner = `${this.DomainName}/post-banner` as const;
     public static readonly PostContent = `${this.DomainName}/post-content` as const;
     public static readonly BlogPosts = `${this.DomainName}/blog-posts` as const;
+
+    public static readonly CampusBanner = `${this.DomainName}/campus-banner` as const;
+    public static readonly CampusContent = `${this.DomainName}/campus-content` as const;
     
     public static readonly PageBanner = `${this.DomainName}/page-banner` as const;
     public static readonly PageContent = `${this.DomainName}/page-content` as const;

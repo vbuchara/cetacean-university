@@ -16,8 +16,11 @@ import type { CampusPost } from "wordpress-types";
 import { EditorAnchor } from "@components/editor-anchor";
 import { getTitle } from "@utils/getTitle";
 
+import type { CampusMapInfo } from "./campus-map";
+
 export type CampusMakerComponentProps = {
-    campus: CampusPost
+    campus: CampusMapInfo;
+    withLink?: boolean;
 };
 
 export type CampusMarkerRef = 
@@ -25,7 +28,8 @@ export type CampusMarkerRef =
     | RefCallback<google.maps.marker.AdvancedMarkerElement>;
 
 function CampusMarkerComponent({
-    campus
+    campus,
+    withLink = true
 }: CampusMakerComponentProps, ref: CampusMarkerRef){
     const { acf: { map_location }} = campus;
 
@@ -59,9 +63,11 @@ function CampusMarkerComponent({
             onClose={onCloseInfo}
         >
             <h3>
+                {!withLink ? getTitle(campus) : (
                 <EditorAnchor href={campus.link}>
                     {getTitle(campus)}
                 </EditorAnchor>
+                )}
             </h3>
             { map_location.address }
         </InfoWindow>

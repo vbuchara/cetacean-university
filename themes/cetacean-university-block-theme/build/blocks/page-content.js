@@ -2414,6 +2414,8 @@ class CetaceanUniversityBlocks {
   static PostBanner = `${this.DomainName}/post-banner`;
   static PostContent = `${this.DomainName}/post-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
+  static CampusBanner = `${this.DomainName}/campus-banner`;
+  static CampusContent = `${this.DomainName}/campus-content`;
   static PageBanner = `${this.DomainName}/page-banner`;
   static PageContent = `${this.DomainName}/page-content`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;

@@ -11,8 +11,13 @@ import { cancelRedirect } from "@src/utils/cancelRedirect";
 import { getTitle } from "@src/utils/getTitle";
 import { getExcerpt } from "@src/utils/getExcerpt";
 
+export type EventInfo = Pick<
+    EventPost,
+    "title" | "content" | "excerpt" | "acf" | "link" | "isPlaceholder"
+>;
+
 export type EventProps = {
-    event: EventPost;
+    event: EventInfo;
     isOnEditor?: boolean;
 };
 

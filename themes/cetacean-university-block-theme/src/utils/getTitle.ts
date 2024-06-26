@@ -3,12 +3,17 @@ import { pipe } from "fp-ts/lib/function";
 
 import type { WP_Post } from "wordpress-types";
 
+export type PostTitleInfo = Pick<
+    WP_Post,
+    "title"
+>;
+
 export type GetTitleOptions = {
     stripTags?: boolean,
 };
 
 export function getTitle(
-    post: WP_Post,
+    post: PostTitleInfo,
     options: GetTitleOptions = {}
 ) {
     const allOptions = {

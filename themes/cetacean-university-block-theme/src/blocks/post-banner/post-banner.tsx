@@ -8,12 +8,12 @@ export type BannerPostInfo = {
     title: string;
     subtitle?: string;
     bannerImageId?: number;
-    autor: {
+    date?: string;
+    autor?: {
         name: string;
         link: string;
     };
-    date: string;
-    category: {
+    category?: {
         id: number;
         name: string;
         link: string;

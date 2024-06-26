@@ -34,6 +34,15 @@ $blocks = [
             'posts_per_page' => get_option( 'posts_per_page' ),
         ]
     ],
+    'campus-banner' => [
+        'data' => [
+            'theme_path' => get_theme_file_uri(),
+            'campuses_archive_link' => get_post_type_archive_link("campus")
+        ]
+    ],
+    'campus-content' => [
+        'deps' => ["google-maps"]
+    ],
     "page-banner" => [
         'data' => [
             'theme_path' => get_theme_file_uri(),
