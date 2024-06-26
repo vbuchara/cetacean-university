@@ -114,7 +114,8 @@ function EditComponent(props) {
     function countPageBannerTitleBlocks(count, {
       name
     }) {
-      return name === _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerTitle ? count + 1 : count;
+      const bannerTitleNames = new Set([_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerTitle, _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerArchiveTitle]);
+      return bannerTitleNames.has(name) ? count + 1 : count;
     }
     return innerBlocks.reduce(countPageBannerTitleBlocks, 0);
   }, [innerBlocksDependency]);
@@ -122,7 +123,8 @@ function EditComponent(props) {
     function countPageBannerSubtitleBlocks(count, {
       name
     }) {
-      return name === _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerSubtitle ? count + 1 : count;
+      const bannerSubtitleNames = new Set([_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerSubtitle]);
+      return bannerSubtitleNames.has(name) ? count + 1 : count;
     }
     return innerBlocks.reduce(countPageBannerSubtitleBlocks, 0);
   }, [innerBlocksDependency]);
@@ -188,7 +190,7 @@ function EditComponent(props) {
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "page-banner__content container container--narrow"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks, {
-    allowedBlocks: [_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerTitle, _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerSubtitle],
+    allowedBlocks: [_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerTitle, _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerSubtitle, _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerArchiveTitle],
     template: [[_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerTitle], [_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.PageBannerSubtitle]],
     renderAppender: RenderAppender
   }))));
@@ -273,6 +275,7 @@ class CetaceanUniversityBlocks {
   static Slide = `${this.DomainName}/slide`;
   static PageBannerTitle = `${this.DomainName}/page-banner-title`;
   static PageBannerSubtitle = `${this.DomainName}/page-banner-subtitle`;
+  static PageBannerArchiveTitle = `${this.DomainName}/page-banner-archive-title`;
   static PageBannerGeneric = `${this.DomainName}/page-banner-generic`;
   static PostBanner = `${this.DomainName}/post-banner`;
   static PostContent = `${this.DomainName}/post-content`;

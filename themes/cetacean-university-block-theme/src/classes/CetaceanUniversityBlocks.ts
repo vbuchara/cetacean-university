@@ -12,6 +12,7 @@ export class CetaceanUniversityBlocks{
 
     public static readonly PageBannerTitle = `${this.DomainName}/page-banner-title` as const;
     public static readonly PageBannerSubtitle = `${this.DomainName}/page-banner-subtitle` as const;
+    public static readonly PageBannerArchiveTitle = `${this.DomainName}/page-banner-archive-title` as const;
     public static readonly PageBannerGeneric = `${this.DomainName}/page-banner-generic` as const;
 
     public static readonly PostBanner = `${this.DomainName}/post-banner` as const;

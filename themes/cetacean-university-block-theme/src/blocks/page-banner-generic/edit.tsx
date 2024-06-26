@@ -40,7 +40,12 @@ export function EditComponent(props: PageBannerGenericEditComponentProps){
 
     const pageBannerTitleBlocksCount = useMemo(() => {
         function countPageBannerTitleBlocks(count: number, { name }: BlockInstance ){
-            return name === CetaceanUniversityBlocks.PageBannerTitle ? count + 1 : count;
+            const bannerTitleNames = new Set<string>([
+                CetaceanUniversityBlocks.PageBannerTitle,
+                CetaceanUniversityBlocks.PageBannerArchiveTitle
+            ]);
+
+            return bannerTitleNames.has(name) ? count + 1 : count;
         }
 
         return innerBlocks.reduce(countPageBannerTitleBlocks, 0);
@@ -48,7 +53,11 @@ export function EditComponent(props: PageBannerGenericEditComponentProps){
 
     const pageBannerSubtitleBlocksCount = useMemo(() => {
         function countPageBannerSubtitleBlocks(count: number, { name }: BlockInstance ){
-            return name === CetaceanUniversityBlocks.PageBannerSubtitle ? count + 1 : count;
+            const bannerSubtitleNames = new Set<string>([
+                CetaceanUniversityBlocks.PageBannerSubtitle,
+            ]);
+
+            return bannerSubtitleNames.has(name) ? count + 1 : count;
         }
 
         return innerBlocks.reduce(countPageBannerSubtitleBlocks, 0);
@@ -129,7 +138,8 @@ export function EditComponent(props: PageBannerGenericEditComponentProps){
                 <InnerBlocks
                     allowedBlocks={[
                         CetaceanUniversityBlocks.PageBannerTitle,
-                        CetaceanUniversityBlocks.PageBannerSubtitle
+                        CetaceanUniversityBlocks.PageBannerSubtitle,
+                        CetaceanUniversityBlocks.PageBannerArchiveTitle
                     ]}
                     template={[
                         [CetaceanUniversityBlocks.PageBannerTitle],

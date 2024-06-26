@@ -3069,6 +3069,7 @@ class CetaceanUniversityBlocks {
   static Slide = `${this.DomainName}/slide`;
   static PageBannerTitle = `${this.DomainName}/page-banner-title`;
   static PageBannerSubtitle = `${this.DomainName}/page-banner-subtitle`;
+  static PageBannerArchiveTitle = `${this.DomainName}/page-banner-archive-title`;
   static PageBannerGeneric = `${this.DomainName}/page-banner-generic`;
   static PostBanner = `${this.DomainName}/post-banner`;
   static PostContent = `${this.DomainName}/post-content`;

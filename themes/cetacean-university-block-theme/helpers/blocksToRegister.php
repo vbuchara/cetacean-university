@@ -16,6 +16,7 @@ $blocks = [
     ],
     'page-banner-title',
     'page-banner-subtitle',
+    'page-banner-archive-title',
     'page-banner-generic' => [
         'data' => [
             'theme_path' => get_theme_file_uri(),
