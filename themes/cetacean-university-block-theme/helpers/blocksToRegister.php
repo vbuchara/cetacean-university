@@ -58,6 +58,7 @@ $blocks = [
             "past_events_link" => site_url("/past-events")
         ]
     ], 
+    'all-programs',
     'menu' => [
         'data' => [
             'avatar_url' => get_avatar_url(get_current_user_id()),

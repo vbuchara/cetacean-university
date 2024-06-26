@@ -22,6 +22,7 @@ export class CetaceanUniversityBlocks{
     public static readonly PageContent = `${this.DomainName}/page-content` as const;
 
     public static readonly UpcomingEvents = `${this.DomainName}/upcoming-events` as const;
+    public static readonly AllPrograms = `${this.DomainName}/all-programs` as const;
 
     public static readonly BlockCategory = "cetacean-university" as const;
 };
