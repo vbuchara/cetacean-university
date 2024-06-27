@@ -350,7 +350,7 @@ declare module "wordpress-types/event"{
 
     export interface EventCustomFields extends PostCustomFields {
         event_date: string,
-        related_programs: number[]
+        related_programs?: number[]
     }
 }
 

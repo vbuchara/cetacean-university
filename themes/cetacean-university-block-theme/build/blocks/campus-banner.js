@@ -2783,7 +2783,7 @@ function CampusBannerInspectorControls({
       per_page: -1
     });
   }, []);
-  const postOptions = campuses?.map(campus => ({
+  const campusOptions = campuses?.map(campus => ({
     label: (0,_utils_getTitle__WEBPACK_IMPORTED_MODULE_6__.getTitle)(campus),
     value: campus.id,
     bannerImageId: campus.acf.page_banner_background_image,
@@ -2803,7 +2803,7 @@ function CampusBannerInspectorControls({
     isLoading: !campuses,
     value: campusInfoPreview,
     onChange: onCampusSelected,
-    options: postOptions
+    options: campusOptions
   }))));
 }
 
@@ -2835,7 +2835,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function EditComponent(props) {
-  const defaultBannerImage = CetaceanUniversityPostBannerData.theme_path + "/images/ocean.jpg";
+  const defaultBannerImage = CetaceanUniversityCampusBannerData.theme_path + "/images/ocean.jpg";
   const defaultCampus = {
     title: "{Campus Title}",
     subtitle: "{Campus Subtitle}",
@@ -3022,6 +3022,8 @@ class CetaceanUniversityBlocks {
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static CampusBanner = `${this.DomainName}/campus-banner`;
   static CampusContent = `${this.DomainName}/campus-content`;
+  static EventBanner = `${this.DomainName}/event-banner`;
+  static EventContent = `${this.DomainName}/event-content`;
   static PageBanner = `${this.DomainName}/page-banner`;
   static PageContent = `${this.DomainName}/page-content`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;

@@ -42,7 +42,7 @@ export function CampusContentInspectorControls({
             }
         ) as CampusPost[] | null;
     }, []);
-    const postOptions = campuses?.map<CampusSelectOption>(campus => ({ 
+    const campusOptions = campuses?.map<CampusSelectOption>(campus => ({ 
         label: getTitle(campus),
         value: campus.id,
         title: campus.title,
@@ -70,7 +70,7 @@ export function CampusContentInspectorControls({
                     isLoading={!campuses}
                     value={campusInfoPreview}
                     onChange={onCampusSelected}
-                    options={postOptions}
+                    options={campusOptions}
                 />
             </PanelRow>
         </PanelBody>

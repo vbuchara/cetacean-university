@@ -43,6 +43,13 @@ $blocks = [
     'campus-content' => [
         'deps' => ["google-maps"]
     ],
+    'event-banner' => [
+        'data' => [
+            'theme_path' => get_theme_file_uri(),
+            "events_archive_link" => get_post_type_archive_link("event"),
+        ]
+    ],
+    'event-content',
     "page-banner" => [
         'data' => [
             'theme_path' => get_theme_file_uri(),

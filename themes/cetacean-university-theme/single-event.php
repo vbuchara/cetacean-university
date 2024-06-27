@@ -25,7 +25,7 @@
             <?php the_content() ?>
         </div>
         <?php
-            /** @var WP_Post[]|NULL */
+            /** @var WP_Post[]|null */
             $relatedPrograms = get_field('related_programs');
         ?>
         <?php if($relatedPrograms): ?>

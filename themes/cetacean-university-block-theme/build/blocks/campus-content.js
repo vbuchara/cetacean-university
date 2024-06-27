@@ -2247,7 +2247,7 @@ function CampusContentInspectorControls({
       per_page: -1
     });
   }, []);
-  const postOptions = campuses?.map(campus => ({
+  const campusOptions = campuses?.map(campus => ({
     label: (0,_utils_getTitle__WEBPACK_IMPORTED_MODULE_6__.getTitle)(campus),
     value: campus.id,
     title: campus.title,
@@ -2269,7 +2269,7 @@ function CampusContentInspectorControls({
     isLoading: !campuses,
     value: campusInfoPreview,
     onChange: onCampusSelected,
-    options: postOptions
+    options: campusOptions
   }))));
 }
 
@@ -2627,6 +2627,8 @@ class CetaceanUniversityBlocks {
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static CampusBanner = `${this.DomainName}/campus-banner`;
   static CampusContent = `${this.DomainName}/campus-content`;
+  static EventBanner = `${this.DomainName}/event-banner`;
+  static EventContent = `${this.DomainName}/event-content`;
   static PageBanner = `${this.DomainName}/page-banner`;
   static PageContent = `${this.DomainName}/page-content`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;

@@ -16,7 +16,7 @@ import type { BannerCampusInfo } from "./campus-banner";
 export type CampusBannerEditComponentProps = BlockEditProps<{}>;
 
 export function EditComponent(props: CampusBannerEditComponentProps){
-    const defaultBannerImage = CetaceanUniversityPostBannerData.theme_path + "/images/ocean.jpg";
+    const defaultBannerImage = CetaceanUniversityCampusBannerData.theme_path + "/images/ocean.jpg";
     const defaultCampus = {
         title: "{Campus Title}",
         subtitle: "{Campus Subtitle}",

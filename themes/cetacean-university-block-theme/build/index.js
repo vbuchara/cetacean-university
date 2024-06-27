@@ -74,7 +74,7 @@ class GMap {
     if (map.markers?.length == 1) {
       // set center of map
       map.setCenter(bounds.getCenter());
-      map.setZoom(16);
+      map.setZoom(4);
     } else {
       // fit to bounds
       map.fitBounds(bounds);

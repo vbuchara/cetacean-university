@@ -42,7 +42,7 @@ export function CampusBannerInspectorControls({
             }
         ) as CampusPost[] | null;
     }, []);
-    const postOptions = campuses?.map<CampusSelectOption>(campus => ({ 
+    const campusOptions = campuses?.map<CampusSelectOption>(campus => ({ 
         label: getTitle(campus),
         value: campus.id,
         bannerImageId: campus.acf.page_banner_background_image,
@@ -68,7 +68,7 @@ export function CampusBannerInspectorControls({
                     isLoading={!campuses}
                     value={campusInfoPreview}
                     onChange={onCampusSelected}
-                    options={postOptions}
+                    options={campusOptions}
                 />
             </PanelRow>
         </PanelBody>

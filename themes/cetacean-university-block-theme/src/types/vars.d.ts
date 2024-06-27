@@ -73,3 +73,8 @@ declare var CetaceanUniversityCampusBannerData: {
     theme_path: string;
     campuses_archive_link: string;
 }
+
+declare var CetaceanUniversityEventBannerData: {
+    theme_path: string;
+    events_archive_link: string;
+}
