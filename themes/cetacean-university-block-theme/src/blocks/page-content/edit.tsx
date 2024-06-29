@@ -57,7 +57,10 @@ export function EditComponent(_: PageContentEditComponentProps){
             </h2>
             <ul className="min-list">
                 {!page.pageChildren ? "" : page.pageChildren.map(childPage => (
-                <li className={`page-item ${childPage.id === page.id ? "current_page_item" : ""}`}>
+                <li 
+                    key={childPage.id}
+                    className={`page-item ${childPage.id === page.id ? "current_page_item" : ""}`}
+                >
                     <EditorAnchor href={childPage.link}>
                         {childPage.title}
                     </EditorAnchor>

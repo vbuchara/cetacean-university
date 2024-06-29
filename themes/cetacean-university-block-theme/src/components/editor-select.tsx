@@ -1,24 +1,27 @@
-import Select, { GroupBase, Props } from "react-select";
+import Select, { type GroupBase, type Props } from "react-select";
 
 export function EditorSelect<
     Option = unknown, 
     IsMulti extends boolean = boolean, 
     Group extends GroupBase<Option> = GroupBase<Option>
->(props: Props<Option, IsMulti, Group>){
+>({ styles, ...props }: Props<Option, IsMulti, Group>){
     return(
     <Select
         isSearchable={true}
         styles={{
-            container: (base) => ({
+            container: (base, props) => ({
                 ...base,
-                flex: 1
+                flex: 1,
+                ...styles?.container?.(base, props)
             }),
-            input: (base) => ({
+            input: (base, props) => ({
                 ...base,
                 "input:focus": {
                     boxShadow: "none"
-                }
-            })
+                },
+                ...styles?.input?.(base, props)
+            }),
+            ...styles
         }}
         {...props}
     />

@@ -15,7 +15,7 @@ import {
 import type { SelectFunction } from '@wordpress/data/build-types/types';
 import type { WP_Page, WP_Post } from "wordpress-types";
 
-import { EditorSelect } from '@components/editor-select';
+import { EditorSelect } from '@src/components/editor-select';
 import { getTitle } from "@utils/getTitle";
 
 import type { PageContentInfo, WP_PageWithChildren } from "../page-content";

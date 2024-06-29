@@ -17,7 +17,7 @@ export type SlideAttributeType = {
 registerBlockType<SlideAttributeType>(CetaceanUniversityBlocks.Slide, {
     title: "Slide",
     category: CetaceanUniversityBlocks.BlockCategory,
-    icon: <FontAwesomeIcon icon={faImage} />,
+    icon: () => <FontAwesomeIcon icon={faImage} />,
     ancestor: [CetaceanUniversityBlocks.Slider],
     attributes: {
         imageId: {

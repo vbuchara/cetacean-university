@@ -40,9 +40,12 @@ const dependencyExtractionPlugin = defaultConfig.plugins.find(
     (plugin) => plugin.constructor.name === 'DependencyExtractionWebpackPlugin'
 );
 
+/** @type {import("webpack").Configuration} */
 module.exports = {
     ...defaultConfig,
-    entry: entries,
+    entry: {
+        ...entries,
+    },
     output: {
         ...defaultConfig.output,
         filename: "[name].js",
@@ -51,7 +54,7 @@ module.exports = {
         ...defaultConfig.resolve,
         alias: {
             ...defaultConfig?.alias,
-            "@assets": path.resolve(__dirname, "assets/"),
+            "@images": path.resolve(__dirname, "images/"),
             "@src": path.resolve(__dirname, "src/"),
             "@blocks": path.resolve(__dirname, "src/blocks/"),
             "@components": path.resolve(__dirname, "src/components/"),
@@ -73,5 +76,19 @@ module.exports = {
             }
 		}),
         new Dotenv()
-    ]
+    ],
+    optimization: {
+        ...defaultConfig.optimization,
+        splitChunks: {
+            ...defaultConfig.optimization.splitChunks,
+            cacheGroups: {
+                ...defaultConfig.optimization.splitChunks.cacheGroups,
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
+        },
+    },
 }

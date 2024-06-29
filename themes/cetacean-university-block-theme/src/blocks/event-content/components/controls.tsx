@@ -14,7 +14,7 @@ import {
 } from "@wordpress/core-data";
 import type { EventPost } from "wordpress-types";
 
-import { EditorSelect } from '@components/editor-select';
+import { EditorSelect } from '@src/components/editor-select';
 import { getTitle } from "@utils/getTitle";
 
 import type { EventContentInfo } from "../event-content";

@@ -14,7 +14,7 @@ import {
 } from "@wordpress/core-data";
 import type { CampusPost } from "wordpress-types";
 
-import { EditorSelect } from '@components/editor-select';
+import { EditorSelect } from '@src/components/editor-select';
 import { getTitle } from "@utils/getTitle";
 
 import type { CampusContentInfo } from "../campus-content";

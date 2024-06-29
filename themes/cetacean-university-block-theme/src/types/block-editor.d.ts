@@ -12,6 +12,7 @@ declare module "@wordpress/block-editor"{
         url: string;
         title?: string | undefined;
         opensInNewTab?: boolean | undefined;
+        type?: string | undefined;
     }
 
     /** Custom settings values associated with a link. */
@@ -24,6 +25,13 @@ declare module "@wordpress/block-editor"{
         id: string;
         title: string;
     }
+
+    export type WPLinkControlSuggestion = {
+        id: number;
+        type: string;
+        title: string;
+        url: string;
+    };
 
     /** 
      * Properties associated with a link control value, composed as a union of the default properties and 
@@ -42,11 +50,12 @@ declare module "@wordpress/block-editor"{
         showSuggestions?: boolean | undefined;
         showInitialSuggestions?: boolean | undefined;
         withCreateSuggestion?: boolean | undefined;
-        suggestionsQuery?: any | undefined;
+        suggestionsQuery?: Record<string, any> | undefined;
         noURLSuggestion?: boolean | undefined;
         hasTextControl?: boolean | undefined;
         createSuggestionButtonText?: string | React.FunctionComponent | undefined;
         renderControlBottom?: React.FunctionComponent;
+        createSuggestion?: (input: string) => (WPLinkControlSuggestion | Promise<WPLinkControlSuggestion>)
     }
 
     export const __experimentalLinkControl: {

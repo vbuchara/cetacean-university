@@ -316,6 +316,11 @@ declare module "wordpress-types" {
         like: "added" | "removed";
     }
 
+    export interface EditorVariablesGet {
+        variables: string[];
+        indicator: string;
+    }
+
     export interface WP_ErrorResponse {
         code: string;
         message: string;
@@ -327,12 +332,17 @@ declare module "wordpress-types" {
     export * from "wordpress-types/professor";
     export * from "wordpress-types/event";
     export * from "wordpress-types/campus";
+    export * from "wordpress-types/program";
 }
 
 declare module "wordpress-types/professor"{
-    import { WP_Post, PostCustomFields } from "wordpress-types";
+    import { WP_Post, PostCustomFields, WP_PostWithEmbedded } from "wordpress-types";
 
     export interface ProfessorPost extends WP_Post {
+        acf: ProfessorCustomFields;
+    }
+
+    export interface ProfessorPostWithEmbedded extends WP_PostWithEmbedded {
         acf: ProfessorCustomFields;
     }
 
@@ -369,5 +379,17 @@ declare module "wordpress-types/campus"{
             zoom: number,
             place_id: string
         },
+    }
+}
+
+declare module "wordpress-types/program"{
+    import { WP_Post, PostCustomFields } from "wordpress-types";
+
+    export interface ProgramPost extends WP_Post {
+        acf: ProgramCustomFields;
+    }
+
+    export interface ProgramCustomFields extends PostCustomFields {
+        related_campus: number[]
     }
 }

@@ -16,46 +16,23 @@ $blocks = [
     ],
     'page-banner-title',
     'page-banner-subtitle',
-    'page-banner-archive-title',
     'page-banner-generic' => [
         'data' => [
             'theme_path' => get_theme_file_uri(),
         ]
     ],
-    'post-banner' => [
-        'data' => [
-            'theme_path' => get_theme_file_uri(),
-            "blog_link" => site_url("/blog"),
-        ]
-    ],
-    'post-content',
     'blog-posts' => [
         'data' => [
             'posts_per_page' => get_option( 'posts_per_page' ),
         ]
     ],
-    'campus-banner' => [
-        'data' => [
-            'theme_path' => get_theme_file_uri(),
-            'campuses_archive_link' => get_post_type_archive_link("campus")
-        ]
-    ],
+    'post-content',
+    "page-content",
     'campus-content' => [
         'deps' => ["google-maps"]
     ],
-    'event-banner' => [
-        'data' => [
-            'theme_path' => get_theme_file_uri(),
-            "events_archive_link" => get_post_type_archive_link("event"),
-        ]
-    ],
     'event-content',
-    "page-banner" => [
-        'data' => [
-            'theme_path' => get_theme_file_uri(),
-        ]
-    ],
-    "page-content",
+    'program-content',
     'events-and-posts' => [
         'data' => [
             "blog_link" => site_url("/blog"),

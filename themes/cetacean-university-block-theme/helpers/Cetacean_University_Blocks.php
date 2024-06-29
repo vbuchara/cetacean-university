@@ -11,6 +11,8 @@ class Cetacean_University_Blocks {
      */
     public $knownDependencies = [];
 
+    public $scriptVendorName = "cetacean_university_blocks_vendors";
+
     /**
      * @param array<string, array{data: array}>|array<string> $blocks
      */
@@ -18,6 +20,7 @@ class Cetacean_University_Blocks {
         array $blocks
     ){
         $this->register_known_dependencies();
+        $this->register_vendor();
 
         foreach ($blocks as $key => $value) {
             /** @var string */
@@ -32,19 +35,39 @@ class Cetacean_University_Blocks {
         }
     }
 
-    private function register_known_dependencies(){
-        $this->knownDependencies['google-maps'] = function(){
-            $scriptName = "google_map_js";
-            wp_enqueue_script(
-                $scriptName,
-                "//maps.googleapis.com/maps/api/js?key=" . GOOGLE_MAPS_API_KEY,
-                [],
-                "1.0",
-                true
-            );
+    private function register_vendor(){
+        wp_enqueue_script(
+            $this->scriptVendorName,
+            get_theme_file_uri("/build/vendors.js"),
+            [],
+            null,
+            true
+        );
+        /**
+         * Try to suppress the warning of @emotion/react by tricking one of its condition to show the warning
+         */
+        wp_localize_script(
+            $this->scriptVendorName,
+            "vi",
+            []
+        );
+    }
 
-            return $scriptName;
-        };
+    private function register_known_dependencies(){
+        $this->knownDependencies = [
+            'google-maps' => function(){
+                $scriptName = "google_map_js";
+                wp_enqueue_script(
+                    $scriptName,
+                    "//maps.googleapis.com/maps/api/js?key=" . GOOGLE_MAPS_API_KEY,
+                    [],
+                    "1.0",
+                    true
+                );
+    
+                return $scriptName;
+            },
+        ];
     }
 
     /**
@@ -68,6 +91,8 @@ class Cetacean_University_Blocks {
          * } 
          */
         $blockAssets = include get_theme_file_path($blockAssetsFile);
+        $dependencies = array_merge($blockAssets['dependencies'], [$this->scriptVendorName]);
+        $version = $blockAssets['version'];
     
         $scriptName = "cetacean-university-" . $blockName . "-block";
 
@@ -78,16 +103,24 @@ class Cetacean_University_Blocks {
                 if(in_array($dep, $knownDependenciesKeys)){
                     $newDependencyName = $this->knownDependencies[$dep]();
 
-                    array_push($blockAssets['dependencies'], $newDependencyName);
+                    array_push($dependencies, $newDependencyName);
                 }
+            }
+        }
+
+        foreach($dependencies as $dependency){
+            $knownDependenciesKeys = array_keys($this->knownDependencies);
+
+            if(in_array($dependency, $knownDependenciesKeys)){
+                $this->knownDependencies[$dependency]();
             }
         }
         
         wp_register_script(
             $scriptName, 
             get_theme_file_uri($blockScriptFile),
-            $blockAssets['dependencies'],
-            $blockAssets['version'],
+            $dependencies,
+            $version,
         );
 
         if(isset($blockOptions["data"])){

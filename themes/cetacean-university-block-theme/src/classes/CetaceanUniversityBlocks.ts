@@ -12,22 +12,16 @@ export class CetaceanUniversityBlocks{
 
     public static readonly PageBannerTitle = `${this.DomainName}/page-banner-title` as const;
     public static readonly PageBannerSubtitle = `${this.DomainName}/page-banner-subtitle` as const;
-    public static readonly PageBannerArchiveTitle = `${this.DomainName}/page-banner-archive-title` as const;
     public static readonly PageBannerGeneric = `${this.DomainName}/page-banner-generic` as const;
 
-    public static readonly PostBanner = `${this.DomainName}/post-banner` as const;
     public static readonly PostContent = `${this.DomainName}/post-content` as const;
-    public static readonly BlogPosts = `${this.DomainName}/blog-posts` as const;
-
-    public static readonly CampusBanner = `${this.DomainName}/campus-banner` as const;
-    public static readonly CampusContent = `${this.DomainName}/campus-content` as const;
-
-    public static readonly EventBanner = `${this.DomainName}/event-banner` as const;
-    public static readonly EventContent = `${this.DomainName}/event-content` as const;
-    
-    public static readonly PageBanner = `${this.DomainName}/page-banner` as const;
     public static readonly PageContent = `${this.DomainName}/page-content` as const;
 
+    public static readonly CampusContent = `${this.DomainName}/campus-content` as const;
+    public static readonly EventContent = `${this.DomainName}/event-content` as const;
+    public static readonly ProgramContent = `${this.DomainName}/program-content` as const;
+    
+    public static readonly BlogPosts = `${this.DomainName}/blog-posts` as const;
     public static readonly UpcomingEvents = `${this.DomainName}/upcoming-events` as const;
     public static readonly AllPrograms = `${this.DomainName}/all-programs` as const;
     public static readonly CampusesMap = `${this.DomainName}/campuses-map` as const;

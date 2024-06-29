@@ -2238,14 +2238,19 @@ body.admin-bar .search-overlay {
   padding: 0;
 }
 .metabox__main {
-  padding: 10px 15px 10px 11px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 12px;
+  padding-left: 12px;
+  line-height: 1;
 }
 .metabox p {
+  --border-radius: 3px;
   margin: 0;
   font-size: 0.9rem;
   color: #fff;
   position: relative;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.07);
   padding: 10px 15px;
@@ -2254,11 +2259,12 @@ body.admin-bar .search-overlay {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  left: 5px;
   right: 0;
   bottom: 0;
   z-index: -1;
   background-color: var(--wp--preset--color--secondary, #86c4da);
+  border-radius: var(--border-radius);
 }
 .metabox a {
   color: #fff;
@@ -2268,22 +2274,31 @@ body.admin-bar .search-overlay {
 .metabox a:hover {
   text-decoration: underline;
 }
-.metabox .metabox__blog-home-link {
+.metabox__blog-home-link {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 10px 15px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 15px;
+  padding-right: 15px;
   background-color: var(--wp--preset--color--primary, #115a82);
-  color: #fff;
-  font-weight: normal;
   border-radius: 3px 0 0 3px;
   border-width: 1px;
   border-style: solid;
   border-color: var(--wp--preset--color--primary, #115a82);
 }
-.metabox .metabox__blog-home-link:hover {
+:is(.metabox__blog-home-link, #priority) {
+  color: #fff;
+  font-weight: normal;
+  line-height: 1;
+}
+:is(.metabox__blog-home-link, #priority):hover {
   text-decoration: none;
   background-color: var(--wp--preset--color--primary, #115a82);
+}
+.metabox--editor .metabox__blog-home-link {
+  cursor: default;
 }
 
 .post-item {

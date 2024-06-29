@@ -9,6 +9,7 @@ import { SaveComponent } from "./save";
 
 export type PageBannerTitleAttributeType = {
     text: string;
+    showConditionalVariables: string[];
 };
 
 registerBlockType<PageBannerTitleAttributeType>(CetaceanUniversityBlocks.PageBannerTitle, {
@@ -19,6 +20,10 @@ registerBlockType<PageBannerTitleAttributeType>(CetaceanUniversityBlocks.PageBan
         text: {
             type: "string",
             default: "Page Banner Title"
+        },
+        showConditionalVariables: {
+            type: "array",
+            default: []
         }
     },
     edit: EditComponent,

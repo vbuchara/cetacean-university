@@ -13,8 +13,8 @@
     "moduleResolution": "node", // Pretty much always node for modern JS. Other option is "classic"
     "jsx": "react-jsx",
     "paths": {
-      "@assets/*": [
-        "./assets/*"
+      "@images/*": [
+        "./images/*"
       ],
       "@src/*": [
         "./src/*"

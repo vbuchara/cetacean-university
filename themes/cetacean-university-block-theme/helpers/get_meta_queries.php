@@ -1,6 +1,6 @@
 <?php 
 
-function get_meta_queries(
+function cetacean_university_get_meta_queries(
     WP_REST_Request $request
 ){
     $params = $request->get_params();

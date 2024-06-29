@@ -1,6 +1,8 @@
 <?php
 
 require_once get_theme_file_path('/helpers/Cetacean_University_Blocks.php');
+require_once get_theme_file_path("/helpers/Cetacean_University_Editor_Variables.php");
+require_once get_theme_file_path("/helpers/Cetacean_University_Editor_Variables_Helper.php");
 
 foreach (glob(get_theme_file_path("/restapi") . "/*.php") as $file){
     if(is_file($file)){
@@ -356,7 +358,7 @@ function cetacean_university_blocks_category(array $categories){
 function cetacean_university_meta_query_support(array $args, WP_REST_Request $request){
     require get_theme_file_path("/helpers/get_meta_queries.php");
     
-    $metaQuery = get_meta_queries($request);
+    $metaQuery = cetacean_university_get_meta_queries($request);
     
     $args += [
         'meta_key'   => $request->get_param('meta_key'),
@@ -423,6 +425,44 @@ function cetacean_university_add_has_children_to_page_response(
     return $response;
 }
 
+function cetacean_university_add_link_variables_to_search(
+    mixed $response, 
+    array $handler, 
+    WP_REST_Request $request
+){
+    if($response instanceof WP_REST_Response && !$response->is_error()){
+        if($request->get_route() !== "/wp/v2/search") return $response;
+        if($request->get_method() !== "GET") return $response;
+        if(!$request->get_param("type")) return $response;
+        if(!$request->get_param("search")) return $response;
+        if($request->get_param("type") !== "term") return $response;
+
+        /** @var array */
+        $searchResults = $response->get_data();
+        $searchTerm = $request->get_param("search");
+        $editorVariables = Cetacean_University_Editor_Variables::getInstance();
+
+        $possibleLinkVariablesNames = $editorVariables->getPossibleLinkVariablesNames();
+        $linkVariables = array_map(function($variable, $index) use ($editorVariables){
+            return [
+                'id' => ($index + 1) * -1,
+                'title' => $variable,
+                'type' => "Variable",
+                'url' => $editorVariables->getVariableNameWithIndicator($variable),
+                "_links" => []
+            ];
+        }, $possibleLinkVariablesNames, array_keys($possibleLinkVariablesNames));
+        $filteredLinkVariables = array_filter($linkVariables, function($variableItem) use ($searchTerm){
+            return str_contains($variableItem["title"], $searchTerm);
+        });
+        $modifiedData = array_merge($searchResults, $filteredLinkVariables);
+        
+        $response->set_data($modifiedData);
+    }
+
+    return $response;
+}
+
 // Filter for the function get_the_archive_title
 add_filter("get_the_archive_title", "cetacean_theme_get_the_archive_title", 10, 3);
 
@@ -459,3 +499,4 @@ add_filter('rest_post_collection_params', 'cetacean_university_add_meta_value_to
 add_filter('rest_event_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
 
 add_filter('rest_request_after_callbacks', 'cetacean_university_add_has_children_to_page_response', 10, 3);
+add_filter('rest_request_after_callbacks', 'cetacean_university_add_link_variables_to_search', 11, 3);

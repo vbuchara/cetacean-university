@@ -11,7 +11,7 @@ export type SliderAttributeType = {};
 registerBlockType<SliderAttributeType>(CetaceanUniversityBlocks.Slider, {
     title: "Slider",
     category: CetaceanUniversityBlocks.BlockCategory,
-    icon: <FontAwesomeIcon icon={faImages} />,
+    icon: () => <FontAwesomeIcon icon={faImages} />,
     attributes: {},
     edit: EditComponent,
     save: SaveComponent
