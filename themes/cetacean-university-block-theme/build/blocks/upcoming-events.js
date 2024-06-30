@@ -59,7 +59,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/format.mjs");
-/* harmony import */ var _src_classes_Placeholders__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @src/classes/Placeholders */ "./src/classes/Placeholders.ts");
+/* harmony import */ var _classes_Placeholders__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @classes/Placeholders */ "./src/classes/Placeholders.ts");
 /* harmony import */ var _components_event__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/event */ "./src/components/event.tsx");
 /* harmony import */ var _components_editor_anchor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @components/editor-anchor */ "./src/components/editor-anchor.tsx");
 /* harmony import */ var _components_controls__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/controls */ "./src/blocks/upcoming-events/components/controls.tsx");
@@ -77,7 +77,7 @@ function EditComponent(props) {
     setAttributes
   } = props;
   const dateNow = new Date();
-  const placeholderEvents = _src_classes_Placeholders__WEBPACK_IMPORTED_MODULE_3__.Placeholders.getPlaceholderEvents(4);
+  const placeholderEvents = _classes_Placeholders__WEBPACK_IMPORTED_MODULE_3__.Placeholders.getPlaceholderEvents(4);
   const upcomingEvents = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
     return select(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__.store).getEntityRecords("postType", "event", {
       orderby: "meta_value",
@@ -131,13 +131,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./src/blocks/upcoming-events/edit.tsx");
-/* harmony import */ var _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @src/classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
+/* harmony import */ var _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
 
 
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__.CetaceanUniversityBlocks.UpcomingEvents, {
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__.CetaceanUniversityBlocks.UpcomingEvents, {
   title: "Upcoming Events",
-  category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__.CetaceanUniversityBlocks.BlockCategory,
+  category: _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_2__.CetaceanUniversityBlocks.BlockCategory,
   icon: "calendar",
   attributes: {
     enablePastEventsLink: {
@@ -179,6 +179,7 @@ class CetaceanUniversityBlocks {
   static CampusContent = `${this.DomainName}/campus-content`;
   static EventContent = `${this.DomainName}/event-content`;
   static ProgramContent = `${this.DomainName}/program-content`;
+  static ProfessorContent = `${this.DomainName}/professor-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;
   static AllPrograms = `${this.DomainName}/all-programs`;

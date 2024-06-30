@@ -4,8 +4,8 @@ import { type WPLinkControlValue } from "@wordpress/block-editor";
 import { EditComponent } from "./edit";
 import { SaveComponent } from "./save";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
-import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
+import { WordpressColorsPresets } from "@classes/WordpressColorsPresets";
 
 export type ButtonSize = "large" | "medium" |"small";
 

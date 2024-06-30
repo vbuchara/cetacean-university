@@ -22,8 +22,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fortawesome_free_solid_svg_icons_faXmark__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faXmark */ "./node_modules/@fortawesome/free-solid-svg-icons/faXmark.js");
 /* harmony import */ var polished__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! polished */ "./node_modules/polished/dist/polished.esm.js");
 /* harmony import */ var _components_editor_anchor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/editor-anchor */ "./src/components/editor-anchor.tsx");
-/* harmony import */ var _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @src/classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
-/* harmony import */ var _src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @src/classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
+/* harmony import */ var _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
+/* harmony import */ var _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
 
 
 
@@ -42,7 +42,7 @@ function EditComponent(props) {
   const {
     siteAnchor
   } = attributes;
-  const backgroundColor = (0,polished__WEBPACK_IMPORTED_MODULE_6__.transparentize)(0.3)(_src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.getColorFromVar(_src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.Primary));
+  const backgroundColor = (0,polished__WEBPACK_IMPORTED_MODULE_6__.transparentize)(0.3)(_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.getColorFromVar(_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.Primary));
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("header", {
     className: "site-header site-header--editor",
     style: {
@@ -81,8 +81,8 @@ function EditComponent(props) {
     width: "1.4rem",
     height: "1.4rem"
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InnerBlocks, {
-    allowedBlocks: [_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.Menu],
-    template: [[_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.Menu, {}]],
+    allowedBlocks: [_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.Menu],
+    template: [[_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.Menu, {}]],
     templateLock: "all"
   })));
 }
@@ -101,15 +101,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/header.js");
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit */ "./src/blocks/header/edit.tsx");
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./save */ "./src/blocks/header/save.tsx");
-/* harmony import */ var _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @src/classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
+/* harmony import */ var _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
 
 
 
 
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.Header, {
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.Header, {
   title: "Header",
-  category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.BlockCategory,
+  category: _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_3__.CetaceanUniversityBlocks.BlockCategory,
   icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__["default"],
   attributes: {
     siteAnchor: {
@@ -186,6 +186,7 @@ class CetaceanUniversityBlocks {
   static CampusContent = `${this.DomainName}/campus-content`;
   static EventContent = `${this.DomainName}/event-content`;
   static ProgramContent = `${this.DomainName}/program-content`;
+  static ProfessorContent = `${this.DomainName}/professor-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;
   static AllPrograms = `${this.DomainName}/all-programs`;

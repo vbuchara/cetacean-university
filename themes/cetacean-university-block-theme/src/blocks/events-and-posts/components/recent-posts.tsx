@@ -4,8 +4,8 @@ import { useSelect } from "@wordpress/data";
 import type { WP_Post } from "wordpress-types";
 
 import { SaveComponent as Button } from "@src/blocks/button/save";
-import { Placeholders } from "@src/classes/Placeholders";
-import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
+import { Placeholders } from "@classes/Placeholders";
+import { WordpressColorsPresets } from "@classes/WordpressColorsPresets";
 
 import { BlogPost } from "./blog-post";
 

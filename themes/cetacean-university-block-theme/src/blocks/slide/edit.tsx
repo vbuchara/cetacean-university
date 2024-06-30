@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { InnerBlocks } from "@wordpress/block-editor";
 import { type BlockEditProps } from "@wordpress/blocks";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 import { SlideInspectorControls } from "./components/controls";
 

@@ -237,7 +237,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/title.js");
-/* harmony import */ var _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @src/classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
+/* harmony import */ var _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/blocks/page-banner-title/edit.tsx");
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/blocks/page-banner-title/save.tsx");
 
@@ -245,9 +245,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__.CetaceanUniversityBlocks.PageBannerTitle, {
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__.CetaceanUniversityBlocks.PageBannerTitle, {
   title: "Page Banner Title",
-  category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__.CetaceanUniversityBlocks.BlockCategory,
+  category: _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__.CetaceanUniversityBlocks.BlockCategory,
   icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_4__["default"],
   attributes: {
     text: {
@@ -261,7 +261,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__.EditComponent,
   save: _save__WEBPACK_IMPORTED_MODULE_3__.SaveComponent,
-  parent: [_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__.CetaceanUniversityBlocks.PageBannerGeneric]
+  parent: [_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_1__.CetaceanUniversityBlocks.PageBannerGeneric]
 });
 
 /***/ }),
@@ -321,6 +321,7 @@ class CetaceanUniversityBlocks {
   static CampusContent = `${this.DomainName}/campus-content`;
   static EventContent = `${this.DomainName}/event-content`;
   static ProgramContent = `${this.DomainName}/program-content`;
+  static ProfessorContent = `${this.DomainName}/professor-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;
   static AllPrograms = `${this.DomainName}/all-programs`;

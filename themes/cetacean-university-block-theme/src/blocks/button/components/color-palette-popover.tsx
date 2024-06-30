@@ -1,7 +1,7 @@
 import { type CSSProperties } from "react";
 import { ColorPalette, Popover } from "@wordpress/components";
 
-import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
+import { WordpressColorsPresets } from "@classes/WordpressColorsPresets";
 
 export type ColorPalettePopoverProps = {
     value: string,

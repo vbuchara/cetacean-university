@@ -4,7 +4,7 @@ import {
     InnerBlocks,
 } from '@wordpress/block-editor';
 
-import { CetaceanUniversityBlocks } from '@src/classes/CetaceanUniversityBlocks';
+import { CetaceanUniversityBlocks } from '@classes/CetaceanUniversityBlocks';
 
 import type { BannerAttributesType } from './banner';
 import { BannerInspectorControls } from './components/controls';

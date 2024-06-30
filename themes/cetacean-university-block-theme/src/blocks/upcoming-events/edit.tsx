@@ -5,7 +5,7 @@ import { useSelect } from "@wordpress/data";
 import { format } from "date-fns";
 import type { EventPost } from "wordpress-types/event";
 
-import { Placeholders } from "@src/classes/Placeholders";
+import { Placeholders } from "@classes/Placeholders";
 import { Event } from "@components/event";
 import { EditorAnchor } from "@components/editor-anchor";
 

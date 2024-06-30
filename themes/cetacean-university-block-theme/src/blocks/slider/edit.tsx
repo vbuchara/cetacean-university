@@ -9,7 +9,7 @@ import {
     store as editorStore
 } from "@wordpress/editor"
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type SliderEditComponentProps = BlockEditProps<{}>;
 

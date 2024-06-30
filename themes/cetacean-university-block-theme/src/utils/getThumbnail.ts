@@ -1,4 +1,4 @@
-import defaultAvatarSrc from "@images/default-user-landscape.png";
+import defaultAvatarLandscapeSrc from "@images/default-user-landscape.png";
 
 import { 
     ImageSizes, 
@@ -15,7 +15,7 @@ export function getThumbnail(
     options: GetThumbnailOptions = {}
 ){
     const allOptions = {
-        defaultImg: defaultAvatarSrc,
+        defaultImg: defaultAvatarLandscapeSrc,
         ...options
     } satisfies GetThumbnailOptions;
     const {

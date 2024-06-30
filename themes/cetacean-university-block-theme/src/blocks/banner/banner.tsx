@@ -2,7 +2,7 @@ import { registerBlockType } from "@wordpress/blocks";
 import { EditComponent } from "./edit";
 import { SaveComponent } from "./save";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type BannerAttributesType = {
     bannerImageId: number,

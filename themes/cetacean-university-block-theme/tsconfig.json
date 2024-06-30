@@ -22,6 +22,9 @@
       "@blocks/*": [
         "./src/blocks/*"
       ],
+      "@classes/*": [
+        "./src/classes/*"
+      ],
       "@components/*": [
         "./src/components/*"
       ],

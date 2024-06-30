@@ -56,7 +56,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @src/classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
+/* harmony import */ var _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
 
 
 
@@ -66,7 +66,7 @@ function ColorPalettePopover({
   onClose,
   style
 }) {
-  const colors = _src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_2__.WordpressColorsPresets.getColorsList();
+  const colors = _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_2__.WordpressColorsPresets.getColorsList();
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Popover, {
     expandOnMobile: true,
     placement: "left-start",
@@ -444,8 +444,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _src_blocks_button_save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @src/blocks/button/save */ "./src/blocks/button/save.tsx");
-/* harmony import */ var _src_classes_Placeholders__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @src/classes/Placeholders */ "./src/classes/Placeholders.ts");
-/* harmony import */ var _src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @src/classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
+/* harmony import */ var _classes_Placeholders__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @classes/Placeholders */ "./src/classes/Placeholders.ts");
+/* harmony import */ var _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
 /* harmony import */ var _blog_post__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./blog-post */ "./src/blocks/events-and-posts/components/blog-post.tsx");
 
 
@@ -461,7 +461,7 @@ function RecentPosts({
   onLayoutChange,
   isOnEditor
 }) {
-  const placeholderPosts = _src_classes_Placeholders__WEBPACK_IMPORTED_MODULE_4__.Placeholders.getPlaceholderPosts();
+  const placeholderPosts = _classes_Placeholders__WEBPACK_IMPORTED_MODULE_4__.Placeholders.getPlaceholderPosts();
   const posts = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
     return select(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__.store).getEntityRecords("postType", "post", {
       context: "view",
@@ -496,8 +496,8 @@ function RecentPosts({
       animations: {
         onHover: "slide-from-top"
       },
-      backgroundColor: `var(${_src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.Secondary})`,
-      color: `var(${_src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.White})`,
+      backgroundColor: `var(${_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.Secondary})`,
+      color: `var(${_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.White})`,
       text: "View All Blog Posts",
       linkObject: {
         url: !isOnEditor ? blogLink : ""
@@ -526,9 +526,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var date_fns__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! date-fns */ "./node_modules/date-fns/format.mjs");
 /* harmony import */ var _src_blocks_button_save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @src/blocks/button/save */ "./src/blocks/button/save.tsx");
-/* harmony import */ var _src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @src/classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
+/* harmony import */ var _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
 /* harmony import */ var _src_components_event__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @src/components/event */ "./src/components/event.tsx");
-/* harmony import */ var _src_classes_Placeholders__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @src/classes/Placeholders */ "./src/classes/Placeholders.ts");
+/* harmony import */ var _classes_Placeholders__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @classes/Placeholders */ "./src/classes/Placeholders.ts");
 
 
 
@@ -545,7 +545,7 @@ function UpcomingEvents({
   isOnEditor
 }) {
   const dateNow = new Date();
-  const placeholderEvents = _src_classes_Placeholders__WEBPACK_IMPORTED_MODULE_6__.Placeholders.getPlaceholderEvents();
+  const placeholderEvents = _classes_Placeholders__WEBPACK_IMPORTED_MODULE_6__.Placeholders.getPlaceholderEvents();
   const events = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
     return select(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__.store).getEntityRecords("postType", "event", {
       context: "view",
@@ -587,8 +587,8 @@ function UpcomingEvents({
       animations: {
         onHover: "slide-from-top"
       },
-      backgroundColor: `var(${_src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__.WordpressColorsPresets.Primary})`,
-      color: `var(${_src_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__.WordpressColorsPresets.White})`,
+      backgroundColor: `var(${_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__.WordpressColorsPresets.Primary})`,
+      color: `var(${_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__.WordpressColorsPresets.White})`,
       text: "View All Events",
       linkObject: {
         url: !isOnEditor ? eventsArchiveLink : ""

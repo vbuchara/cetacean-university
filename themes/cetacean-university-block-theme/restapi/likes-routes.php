@@ -16,6 +16,33 @@ function university_register_likes_routes(){
             ]
         ]
     ]);
+
+    register_rest_route('university/v1', 'like/count/(?P<professor_id>\d+)', [
+        'methods' => WP_REST_Server::READABLE,
+        'callback' => 'get_like_count',
+        'args' => [
+            'professor_id' => [
+                'validate_callback' => function($param){
+                    return is_numeric($param) && 
+                        get_post_type($param) === 'professor';
+                }
+            ]
+        ]
+    ]);
+
+    register_rest_route('university/v1', 'like/check/(?P<professor_id>\d+)', [
+        'methods' => WP_REST_Server::READABLE,
+        'callback' => 'check_logged_user_has_liked',
+        'permission_callback' => fn() => is_user_logged_in(),
+        'args' => [
+            'professor_id' => [
+                'validate_callback' => function($param){
+                    return is_numeric($param) && 
+                        get_post_type($param) === 'professor';
+                }
+            ]
+        ]
+    ]);
 }
 
 function update_like(
@@ -99,5 +126,50 @@ function update_like(
         'professor_id' => $professor_id,
         'professor_likes_count' => $likeCount + 1,
         'like' => 'added',
+    ];
+}
+
+function get_like_count(
+    WP_REST_Request $request
+){
+    $professor_id = (int) $request->get_param('professor_id');
+
+    $likeCount = new WP_Query([
+        'post_type' => 'like',
+        'meta_query' => [
+            [
+                'key' => 'liked_professors',
+                'compare' => 'LIKE',
+                'value' =>  "\"" . $professor_id . "\""
+            ]
+        ]
+    ]);
+
+    return [
+        'professor_id' => $professor_id,
+        'likes_count' => $likeCount->post_count
+    ];
+}
+
+function check_logged_user_has_liked(
+    WP_REST_Request $request
+){
+    $professor_id = (int) $request->get_param('professor_id');
+
+    $hasUserLiked = new WP_Query([
+        'post_type' => 'like',
+        'author' => get_current_user_id(),
+        'meta_query' => [
+            [
+                'key' => 'liked_professors',
+                'compare' => 'LIKE',
+                'value' =>  "\"" . $professor_id . "\""
+            ]
+        ]
+    ]);
+
+    return [
+        'professor_id' => $professor_id,
+        'has_logged_user_liked' => $hasUserLiked->post_count > 0
     ];
 }

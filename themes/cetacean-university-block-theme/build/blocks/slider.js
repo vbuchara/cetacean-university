@@ -20,7 +20,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/editor */ "@wordpress/editor");
 /* harmony import */ var _wordpress_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_editor__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @src/classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
+/* harmony import */ var _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
 
 
 
@@ -84,7 +84,7 @@ function EditComponent(props) {
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "glide__slides glide__slides--editor"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks, {
-    allowedBlocks: [_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.Slide],
+    allowedBlocks: [_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_4__.CetaceanUniversityBlocks.Slide],
     renderAppender: RenderAppender
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slider__bullets glide__bullets",
@@ -155,7 +155,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./edit */ "./src/blocks/slider/edit.tsx");
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./save */ "./src/blocks/slider/save.tsx");
-/* harmony import */ var _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @src/classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
+/* harmony import */ var _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @classes/CetaceanUniversityBlocks */ "./src/classes/CetaceanUniversityBlocks.ts");
 
 
 
@@ -163,9 +163,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.registerBlockType)(_src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_5__.CetaceanUniversityBlocks.Slider, {
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_2__.registerBlockType)(_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_5__.CetaceanUniversityBlocks.Slider, {
   title: "Slider",
-  category: _src_classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_5__.CetaceanUniversityBlocks.BlockCategory,
+  category: _classes_CetaceanUniversityBlocks__WEBPACK_IMPORTED_MODULE_5__.CetaceanUniversityBlocks.BlockCategory,
   icon: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__.FontAwesomeIcon, {
     icon: _fortawesome_free_solid_svg_icons_faImages__WEBPACK_IMPORTED_MODULE_6__.faImages
   }),
@@ -205,6 +205,7 @@ class CetaceanUniversityBlocks {
   static CampusContent = `${this.DomainName}/campus-content`;
   static EventContent = `${this.DomainName}/event-content`;
   static ProgramContent = `${this.DomainName}/program-content`;
+  static ProfessorContent = `${this.DomainName}/professor-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;
   static AllPrograms = `${this.DomainName}/all-programs`;

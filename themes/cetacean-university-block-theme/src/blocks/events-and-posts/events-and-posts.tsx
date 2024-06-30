@@ -1,6 +1,6 @@
 import { registerBlockType } from "@wordpress/blocks";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 import { EditComponent } from "./edit";
 

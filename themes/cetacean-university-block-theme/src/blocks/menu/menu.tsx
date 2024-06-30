@@ -5,7 +5,7 @@ import { menu } from "@wordpress/icons";
 
 import { EditComponent } from "./edit";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type MenuAttributeType = {};
 

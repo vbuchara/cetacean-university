@@ -2,7 +2,7 @@
 import { registerBlockType } from "@wordpress/blocks";
 import type { Content, Guid } from "wordpress-types";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 import { EditComponent } from "./edit";
 

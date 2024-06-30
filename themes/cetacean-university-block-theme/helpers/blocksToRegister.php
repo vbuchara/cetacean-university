@@ -33,6 +33,7 @@ $blocks = [
     ],
     'event-content',
     'program-content',
+    'professor-content',
     'events-and-posts' => [
         'data' => [
             "blog_link" => site_url("/blog"),

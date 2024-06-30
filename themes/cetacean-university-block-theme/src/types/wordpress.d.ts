@@ -316,6 +316,16 @@ declare module "wordpress-types" {
         like: "added" | "removed";
     }
 
+    export interface LikeCountGet {
+        professor_id: number;
+        likes_count: number;
+    }
+
+    export interface LikeCheckGet {
+        professor_id: number;
+        has_logged_user_liked: boolean;
+    }
+
     export interface EditorVariablesGet {
         variables: string[];
         indicator: string;

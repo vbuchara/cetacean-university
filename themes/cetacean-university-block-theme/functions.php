@@ -493,6 +493,7 @@ add_filter("rest_event_query", "cetacean_university_meta_query_support", 10, 2);
 add_filter("rest_campus_query", "cetacean_university_meta_query_support", 10, 2);
 add_filter("rest_program_query", "cetacean_university_meta_query_support", 10, 2);
 add_filter("rest_professor_query", "cetacean_university_meta_query_support", 10, 2);
+add_filter("rest_like_query", "cetacean_university_meta_query_support", 10, 2);
 
 // Filter to add meta_value to orderby enum in the rest api
 add_filter('rest_post_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);

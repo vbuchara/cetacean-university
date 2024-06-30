@@ -3,7 +3,7 @@
 import { registerBlockType } from "@wordpress/blocks";
 import { EditComponent } from "./edit";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 import type { EventInfo } from "@components/event";
 
 export type ProgramContentAttributeType = {};

@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelect } from "@wordpress/data";
 import type { EditorVariablesGet, WpFeaturedmedia } from "wordpress-types";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 import { PageBannerGenericBlockControls, PageBannerGenericInspectorControls } from "./components/control";
 import { Metabox } from "./components/metabox";

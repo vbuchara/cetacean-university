@@ -4,7 +4,7 @@ import type { WP_Page } from "wordpress-types";
 
 import { EditComponent } from "./edit";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type PageContentInfo = {
     id: number;

@@ -8,8 +8,8 @@ import { transparentize } from "polished";
 
 import { EditorAnchor } from "@components/editor-anchor";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
-import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
+import { WordpressColorsPresets } from "@classes/WordpressColorsPresets";
 
 import { type HeaderAtributesType } from "./header";
 

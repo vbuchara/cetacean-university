@@ -23,7 +23,7 @@ import type { ButtonAnimation, ButtonSize } from "../button";
 import type { ButtonEditComponentProps } from "../edit";
 import { ColorButton } from "./color-button";
 
-import { WordpressColorsPresets } from "@src/classes/WordpressColorsPresets";
+import { WordpressColorsPresets } from "@classes/WordpressColorsPresets";
 import { ColorPalettePopover } from "./color-palette-popover";
 
 export function ButtonInspectorControls({

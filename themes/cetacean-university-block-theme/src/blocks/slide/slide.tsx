@@ -3,7 +3,7 @@ import { registerBlockType } from "@wordpress/blocks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
+import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 import { EditComponent } from "./edit";
 import { SaveComponent } from "./save";
