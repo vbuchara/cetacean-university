@@ -41,5 +41,12 @@
                 }
             }
         }
-    }
+    },
+    "customTemplates": [
+        {
+            "name": "empty-canvas",
+            "postTypes": ["page"],
+            "title": "Empty Canvas"
+        }
+    ]
 }

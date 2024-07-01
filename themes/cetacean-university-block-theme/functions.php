@@ -88,10 +88,6 @@ function cetacean_university_after_setup(){
     add_image_size("page-banner", 1500, 350, true);
     add_image_size("professor-landscape", 400, 260, true);
     add_image_size("professor-portrait", 480, 650, true);
-
-    register_nav_menu("main-menu", "Main Menu Location");
-    register_nav_menu("footer-menu-1", "Footer Menu Location 1");
-    register_nav_menu("footer-menu-2", "Footer Menu Location 2");
 }
 
 function cetacean_university_adjust_queries(
@@ -197,31 +193,7 @@ function cetacean_theme_get_the_archive_title(
     }
 
     return $title;
-}
-
-function cetacean_university_nav_classes(
-    array $classes, $item
-) {
-    $postParentId = wp_get_post_parent_id();
-
-    $itemsToActivate = [
-        'Blog' => get_post_type() == "post",
-        'Events' => is_singular("event") 
-            || is_page("past-events"),
-        'Programs' => is_singular("program"),
-        'Campuses' => is_singular("campus"),
-        'About Us' => get_post_field('post_name', $postParentId) === "about-us",
-        'Privacy Policy' => get_post_field('post_name', $postParentId) === "privacy-policy"
-    ];
-
-    foreach($itemsToActivate as $itemTitle => $activate){
-        if($item->title === $itemTitle && $activate){
-            $classes[] = 'current-menu-item';
-        }
-    }
-
-    return $classes;
-}    
+}   
 
 function cetacean_university_map_key($api){
     $api['key'] = GOOGLE_MAPS_API_KEY;
@@ -464,10 +436,26 @@ function cetacean_university_add_link_variables_to_search(
     return $response;
 }
 
+/**
+ * You can limit the allowed block types in either post/page editor, as in the FSE, as well
+ * as filter per post type.
+ * 
+ * @param bool|string[] $allowed_block_types
+ * @param WP_Block_Editor_Context $block_editor_context
+ */
+function cetacean_university_allowed_blocks(
+    bool|array $allowed_block_types, 
+    WP_Block_Editor_Context $block_editor_context
+){
+    if(!empty($block_editor_context->post)){
+        return $allowed_block_types;
+    }
+
+    return $allowed_block_types;
+}
+
 // Filter for the function get_the_archive_title
 add_filter("get_the_archive_title", "cetacean_theme_get_the_archive_title", 10, 3);
-
-add_filter('nav_menu_css_class', 'cetacean_university_nav_classes', 10, 2 );
 
 add_filter('acf/fields/google_map/api', 'cetacean_university_map_key');
 
@@ -500,6 +488,15 @@ add_filter("rest_like_query", "cetacean_university_adjust_rest_query", 10, 2);
 // Filter to add meta_value to orderby enum in the rest api
 add_filter('rest_post_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
 add_filter('rest_event_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
+add_filter('rest_campus_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
+add_filter('rest_program_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
+add_filter('rest_professor_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
+add_filter('rest_note_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
+add_filter('rest_like_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);
 
+// Add info to the responses of pages requests on the rest api
 add_filter('rest_request_after_callbacks', 'cetacean_university_add_has_children_to_page_response', 10, 3);
+// Add possible link variables to the return of link suggestions of LinkControls on the editor
 add_filter('rest_request_after_callbacks', 'cetacean_university_add_link_variables_to_search', 11, 3);
+
+add_filter('allowed_block_types_all', 'cetacean_university_allowed_blocks', 10, 2);
