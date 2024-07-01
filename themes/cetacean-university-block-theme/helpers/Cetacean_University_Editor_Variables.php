@@ -36,6 +36,7 @@ final class Cetacean_University_Editor_Variables {
             "Post Author With Link" => fn() => get_the_author_posts_link(),
             "Post Date" => fn() => get_the_time("d/m/Y"),
             "Post Category List With Link" => fn() => get_the_category_list(", "),
+            "Search Query" => fn() => esc_html(get_search_query(false))
         ];
     }
 
@@ -54,6 +55,7 @@ final class Cetacean_University_Editor_Variables {
 
                 return get_permalink($parentPostId);
             },
+            "Search Form Action Link" => fn() => esc_url(site_url('/'))
         ];
     }
 

@@ -1,4 +1,6 @@
 <?php
+$editorVariables = Cetacean_University_Editor_Variables::getInstance();
+
 /** @var array<string, array{data: array}>|array<string> */
 $blocks = [
     'button',
@@ -42,14 +44,25 @@ $blocks = [
     ],
     'upcoming-events' => [
         'data' => [
-            "events_archive_link" => get_post_type_archive_link("event"),
             "past_events_link" => site_url("/past-events")
         ]
     ], 
+    'past-events' => [
+        'data' => [
+            "events_archive_link" => get_post_type_archive_link("event"),
+        ]
+    ],
     'all-programs',
     'campuses-map' => [
         'deps' => ["google-maps"]
     ],
+    'note-manager',
+    'search-form' => [
+        'data' => [
+            "search_form_action_link" => $editorVariables->getVariableNameWithIndicator("Search Form Action Link"),
+        ]
+    ],
+    'search-results',
     'header' => [
         'data' => [
             "search_link" => esc_url(site_url('/search')),

@@ -1,14 +1,12 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useAsync from "react-use/lib/useAsync";
 import { SingleValue, type MultiValue } from "react-select";
-import { useMutationObserverRef } from "rooks";
 import apiFetch from "@wordpress/api-fetch";
 import { 
     InspectorControls,
     MediaUpload, 
     MediaUploadCheck,
     type WPLinkControlValue,
-    __experimentalLinkControl as LinkControl,
     BlockControls,
 } from "@wordpress/block-editor";
 import { 
@@ -24,12 +22,12 @@ import {
     Popover,
 } from "@wordpress/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSliders } from "@fortawesome/free-solid-svg-icons";
+import { faSliders } from "@fortawesome/free-solid-svg-icons/faSliders";
 import stringInsert from "voca/insert";
 import type { EditorVariablesGet } from "wordpress-types";
 
 import { EditorSelect } from "@components/editor-select"; 
-import { isHTMLElement } from "@utils/typeCheck";
+import { PanelLinkControl } from "@components/panel-link-control";
 
 import type { MetaboxSelectionType, PageBannerGenericEditComponentProps } from "../edit";
 
@@ -52,8 +50,6 @@ export function PageBannerGenericInspectorControls({
     setAttributes
 }: PageBannerGenericInspectorControlsProps){
 
-    const [hasChanged, setHasChanged] = useState(false);
-
     const { loading, value: response } = useAsync(async() => {
         const response = await apiFetch<EditorVariablesGet>({
             path: "/cetacean-university/v1/editor/variables",
@@ -75,97 +71,11 @@ export function PageBannerGenericInspectorControls({
         })
     }, [loading, response]);
 
-    const [linkControlRef] = useMutationObserverRef((mutations) => {
-        const targetMutated = mutations[0]?.target;
-        if(!targetMutated) return;
-
-        const elementMutated = targetMutated instanceof Element
-            ? targetMutated
-            : targetMutated.parentElement;
-
-        if(!elementMutated || !isHTMLElement(elementMutated)) return;
-
-        const linkControl = elementMutated.classList.contains("block-editor-link-control")
-            ? elementMutated
-            : elementMutated.closest(".block-editor-link-control");
-
-        if(!linkControl || !isHTMLElement(linkControl)) return;
-
-        adjustLinkControlStyle(linkControl);
-    });
-
-    const setLinkControlRef = useCallback((element: HTMLDivElement | null) => {
-        if(!element) return;
-
-        const linkControlElement = element
-            .getElementsByClassName("block-editor-link-control")
-            .item(0);
-
-        if(!linkControlElement || !isHTMLElement(linkControlElement)) return;
-
-        linkControlRef(linkControlElement);
-
-        if(!linkControlElement) return;
-
-        adjustLinkControlStyle(linkControlElement);
-    }, [attributes.metaboxInfo.homeLinkObject?.url ,hasChanged]);
-
     const variablesOptionsSelected = attributes.metaboxInfo.showConditionalVariables.map((
         variableSelected
     ) => {
         return variablesOptions.find(variable => variable.value === variableSelected);
     }).filter((variable): variable is VariableOptions => typeof variable !== undefined);
-
-    function adjustLinkControlStyle(linkControl: HTMLElement){
-        linkControl.style.setProperty("min-width", "unset");
-
-        const otherElementsWithMinWidthSetBreakingTheStyle = linkControl
-            .querySelectorAll<HTMLSpanElement>(".components-menu-item__item");
-        
-        Array.from(otherElementsWithMinWidthSetBreakingTheStyle).forEach(element => {
-            element.style.setProperty("min-width", "unset");
-            element.style.setProperty("white-space", "unset");
-            element.style.setProperty("overflow-wrap", "anywhere");
-        });
-
-        const inputField = linkControl
-            .querySelectorAll<HTMLElement>(".block-editor-link-control__field");
-
-        Array.from(inputField).forEach(element => {
-            element.style.setProperty("margin-left", "0px");
-            element.style.setProperty("margin-right", "0px");
-        });
-
-        const searchResults = linkControl
-            .querySelectorAll<HTMLElement>(".block-editor-link-control__search-results");
-
-        Array.from(searchResults).forEach(element => {
-            element.style.setProperty("padding-left", "0px");
-            element.style.setProperty("padding-right", "0px");
-        });
-
-        const searchItem = linkControl
-            .querySelectorAll<HTMLElement>(".block-editor-link-control__search-item");
-
-        Array.from(searchItem).forEach(element => {
-            element.style.setProperty("padding-left", "0px");
-            element.style.setProperty("padding-right", "0px");
-        });
-
-        const componentGroup = linkControl
-            .querySelector<HTMLElement>(".block-editor-link-control__search-results > .components-menu-group");
-
-        if(componentGroup){
-            componentGroup.style.setProperty("padding-inline", "1.5px");
-        }
-
-        const menuItemShortcut = linkControl
-            .querySelectorAll<HTMLElement>(".components-menu-item__shortcut");
-
-        Array.from(menuItemShortcut).forEach(element => {
-            element.style.setProperty("padding-left", "0px");
-        });
-    }
 
 
     function onChangeVariable(variables: MultiValue<VariableOptions>){
@@ -190,7 +100,6 @@ export function PageBannerGenericInspectorControls({
     }
 
     function onChangeMetaboxHomeLink(value: WPLinkControlValue){
-        setHasChanged(prevValue => !prevValue);
         setAttributes({
             metaboxInfo: {
                 ...attributes.metaboxInfo,
@@ -244,23 +153,15 @@ export function PageBannerGenericInspectorControls({
                 />
             </PanelRow>
             <PanelRow>
-                <Grid
-                    ref={setLinkControlRef}
-                    className="link-control-wrapper"
-                    columns={1}
-                    style={{ flex: 1 }}
-                >
-                    <BaseControl label="Home Link Url">
-                        <LinkControl
-                            settings={[]}
-                            value={attributes.metaboxInfo.homeLinkObject ? {
-                                ...attributes.metaboxInfo.homeLinkObject,
-                                title: undefined,
-                            } : undefined}
-                            onChange={onChangeMetaboxHomeLink}
-                        />
-                    </BaseControl>
-                </Grid>
+                <PanelLinkControl
+                    label={"Home Link Url"}
+                    settings={[]}
+                    value={attributes.metaboxInfo.homeLinkObject ? {
+                        ...attributes.metaboxInfo.homeLinkObject,
+                        title: undefined,
+                    } : undefined}
+                    onChange={onChangeMetaboxHomeLink}
+                />
             </PanelRow>
             <PanelRow>
                 <Grid 
@@ -348,6 +249,7 @@ export function PageBannerGenericBlockControls(props: PageBannerGenericBlockCont
     return (
     <>
         <BlockControls>
+            {!props.attributes.enableMetabox ? "" : (
             <ToolbarGroup>
                 <ToolbarButton
                     icon={() => <FontAwesomeIcon icon={faSliders} />}
@@ -356,6 +258,7 @@ export function PageBannerGenericBlockControls(props: PageBannerGenericBlockCont
                     ref={setVariableButtonTrigger}
                 />
             </ToolbarGroup>
+            )}
         </BlockControls>
         {!isVariablePopoverVisible ? "" : (
         <Popover

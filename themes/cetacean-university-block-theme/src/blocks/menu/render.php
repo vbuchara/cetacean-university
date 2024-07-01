@@ -3,12 +3,22 @@
         $postParentId = wp_get_post_parent_id();
 
         $itemsToActivate = [
-            'Blog' => get_post_type() == "post" || is_page("blog"),
-            'Events' => is_singular("event") || is_page("past-events") || get_post_type() == "event",
-            'Programs' => is_singular("program") || get_post_type() == "program",
-            'Campuses' => is_singular("campus") || get_post_type() == "campus",
-            'About Us' => get_post_field('post_name', $postParentId) === "about-us" || is_page("about-us"),
-            'Privacy Policy' => get_post_field('post_name', $postParentId) === "privacy-policy" || is_page("privacy-policy")
+            'Blog' => get_post_type() == "post" 
+                || is_page("blog"),
+            'Events' => is_singular("event") 
+                || get_post_type() == "event" 
+                || is_page("past-events") 
+                || is_post_type_archive("event"),
+            'Programs' => is_singular("program") 
+                || get_post_type() == "program" 
+                || is_post_type_archive("program"),
+            'Campuses' => is_singular("campus") 
+                || get_post_type() == "campus"
+                || is_post_type_archive("campus"),
+            'About Us' => get_post_field('post_name', $postParentId) === "about-us" 
+                || is_page("about-us"),
+            'Privacy Policy' => get_post_field('post_name', $postParentId) === "privacy-policy" 
+                || is_page("privacy-policy")
         ];
 
         foreach($itemsToActivate as $itemTitle => $activate){

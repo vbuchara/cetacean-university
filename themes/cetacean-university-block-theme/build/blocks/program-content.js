@@ -330,8 +330,12 @@ class CetaceanUniversityBlocks {
   static ProfessorContent = `${this.DomainName}/professor-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;
+  static PastEvents = `${this.DomainName}/past-events`;
   static AllPrograms = `${this.DomainName}/all-programs`;
   static CampusesMap = `${this.DomainName}/campuses-map`;
+  static NoteManager = `${this.DomainName}/note-manager`;
+  static SearchForm = `${this.DomainName}/search-form`;
+  static SearchResults = `${this.DomainName}/search-results`;
   static BlockCategory = "cetacean-university";
 }
 ;

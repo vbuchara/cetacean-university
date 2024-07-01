@@ -355,18 +355,19 @@ function cetacean_university_blocks_category(array $categories){
     return [$cetaceanUniversityCategory, ...$categories];
 }
 
-function cetacean_university_meta_query_support(array $args, WP_REST_Request $request){
+function cetacean_university_adjust_rest_query(array $args, WP_REST_Request $request){
     require get_theme_file_path("/helpers/get_meta_queries.php");
     
     $metaQuery = cetacean_university_get_meta_queries($request);
-    
-    $args += [
+
+    $newArgs = [
         'meta_key'   => $request->get_param('meta_key'),
         'meta_value' => $request->get_param('meta_value'),
         'meta_query' => $metaQuery,
+        'author' => $request->get_param("author")
     ];
 
-    return $args;
+    return array_merge($args, $newArgs);
 }
 
 function cetacean_university_add_meta_value_to_orderby(array $params){
@@ -488,12 +489,13 @@ add_filter('private_title_format', 'university_notes_title_format', 10, 2);
 add_filter('block_categories_all', 'cetacean_university_blocks_category');
 
 // Filter to add Query Params to the rest api
-add_filter("rest_post_query", "cetacean_university_meta_query_support", 10, 2);
-add_filter("rest_event_query", "cetacean_university_meta_query_support", 10, 2);
-add_filter("rest_campus_query", "cetacean_university_meta_query_support", 10, 2);
-add_filter("rest_program_query", "cetacean_university_meta_query_support", 10, 2);
-add_filter("rest_professor_query", "cetacean_university_meta_query_support", 10, 2);
-add_filter("rest_like_query", "cetacean_university_meta_query_support", 10, 2);
+add_filter("rest_post_query", "cetacean_university_adjust_rest_query", 10, 2);
+add_filter("rest_event_query", "cetacean_university_adjust_rest_query", 10, 2);
+add_filter("rest_campus_query", "cetacean_university_adjust_rest_query", 10, 2);
+add_filter("rest_program_query", "cetacean_university_adjust_rest_query", 10, 2);
+add_filter("rest_professor_query", "cetacean_university_adjust_rest_query", 10, 2);
+add_filter("rest_note_query", "cetacean_university_adjust_rest_query", 10, 2);
+add_filter("rest_like_query", "cetacean_university_adjust_rest_query", 10, 2);
 
 // Filter to add meta_value to orderby enum in the rest api
 add_filter('rest_post_collection_params', 'cetacean_university_add_meta_value_to_orderby', 10);

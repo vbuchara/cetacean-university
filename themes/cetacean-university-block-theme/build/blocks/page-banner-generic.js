@@ -16,7 +16,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_use_lib_useAsync__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-use/lib/useAsync */ "./node_modules/react-use/lib/useAsync.js");
-/* harmony import */ var rooks__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rooks */ "./node_modules/rooks/dist/esm/hooks/useMutationObserverRef.js");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
@@ -24,12 +23,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./node_modules/@fortawesome/free-solid-svg-icons/index.mjs");
+/* harmony import */ var _fortawesome_free_solid_svg_icons_faSliders__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fortawesome/free-solid-svg-icons/faSliders */ "./node_modules/@fortawesome/free-solid-svg-icons/faSliders.js");
 /* harmony import */ var voca_insert__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! voca/insert */ "./node_modules/voca/insert.js");
 /* harmony import */ var voca_insert__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(voca_insert__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _components_editor_select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @components/editor-select */ "./src/components/editor-select.tsx");
-/* harmony import */ var _utils_typeCheck__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @utils/typeCheck */ "./src/utils/typeCheck.ts");
-
+/* harmony import */ var _components_panel_link_control__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @components/panel-link-control */ "./src/components/panel-link-control.tsx");
 
 
 
@@ -46,7 +44,6 @@ function PageBannerGenericInspectorControls({
   attributes,
   setAttributes
 }) {
-  const [hasChanged, setHasChanged] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const {
     loading,
     value: response
@@ -70,58 +67,9 @@ function PageBannerGenericInspectorControls({
       };
     });
   }, [loading, response]);
-  const [linkControlRef] = (0,rooks__WEBPACK_IMPORTED_MODULE_9__.useMutationObserverRef)(mutations => {
-    const targetMutated = mutations[0]?.target;
-    if (!targetMutated) return;
-    const elementMutated = targetMutated instanceof Element ? targetMutated : targetMutated.parentElement;
-    if (!elementMutated || !(0,_utils_typeCheck__WEBPACK_IMPORTED_MODULE_7__.isHTMLElement)(elementMutated)) return;
-    const linkControl = elementMutated.classList.contains("block-editor-link-control") ? elementMutated : elementMutated.closest(".block-editor-link-control");
-    if (!linkControl || !(0,_utils_typeCheck__WEBPACK_IMPORTED_MODULE_7__.isHTMLElement)(linkControl)) return;
-    adjustLinkControlStyle(linkControl);
-  });
-  const setLinkControlRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(element => {
-    if (!element) return;
-    const linkControlElement = element.getElementsByClassName("block-editor-link-control").item(0);
-    if (!linkControlElement || !(0,_utils_typeCheck__WEBPACK_IMPORTED_MODULE_7__.isHTMLElement)(linkControlElement)) return;
-    linkControlRef(linkControlElement);
-    if (!linkControlElement) return;
-    adjustLinkControlStyle(linkControlElement);
-  }, [attributes.metaboxInfo.homeLinkObject?.url, hasChanged]);
   const variablesOptionsSelected = attributes.metaboxInfo.showConditionalVariables.map(variableSelected => {
     return variablesOptions.find(variable => variable.value === variableSelected);
   }).filter(variable => typeof variable !== undefined);
-  function adjustLinkControlStyle(linkControl) {
-    linkControl.style.setProperty("min-width", "unset");
-    const otherElementsWithMinWidthSetBreakingTheStyle = linkControl.querySelectorAll(".components-menu-item__item");
-    Array.from(otherElementsWithMinWidthSetBreakingTheStyle).forEach(element => {
-      element.style.setProperty("min-width", "unset");
-      element.style.setProperty("white-space", "unset");
-      element.style.setProperty("overflow-wrap", "anywhere");
-    });
-    const inputField = linkControl.querySelectorAll(".block-editor-link-control__field");
-    Array.from(inputField).forEach(element => {
-      element.style.setProperty("margin-left", "0px");
-      element.style.setProperty("margin-right", "0px");
-    });
-    const searchResults = linkControl.querySelectorAll(".block-editor-link-control__search-results");
-    Array.from(searchResults).forEach(element => {
-      element.style.setProperty("padding-left", "0px");
-      element.style.setProperty("padding-right", "0px");
-    });
-    const searchItem = linkControl.querySelectorAll(".block-editor-link-control__search-item");
-    Array.from(searchItem).forEach(element => {
-      element.style.setProperty("padding-left", "0px");
-      element.style.setProperty("padding-right", "0px");
-    });
-    const componentGroup = linkControl.querySelector(".block-editor-link-control__search-results > .components-menu-group");
-    if (componentGroup) {
-      componentGroup.style.setProperty("padding-inline", "1.5px");
-    }
-    const menuItemShortcut = linkControl.querySelectorAll(".components-menu-item__shortcut");
-    Array.from(menuItemShortcut).forEach(element => {
-      element.style.setProperty("padding-left", "0px");
-    });
-  }
   function onChangeVariable(variables) {
     setAttributes({
       metaboxInfo: {
@@ -143,7 +91,6 @@ function PageBannerGenericInspectorControls({
     });
   }
   function onChangeMetaboxHomeLink(value) {
-    setHasChanged(prevValue => !prevValue);
     setAttributes({
       metaboxInfo: {
         ...attributes.metaboxInfo,
@@ -183,23 +130,15 @@ function PageBannerGenericInspectorControls({
     onChange: value => setAttributes({
       enableMetabox: value
     })
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.__experimentalGrid, {
-    ref: setLinkControlRef,
-    className: "link-control-wrapper",
-    columns: 1,
-    style: {
-      flex: 1
-    }
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.BaseControl, {
-    label: "Home Link Url"
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.__experimentalLinkControl, {
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_panel_link_control__WEBPACK_IMPORTED_MODULE_7__.PanelLinkControl, {
+    label: "Home Link Url",
     settings: [],
     value: attributes.metaboxInfo.homeLinkObject ? {
       ...attributes.metaboxInfo.homeLinkObject,
       title: undefined
     } : undefined,
     onChange: onChangeMetaboxHomeLink
-  })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.__experimentalGrid, {
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.__experimentalGrid, {
     columns: 1,
     style: {
       flex: 1
@@ -266,9 +205,9 @@ function PageBannerGenericBlockControls(props) {
     }
     setIsVariablePopoverVisible(false);
   }
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.BlockControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.BlockControls, null, !props.attributes.enableMetabox ? "" : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarGroup, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToolbarButton, {
     icon: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_4__.FontAwesomeIcon, {
-      icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_10__.faSliders
+      icon: _fortawesome_free_solid_svg_icons_faSliders__WEBPACK_IMPORTED_MODULE_9__.faSliders
     }),
     onClick: onClickVariableButton,
     title: "Add a variable",
@@ -673,8 +612,12 @@ class CetaceanUniversityBlocks {
   static ProfessorContent = `${this.DomainName}/professor-content`;
   static BlogPosts = `${this.DomainName}/blog-posts`;
   static UpcomingEvents = `${this.DomainName}/upcoming-events`;
+  static PastEvents = `${this.DomainName}/past-events`;
   static AllPrograms = `${this.DomainName}/all-programs`;
   static CampusesMap = `${this.DomainName}/campuses-map`;
+  static NoteManager = `${this.DomainName}/note-manager`;
+  static SearchForm = `${this.DomainName}/search-form`;
+  static SearchResults = `${this.DomainName}/search-results`;
   static BlockCategory = "cetacean-university";
 }
 ;
@@ -743,6 +686,112 @@ function EditorSelect({
     },
     ...props
   });
+}
+
+/***/ }),
+
+/***/ "./src/components/panel-link-control.tsx":
+/*!***********************************************!*\
+  !*** ./src/components/panel-link-control.tsx ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   PanelLinkControl: () => (/* binding */ PanelLinkControl)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var rooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rooks */ "./node_modules/rooks/dist/esm/hooks/useMutationObserverRef.js");
+/* harmony import */ var _utils_typeCheck__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @utils/typeCheck */ "./src/utils/typeCheck.ts");
+
+
+
+
+
+
+function PanelLinkControl({
+  label,
+  wrapperDivProps: {
+    style,
+    className,
+    ...wrapperDivProps
+  } = {},
+  ...props
+}) {
+  const [hasChanged, setHasChanged] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const [linkControlRef] = (0,rooks__WEBPACK_IMPORTED_MODULE_4__.useMutationObserverRef)(mutations => {
+    const targetMutated = mutations[0]?.target;
+    if (!targetMutated) return;
+    const elementMutated = targetMutated instanceof Element ? targetMutated : targetMutated.parentElement;
+    if (!elementMutated || !(0,_utils_typeCheck__WEBPACK_IMPORTED_MODULE_3__.isHTMLElement)(elementMutated)) return;
+    const linkControl = elementMutated.classList.contains("block-editor-link-control") ? elementMutated : elementMutated.closest(".block-editor-link-control");
+    if (!linkControl || !(0,_utils_typeCheck__WEBPACK_IMPORTED_MODULE_3__.isHTMLElement)(linkControl)) return;
+    adjustLinkControlStyle(linkControl);
+  });
+  const setLinkControlRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(element => {
+    if (!element) return;
+    const linkControlElement = element.getElementsByClassName("block-editor-link-control").item(0);
+    if (!linkControlElement || !(0,_utils_typeCheck__WEBPACK_IMPORTED_MODULE_3__.isHTMLElement)(linkControlElement)) return;
+    linkControlRef(linkControlElement);
+    if (!linkControlElement) return;
+    adjustLinkControlStyle(linkControlElement);
+  }, [props.value, hasChanged]);
+  function adjustLinkControlStyle(linkControl) {
+    linkControl.style.setProperty("min-width", "unset");
+    const otherElementsWithMinWidthSetBreakingTheStyle = linkControl.querySelectorAll(".components-menu-item__item");
+    Array.from(otherElementsWithMinWidthSetBreakingTheStyle).forEach(element => {
+      element.style.setProperty("min-width", "unset");
+      element.style.setProperty("white-space", "unset");
+      element.style.setProperty("overflow-wrap", "anywhere");
+    });
+    const inputField = linkControl.querySelectorAll(".block-editor-link-control__field");
+    Array.from(inputField).forEach(element => {
+      element.style.setProperty("margin-left", "0px");
+      element.style.setProperty("margin-right", "0px");
+    });
+    const searchResults = linkControl.querySelectorAll(".block-editor-link-control__search-results");
+    Array.from(searchResults).forEach(element => {
+      element.style.setProperty("padding-left", "0px");
+      element.style.setProperty("padding-right", "0px");
+    });
+    const searchItem = linkControl.querySelectorAll(".block-editor-link-control__search-item");
+    Array.from(searchItem).forEach(element => {
+      element.style.setProperty("padding-left", "0px");
+      element.style.setProperty("padding-right", "0px");
+    });
+    const componentGroup = linkControl.querySelector(".block-editor-link-control__search-results > .components-menu-group");
+    if (componentGroup) {
+      componentGroup.style.setProperty("padding-inline", "1.5px");
+    }
+    const menuItemShortcut = linkControl.querySelectorAll(".components-menu-item__shortcut");
+    Array.from(menuItemShortcut).forEach(element => {
+      element.style.setProperty("padding-left", "0px");
+    });
+  }
+  function onLinkChanged(value) {
+    props.onChange?.(value);
+    setHasChanged(true);
+  }
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalGrid, {
+    ...wrapperDivProps,
+    ref: setLinkControlRef,
+    className: `link-control-wrapper ${className ? className : ""}}`,
+    columns: wrapperDivProps.columns ? wrapperDivProps.columns : 1,
+    style: {
+      flex: 1,
+      ...style
+    }
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.BaseControl, {
+    label: label
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.__experimentalLinkControl, {
+    ...props,
+    onChange: onLinkChanged
+  })));
 }
 
 /***/ }),

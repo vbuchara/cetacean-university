@@ -65,7 +65,6 @@ declare var CetaceanUniversityPageBannerGenericData: {
 }
 
 declare var CetaceanUniversityUpcomingEventsData: {
-    theme_path: string;
     past_events_link: string;
 }
 
@@ -77,4 +76,12 @@ declare var CetaceanUniversityCampusBannerData: {
 declare var CetaceanUniversityEventBannerData: {
     theme_path: string;
     events_archive_link: string;
+}
+
+declare var CetaceanUniversityPastEventsData: {
+    events_archive_link: string;
+}
+
+declare var CetaceanUniversitySearchFormData: {
+    search_form_action_link: string;
 }

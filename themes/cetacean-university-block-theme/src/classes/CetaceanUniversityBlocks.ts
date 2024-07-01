@@ -24,8 +24,13 @@ export class CetaceanUniversityBlocks{
     
     public static readonly BlogPosts = `${this.DomainName}/blog-posts` as const;
     public static readonly UpcomingEvents = `${this.DomainName}/upcoming-events` as const;
+    public static readonly PastEvents = `${this.DomainName}/past-events` as const;
     public static readonly AllPrograms = `${this.DomainName}/all-programs` as const;
     public static readonly CampusesMap = `${this.DomainName}/campuses-map` as const;
+
+    public static readonly NoteManager = `${this.DomainName}/note-manager` as const;
+    public static readonly SearchForm = `${this.DomainName}/search-form` as const;
+    public static readonly SearchResults = `${this.DomainName}/search-results` as const;
 
     public static readonly BlockCategory = "cetacean-university" as const;
 };

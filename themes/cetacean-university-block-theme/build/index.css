@@ -1030,6 +1030,11 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   white-space: nowrap;
   justify-self: flex-end;
   align-self: center;
+  --color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
   background-color: #ddd;
   color: #333;
   border-color: #ddd;
@@ -1053,6 +1058,11 @@ body.login a:is(:hover, :focus, #priority#priority2) {
   white-space: nowrap;
   justify-self: flex-end;
   align-self: center;
+  --color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
   background-color: #F44336;
   color: #fff;
   border-color: #F44336;

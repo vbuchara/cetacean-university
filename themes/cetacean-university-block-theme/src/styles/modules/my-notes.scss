@@ -28,6 +28,12 @@
 
   &--edit-note, &--cancel-edit {
     @include note-button();
+    --color: #{$white};
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
   
     background-color: $light-gray;
     color: $dark-gray;
@@ -41,6 +47,12 @@
 
   &--delete-note {
     @include note-button();
+    --color: #{$white};
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
 
     background-color: $red-cancel;
     color: $white;

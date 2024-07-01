@@ -9,7 +9,7 @@
         <?php the_excerpt() ?>
         <p>
             <a class="btn btn--primary btn--slide-from-top" href="<?php the_permalink() ?>">
-                VIew Campus &raquo;
+                View Campus &raquo;
             </a>
         </p>
     </div>
