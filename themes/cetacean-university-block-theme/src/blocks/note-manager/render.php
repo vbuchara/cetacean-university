@@ -4,6 +4,10 @@
      * @var string $content
      * @var WP_Block $block
      */
+    if(!is_user_logged_in()){
+        wp_redirect(esc_url('/'));
+        exit;
+    }
 ?>
 <div class="container container--narrow page-section">
     <div class="create-note">
