@@ -1,0 +1,30 @@
+<!-- wp:template-part {"slug":"site-header","area":"header"} /-->
+
+<!-- wp:cetacean-university-theme/page-banner-generic -->
+    <!-- wp:cetacean-university-theme/page-banner-title {"text":"Search Results"} -->
+    <h1 class="wp-block-cetacean-university-theme-page-banner-title page-banner__title">Search Results</h1>
+    <!-- /wp:cetacean-university-theme/page-banner-title -->
+
+    <!-- wp:cetacean-university-theme/page-banner-subtitle {"text":"Searching for \u0022#{Search Query}\u0022","showConditionalVariables":["#{Search Query}"]} -->
+    <div class="wp-block-cetacean-university-theme-page-banner-subtitle page-banner__intro">
+        <p>Searching for "#{Search Query}"</p>
+    </div>
+    <!-- /wp:cetacean-university-theme/page-banner-subtitle -->
+<!-- /wp:cetacean-university-theme/page-banner-generic -->
+
+<!-- wp:cetacean-university-theme/search-results /-->
+
+<!-- wp:cetacean-university-theme/search-form -->
+<div class="container container--narrow page-section">
+    <div class="generic-content">
+        <form class="search-form" action="#{Search Form Action Link}" method="get"><label
+                class="headline headline--medium" for="search-input">What are you searching for?</label>
+            <div class="search-form-row"><input id="search-input" class="s" type="search"
+                    placeholder="Type what you want to search for!" name="s" /><button
+                    class="search-submit btn btn--primary btn--slide-from-top" type="submit">Search</button></div>
+        </form>
+    </div>
+</div>
+<!-- /wp:cetacean-university-theme/search-form -->
+
+<!-- wp:template-part {"slug":"site-footer","area":"footer"} /-->

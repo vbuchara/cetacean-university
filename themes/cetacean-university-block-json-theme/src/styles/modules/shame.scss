@@ -1,0 +1,338 @@
+.remove-favorite {
+	display: inline-block;
+	transition: all 0.3s;
+	color: #999;
+	font-size: 0.9rem;
+	cursor: pointer;
+	padding: 4px 6px;
+	border-radius: 3px;
+}
+
+.remove-favorite:hover {
+	background-color: #dedede;
+}
+
+.page-section {
+	padding-top: 1.6rem;
+	padding-bottom: 1.6rem;
+
+	@include atSmall {
+		padding-top: 3.5rem;
+		padding-bottom: 3.5rem;
+	}
+
+	&--white {
+		background-color: #fff;
+	}
+
+	&--beige {
+		background-color: $beige;
+	}
+
+	p:last-of-type {
+		margin-bottom: 0;
+	}
+}
+
+.school-logo-text {
+	position: relative;
+	z-index: 20;
+	margin: 0;
+	font-size: 1.75rem;
+	font-weight: 100;
+
+	strong {
+		font-weight: 400;
+		color: $secondary-color;
+	}
+
+	a {
+		color: #fff;
+		text-decoration: none;
+	}
+
+	&--alt-color {
+		a {
+			color: #666;
+
+			strong {
+				color: $primary-color;
+			}
+
+			&:hover {
+				color: $primary-color;
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+@keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+.spinner-loader {
+	margin-top: 45px;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	border: 0.25rem solid rgba(0, 0, 0, 0.2);
+	border-top-color: black;
+	-webkit-animation: spin 1s infinite linear;
+	animation: spin 1s infinite linear;
+}
+
+.c-orange {
+	color: $dark-orange;
+}
+
+.c-blue {
+	color: $primary-color;
+}
+
+.c-white {
+	color: #fff;
+}
+
+.c-dark {
+	color: #333;
+}
+
+.gray {
+	color: #999999;
+}
+
+.search-trigger {
+	display: none;
+	color: #fff;
+	position: relative;
+	cursor: pointer;
+	top: 1px;
+	margin-left: 20px;
+
+	i {
+		font-size: 1.4rem;
+	}
+
+	@include atMedium {
+		display: inline-block;
+	}
+}
+
+.search-trigger:hover {
+	opacity: 0.65;
+}
+
+.social-icons-list {
+	display: grid;
+    grid-template-columns: repeat(5, 2rem);
+    grid-template-rows: 2rem;
+	gap: 0.5rem;
+}
+
+.social-media-icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 100%;
+
+	color: #fff;
+	text-decoration: none;
+
+	border-radius: 2px;
+
+	&:hover {
+		opacity: 0.75;
+	}
+}
+
+.social-color-facebook {
+	background-color: #4862a3;
+}
+
+.social-color-twitter {
+	background-color: #55acee;
+}
+
+.social-color-youtube {
+	background-color: #cc1e1f;
+}
+
+.social-color-linkedin {
+	background-color: #0077b5;
+}
+
+.social-color-instagram {
+	background-color: #d8226b;
+}
+
+.nav-list ul {
+	padding: 0;
+	margin: 0;
+}
+
+.nav-list li {
+	list-style: none;
+}
+
+.nav-list a {
+	font-size: 0.9rem;
+	color: #999;
+	text-decoration: none;
+}
+
+.nav-list a:hover {
+	color: $primary-color;
+	text-decoration: underline;
+}
+
+.one-half,
+.one-third,
+.one-fourth,
+.one-fifth,
+.one-sixth {
+	padding-bottom: 1.6rem;
+}
+
+@include atMedium {
+	.row {
+		margin-right: -50px;
+	}
+
+	.one-half,
+	.one-third,
+	.two-thirds,
+	.one-fourth,
+	.one-fifth,
+	.one-sixth {
+		padding-bottom: 0;
+		float: left;
+		box-sizing: border-box;
+		padding-right: 50px;
+	}
+
+	.two-thirds {
+		width: 66.66%;
+	}
+
+	.one-half {
+		width: 50%;
+	}
+
+	.one-third {
+		width: 33.33%;
+	}
+
+	.one-quarter {
+		width: 25%;
+	}
+
+	.one-fifth {
+		width: 20%;
+	}
+
+	.one-sixth {
+		width: 16.66%;
+	}
+}
+
+/* Make Top WP Admin Bar Fixed on Mobile */
+@media screen and (max-width: 600px) {
+	#wpadminbar {
+		position: fixed;
+	}
+}
+
+/* Seach Form */
+.search-form {
+	background-color: #dedede;
+	padding: 20px;
+	text-align: center;
+}
+
+.search-form label {
+	display: block;
+}
+
+.search-form-row {
+	display: flex;
+}
+
+.search-form .s {
+	min-width: 20px;
+	flex-basis: auto;
+	flex-grow: 1;
+	border: none;
+	font-family: "Roboto", sans-serif;
+	padding: 10px;
+
+	@include atSmall {
+		font-size: 1.4rem;
+	}
+}
+
+.search-submit {
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	outline: none;
+	background-color: $primary-color;
+	font-family: "Roboto", sans-serif;
+	padding: 0 20px;
+	margin-left: 10px;
+}
+
+/* Like Box */
+.generic-content .like-box {
+	float: right;
+	font-size: 1rem;
+	background-color: #ededed;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+	color: red;
+	padding: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+	margin: 0 0 30px 30px;
+	position: relative;
+	border: none;
+
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	&:hover {
+		background-color: #dedede;
+	}
+}
+
+.like-box .like-box__empty-heart {
+	transition: all 0.35s ease-out;
+	position: absolute;
+}
+
+.like-box .like-box__filled-heart {
+	transition: all 0.4s ease-out;
+	visibility: hidden;
+	transform: scale(0.2);
+	opacity: 0;
+}
+
+.like-box[data-exists="yes"] .like-box__filled-heart {
+	transform: scale(1);
+	visibility: visible;
+	opacity: 1;
+}
+
+.like-box[data-exists="yes"] .like-box__empty-heart {
+	visibility: hidden;
+	opacity: 0;
+}

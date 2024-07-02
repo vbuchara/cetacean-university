@@ -1,0 +1,94 @@
+
+
+$headline-color: #666;
+$link-color: #999;
+
+.site-footer {
+	padding: 2rem 0 3.5rem 0;
+	background-image: linear-gradient(#fff, #ececec);
+
+	p {
+		font-size: 0.9rem;
+	}
+
+	.headline {
+		color: $headline-color;
+		margin-bottom: 0.33rem;
+	}
+
+	&__link {
+		color: $link-color;
+		text-decoration: none;
+	}
+
+	&__link:hover {
+		color: $whales-tale;
+		text-decoration: underline;
+	}
+
+	&__inner {
+		border-top: 1px dotted #dedede;
+		padding-top: 3.5rem;
+
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__main-info {
+		display: grid;
+		grid-auto-rows: auto;
+		row-gap: 1rem;
+
+		@include atMedium {
+            grid-template-rows: 1fr;
+			grid-auto-columns: 1fr;
+			grid-auto-flow: column;
+			justify-content: stretch;
+			justify-items: center;
+        }
+	}
+
+	&__col-one {
+		text-align: center;
+
+		@include atMedium {
+			text-align: left;
+		}
+	}
+
+	&__col-two-three-group {
+		text-align: center;
+		margin: 0 auto;
+
+		display: flex;
+		gap: 5rem;
+
+		@include atMedium {
+			text-align: left;
+			margin: 0;
+		}
+	}
+
+	&__col-four {
+		padding-top: 20px;
+		margin: 0 auto;
+		text-align: center;
+
+		@include atMedium {
+			padding-top: 0;
+			margin: 0;
+			text-align: left;
+		}
+	}
+
+	&__copyright {
+		display: flex;
+		justify-content: center;
+		margin-top: 40px;
+
+		p {
+			margin-bottom: 0;
+			color: $headline-color;
+		}
+	}
+}
