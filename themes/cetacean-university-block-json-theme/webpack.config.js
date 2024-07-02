@@ -6,42 +6,11 @@ const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extrac
 const Dotenv = require('dotenv-webpack');
 
 const path = require("path");
-const glob = require("glob");
 
 /** @type {import("webpack").Configuration} */
 const scriptConfig = Array.isArray(defaultConfig) ? defaultConfig[0] : defaultConfig;
 /** @type {import("webpack").Configuration|undefined} */
 const moduleConfig = Array.isArray(defaultConfig) ? defaultConfig[1] : undefined;
-
-const entries = glob.sync([
-    "./src/index.ts",
-    "./src/blocks/**/index.ts",
-    "./src/blocks/**/frontend.tsx"
-], { 
-    posix: true,
-    dotRelative: true
-}).reduce((entry, file) => {
-    const folderName = path.basename(path.dirname(file));
-    const fileName = path.basename(file)
-        .replace(/\.tsx|.ts$/gm, "");
-    
-    function getEntryName(){
-        if(folderName === "src"){
-            return fileName;
-        }
-
-        if(fileName === "frontend"){
-            return `blocks/${folderName}-frontend`;
-        }
-
-        return `blocks/${folderName}`;
-    }
-
-    return {
-        ...entry,
-        [getEntryName()]: file,
-    };
-}, {});
 
 const possiblePromiseScriptConfigEntries = typeof scriptConfig.entry === "function" 
     ? scriptConfig.entry() 
@@ -101,7 +70,7 @@ const newScriptConfig = {
     ...scriptConfig,
     entry: {
         ...(typeof scriptConfigEntries === "object" ? scriptConfigEntries : {}),
-        ...entries,
+        index: "./src/index.ts"
     },
     output: {
         ...scriptConfig.output,
