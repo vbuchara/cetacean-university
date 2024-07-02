@@ -8,10 +8,10 @@ import { EditComponent } from "./edit";
 
 export type SearchResultsAttributeType = {};
 
-registerBlockType<SearchResultsAttributeType>(CetaceanUniversityBlocks.SearchResults, {
-    title: "Search Results",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<SearchResultsAttributeType>;
+
+registerBlockType<SearchResultsAttributeType>(block.name, {
+    ...block,
     icon:  () => <FontAwesomeIcon icon={faMagnifyingGlass} />,
-    attributes: {},
     edit: EditComponent,
 });

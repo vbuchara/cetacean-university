@@ -1,17 +1,15 @@
-<!-- wp:template-part {"slug":"site-header","area":"header"} /-->
+<!-- wp:template-part {"slug":"site-header","theme":"cetacean-university-block-json-theme","area":"header"} /-->
 
 <!-- wp:cetacean-university-theme/page-banner-generic {"enableMetabox":true,"metaboxInfo":{"homeLinkText":"All Upcoming Events","mainText":"#{Post/Page Title}","showConditionalVariables":["#{Post/Page Title}"],"homeLinkObject":{"url":"#{Events Link}","title":"Events Link","type":"Variable"}}} -->
-    <!-- wp:cetacean-university-theme/page-banner-title {"text":"#{Post/Page Title}","showConditionalVariables":["#{Post/Page Title}"]} -->
-    <h1 class="wp-block-cetacean-university-theme-page-banner-title page-banner__title">#{Post/Page Title}</h1>
-    <!-- /wp:cetacean-university-theme/page-banner-title -->
+<!-- wp:cetacean-university-theme/page-banner-title {"text":"#{Post/Page Title}","showConditionalVariables":["#{Post/Page Title}"],"className":"wp-block-cetacean-university-theme-page-banner-title"} -->
+<h1 class="page-banner__title">#{Post/Page Title}</h1>
+<!-- /wp:cetacean-university-theme/page-banner-title -->
 
-    <!-- wp:cetacean-university-theme/page-banner-subtitle {"text":"#{Post/Page Subtitle}","showConditionalVariables":["#{Post/Page Title}","#{Post/Page Subtitle}"]} -->
-    <div class="wp-block-cetacean-university-theme-page-banner-subtitle page-banner__intro">
-        <p>#{Post/Page Subtitle}</p>
-    </div>
-    <!-- /wp:cetacean-university-theme/page-banner-subtitle -->
+<!-- wp:cetacean-university-theme/page-banner-subtitle {"text":"#{Post/Page Subtitle}","showConditionalVariables":["#{Post/Page Title}","#{Post/Page Subtitle}"],"className":"wp-block-cetacean-university-theme-page-banner-subtitle"} -->
+<div class="page-banner__intro"><p>#{Post/Page Subtitle}</p></div>
+<!-- /wp:cetacean-university-theme/page-banner-subtitle -->
 <!-- /wp:cetacean-university-theme/page-banner-generic -->
 
 <!-- wp:cetacean-university-theme/event-content /-->
 
-<!-- wp:template-part {"slug":"site-footer","area":"footer"} /-->
+<!-- wp:template-part {"slug":"site-footer","theme":"cetacean-university-block-json-theme","area":"footer"} /-->

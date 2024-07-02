@@ -8,13 +8,11 @@ export function LoggedUserMenu(){
     <>
         <EditorAnchor
             className="btn btn--small btn--secondary float-left push-right btn--slide-from-left"
-            href={CetaceanUniversityMenuData.my_notes_link}
         >
             My Notes
         </EditorAnchor>
         <EditorAnchor
             className="btn btn--small btn--secondary float-left btn--with-photo btn--slide-from-left"
-            href={CetaceanUniversityMenuData.logout_link}
         >
             <span className="site-header__avatar">
                 <img
@@ -30,7 +28,6 @@ export function LoggedUserMenu(){
         </EditorAnchor>
         <EditorAnchor
             className="search-trigger js-search-trigger"
-            href={CetaceanUniversityMenuData.search_link}
         >
             <FontAwesomeIcon 
                 icon={faMagnifyingGlass}

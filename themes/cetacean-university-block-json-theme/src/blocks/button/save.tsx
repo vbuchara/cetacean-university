@@ -9,7 +9,8 @@ export type ButtonSaveComponentProps = BlockSaveProps<ButtonAttributesType>;
 
 export function SaveComponent(props: ButtonSaveComponentProps){
     const {
-        attributes
+        attributes,
+        className
     } = props;
 
     const buttonLink = attributes.linkObject?.url ? attributes.linkObject?.url : undefined;
@@ -17,6 +18,7 @@ export function SaveComponent(props: ButtonSaveComponentProps){
         "btn",
         attributes.size ? (buttonSizeClasses.get(attributes.size) || "") : "",
         buttonAnimationsOnHoverClasses.get(attributes.animations.onHover) || "",
+        className
     ]);
 
     return (

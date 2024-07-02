@@ -1,7 +1,5 @@
-import { BlockConfiguration, registerBlockType } from "@wordpress/blocks";
+import { registerBlockType } from "@wordpress/blocks";
 import { footer } from "@wordpress/icons";
-
-import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 import type { SocialLinks } from "./components/social-menu";
 

@@ -6,10 +6,10 @@ import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type AllProgramsAttributeType = {};
 
-registerBlockType<AllProgramsAttributeType>(CetaceanUniversityBlocks.AllPrograms, {
-    title: "All Programs",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<AllProgramsAttributeType>;
+
+registerBlockType<AllProgramsAttributeType>(block.name, {
+    ...block,
     icon: "welcome-learn-more",
-    attributes: {},
     edit: EditComponent,
 });

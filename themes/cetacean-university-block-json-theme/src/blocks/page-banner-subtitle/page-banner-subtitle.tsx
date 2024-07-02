@@ -11,20 +11,11 @@ export type PageBannerSubtitleAttributeType = {
     showConditionalVariables: string[];
 };
 
-registerBlockType<PageBannerSubtitleAttributeType>(CetaceanUniversityBlocks.PageBannerSubtitle, {
-    title: "Page Banner Subtitle",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<PageBannerSubtitleAttributeType>;
+
+registerBlockType<PageBannerSubtitleAttributeType>(block.name, {
+    ...block,
     icon: title,
-    attributes: {
-        text: {
-            type: "string",
-            default: "Page Banner Subtitle"
-        },
-        showConditionalVariables: {
-            type: "array",
-            default: [],
-        }
-    },
     edit: EditComponent,
     save: SaveComponent,
     parent: [CetaceanUniversityBlocks.PageBannerGeneric],

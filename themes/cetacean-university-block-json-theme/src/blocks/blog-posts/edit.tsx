@@ -5,6 +5,8 @@ import {
 import { useSelect } from "@wordpress/data";
 import type { WP_PostWithEmbedded } from "wordpress-types";
 
+import { EditorWrapper } from "@components/editor-wrapper";
+
 import { Post } from "./components/post";
 
 export type BlogPostsEditComponentProps = BlockEditProps<{}>;
@@ -25,8 +27,10 @@ export function EditComponent(props: BlogPostsEditComponentProps){
     }, []);
 
     return (
-    <div className="container container--narrow page-section">
-        {posts?.map((post) => <Post key={post.id} post={post} />)}
-    </div>
+    <EditorWrapper>
+        <div className="container container--narrow page-section">
+            {posts?.map((post) => <Post key={post.id} post={post} />)}
+        </div>
+    </EditorWrapper>
     );
 }

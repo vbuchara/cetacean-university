@@ -4,15 +4,13 @@ import { registerBlockType } from "@wordpress/blocks";
 import { EditComponent } from "./edit";
 import { SaveComponent } from "./save";
 
-import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
-
 export type SliderAttributeType = {};
 
-registerBlockType<SliderAttributeType>(CetaceanUniversityBlocks.Slider, {
-    title: "Slider",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<SliderAttributeType>;
+
+registerBlockType<SliderAttributeType>(block.name, {
+    ...block,
     icon: () => <FontAwesomeIcon icon={faImages} />,
-    attributes: {},
     edit: EditComponent,
     save: SaveComponent
 });

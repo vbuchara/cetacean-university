@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { pasteHandler, type BlockEditProps } from "@wordpress/blocks";
 import { RawHTML } from "@wordpress/element";
 
+import { EditorWrapper } from "@components/editor-wrapper";
+
 import { PostContentInspectorControls } from "./components/controls";
 
 import type { PostContentAttributeType, PostContentInfo } from "./post-content";
@@ -21,7 +23,7 @@ export function EditComponent(_: PostContentEditComponentProps){
     };
 
     return (
-   <> 
+   <EditorWrapper> 
         <PostContentInspectorControls
             postInfoPreview={postInfoPreview}
             setPostInfoPreview={setPostInfoPreview}
@@ -33,6 +35,6 @@ export function EditComponent(_: PostContentEditComponentProps){
                 </RawHTML>
             </div>
         </div>
-    </>
+    </EditorWrapper>
     );
 }

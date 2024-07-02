@@ -31,27 +31,14 @@ $blocks = [
     'post-content',
     "page-content",
     'campus-content' => [
-        'deps' => ["google-maps"]
+        'deps' => ["google_map_js"]
     ],
     'event-content',
     'program-content',
     'professor-content',
-    'events-and-posts' => [
-        'data' => [
-            "blog_link" => site_url("/blog"),
-            "events_archive_link" => get_post_type_archive_link("event"),
-        ]
-    ],
-    'upcoming-events' => [
-        'data' => [
-            "past_events_link" => site_url("/past-events")
-        ]
-    ], 
-    'past-events' => [
-        'data' => [
-            "events_archive_link" => get_post_type_archive_link("event"),
-        ]
-    ],
+    'events-and-posts',
+    'upcoming-events', 
+    'past-events',
     'all-programs',
     'campuses-map' => [
         'deps' => ["google-maps"]
@@ -63,26 +50,10 @@ $blocks = [
         ]
     ],
     'search-results',
-    'header' => [
-        'data' => [
-            "search_link" => esc_url(site_url('/search')),
-            "site_name" => get_bloginfo("name"),
-            "site_url" => site_url(),
-        ]
-    ],
+    'header',
     'menu' => [
         'data' => [
-            'avatar_url' => get_avatar_url(get_current_user_id()),
-            "search_link" => esc_url(site_url('/search')),
-            "login_link" => wp_login_url(),
-            "register_link" => wp_registration_url(),
-            "logout_link" => wp_logout_url(),
-            "my_notes_link" => esc_url(site_url('/my-notes')),
-            "blog_link" => site_url("/blog"),
-            "events_archive_link" => get_post_type_archive_link("event"),
-            "program_archive_link" => get_post_type_archive_link("program"),
-            "campus_archive_link" => get_post_type_archive_link("campus"),
-            "about_us_link" => site_url("/about-us")
+            'avatar_url' => get_avatar_url(get_current_user_id())
         ]
     ],
     'footer',

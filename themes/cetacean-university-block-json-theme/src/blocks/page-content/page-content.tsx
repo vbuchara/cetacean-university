@@ -29,10 +29,10 @@ export interface WP_PageWithChildren extends WP_Page {
 
 export type PageContentAttributeType = {};
 
-registerBlockType<PageContentAttributeType>(CetaceanUniversityBlocks.PageContent, {
-    title: "Page Content",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<PageContentAttributeType>;
+
+registerBlockType<PageContentAttributeType>(block.name, {
+    ...block,
     icon: "admin-page",
-    attributes: {},
     edit: EditComponent,
 });

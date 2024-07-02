@@ -1,6 +1,7 @@
 import { type BlockEditProps } from "@wordpress/blocks";
 
 import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 
 import { MenuInspectorControls } from "./components/controls";
 import { LoggedUserMenu } from "./components/logged-user-menu";
@@ -19,7 +20,7 @@ export function EditComponent({
     const [showLoggedMenu, setShowLoggedMenu] = useState(true);
 
     return (
-    <>
+    <EditorWrapper>
         <MenuInspectorControls
             attributes={attributes}
             setAttributes={setAttributes}
@@ -31,37 +32,27 @@ export function EditComponent({
                 <div className="menu-main-menu-container">
                     <ul id="menu-main-menu" className="menu">
                         <li className="menu-item">
-                            <EditorAnchor
-                                href={CetaceanUniversityMenuData.blog_link}
-                            >
+                            <EditorAnchor>
                                 Blog
                             </EditorAnchor>
                         </li>
                         <li className="menu-item">
-                            <EditorAnchor
-                                href={CetaceanUniversityMenuData.events_archive_link}
-                            >
+                            <EditorAnchor >
                                 Events
                             </EditorAnchor>
                         </li>
                         <li className="menu-item">
-                            <EditorAnchor
-                                href={CetaceanUniversityMenuData.program_archive_link}
-                            >
+                            <EditorAnchor>
                                 Programs
                             </EditorAnchor>
                         </li>
                         <li className="menu-item">
-                            <EditorAnchor
-                                href={CetaceanUniversityMenuData.campus_archive_link}
-                            >
+                            <EditorAnchor>
                                 Campuses
                             </EditorAnchor>
                         </li>
                         <li className="menu-item">
-                            <EditorAnchor
-                                href={CetaceanUniversityMenuData.about_us_link}
-                            >
+                            <EditorAnchor>
                                 About Us
                             </EditorAnchor>
                         </li>
@@ -72,6 +63,6 @@ export function EditComponent({
                 {showLoggedMenu ? (<LoggedUserMenu/>) : (<UnloggedUserMenu/>)}
             </div>
         </div>
-    </>
+    </EditorWrapper>
     );
 }

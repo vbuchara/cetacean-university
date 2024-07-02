@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "cetacean-university-theme/slide",
+    "title": "Slide",
+    "category": "cetacean-university",
+    "attributes": {
+        "imageId": {
+            "type": "number",
+            "default": 0
+        },
+        "imageUrl": {
+            "type": "string"
+        },
+        "imageDefault": {
+            "type": "string",
+            "default": "/images/boat.jpg"
+        }  
+    },
+    "editorScript": "file:./slide.tsx",
+    "render": "file:./render.php"
+}   

@@ -8,6 +8,7 @@ import type { CampusPost, EventPost, ProfessorPostWithEmbedded } from "wordpress
 
 import { Event } from "@components/event";
 import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 import defaultAvatarSrc from "@images/default-user-landscape.png";
 import { getTitle } from "@utils/getTitle";
 import { getThumbnail } from "@utils/getThumbnail";
@@ -150,7 +151,7 @@ export function EditComponent(props: ProgramContentEditComponentProps){
     } = program;
 
     return (
-    <>
+    <EditorWrapper>
         <ProgramContentInspectorControls
             programInfoPreview={programInfoPreview}
             setProgramInfoPreview={setProgramInfoPreview}
@@ -229,6 +230,6 @@ export function EditComponent(props: ProgramContentEditComponentProps){
             </>
             )}
         </div>
-    </>
+    </EditorWrapper>
     );
 }

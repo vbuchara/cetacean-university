@@ -1,19 +1,21 @@
 import { 
     useEffect,
     useState,
-    type MouseEvent
 } from "react";
 import { 
     RichText 
 } from "@wordpress/block-editor";
 import { type BlockEditProps } from "@wordpress/blocks";
 
+import { EditorWrapper } from "@components/editor-wrapper";
+
+import { ButtonBlockControls, ButtonInspectorControls } from "./components/controls";
+
 import type { 
     ButtonAnimation,
     ButtonAttributesType, 
     ButtonSize
 } from "./button";
-import { ButtonBlockControls, ButtonInspectorControls } from "./components/controls";
 
 export type ButtonEditComponentProps = BlockEditProps<ButtonAttributesType>;
 
@@ -59,7 +61,7 @@ export function EditComponent(props: ButtonEditComponentProps){
     }, [attributes.size, attributes.backgroundColor, attributes.animations.onHover]);
 
     return (
-    <>
+    <EditorWrapper>
         <ButtonInspectorControls {...props} />
         <ButtonBlockControls {...props} />
         <RichText
@@ -73,6 +75,6 @@ export function EditComponent(props: ButtonEditComponentProps){
                 "--color": attributes.color,
             }}
         />
-    </>
+    </EditorWrapper>
     );
 }

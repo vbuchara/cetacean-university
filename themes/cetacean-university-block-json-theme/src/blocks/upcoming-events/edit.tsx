@@ -8,6 +8,7 @@ import type { EventPost } from "wordpress-types/event";
 import { Placeholders } from "@classes/Placeholders";
 import { Event } from "@components/event";
 import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 
 import type { UpcomingEventsAttributeType } from "./upcoming-events";
 import { UpcomingEventsInspectorControls } from "./components/controls";
@@ -36,7 +37,7 @@ export function EditComponent(props: UpcomingEventsEditComponentProps){
     }, []);
 
     return (
-    <>
+    <EditorWrapper>
         <UpcomingEventsInspectorControls
             attributes={attributes}
             setAttributes={setAttributes}
@@ -49,13 +50,13 @@ export function EditComponent(props: UpcomingEventsEditComponentProps){
             <>
                 <hr className="section-break"/>
                 <p>
-                    <EditorAnchor href={CetaceanUniversityUpcomingEventsData.past_events_link}>
+                    <EditorAnchor>
                         See Past Events
                     </EditorAnchor>
                 </p>
             </>
             )}
         </div>
-    </>
+    </EditorWrapper>
     );
 }

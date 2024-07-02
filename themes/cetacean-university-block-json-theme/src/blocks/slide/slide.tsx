@@ -14,24 +14,12 @@ export type SlideAttributeType = {
     imageDefault: string;
 };
 
-registerBlockType<SlideAttributeType>(CetaceanUniversityBlocks.Slide, {
-    title: "Slide",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<SlideAttributeType>;
+
+registerBlockType<SlideAttributeType>(block.name, {
+    ...block,
     icon: () => <FontAwesomeIcon icon={faImage} />,
     ancestor: [CetaceanUniversityBlocks.Slider],
-    attributes: {
-        imageId: {
-            type: "number",
-            default: 0
-        },
-        imageUrl: {
-            type: "string",
-        },
-        imageDefault: {
-            type: "string",
-            default: "/images/boat.jpg",
-        }  
-    },
     edit: EditComponent,
     save: SaveComponent,
 });

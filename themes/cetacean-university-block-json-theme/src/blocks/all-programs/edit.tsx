@@ -5,6 +5,7 @@ import { useSelect } from "@wordpress/data";
 import type { WP_Post } from "wordpress-types";
 
 import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 import { getTitle } from "@utils/getTitle";
 
 export type AllProgramsEditComponentProps = BlockEditProps<{}>;
@@ -25,18 +26,22 @@ export function EditComponent(props: AllProgramsEditComponentProps){
     }, []);
 
     return (
-    <div className="container container--narrow page-section">
-        <ul className="link-list min-list" >
-            {(programs || []).map(program => {
-                return (
-                <li>
-                    <EditorAnchor href={program.link}>
-                        {getTitle(program)}
-                    </EditorAnchor>
-                </li>
-                );
-            })}
-        </ul>
-    </div>
+    <EditorWrapper>
+        <div className="container container--narrow page-section">
+            <ul className="link-list min-list" >
+                {(programs || []).map(program => {
+                    return (
+                    <li
+                        key={program.id}
+                    >
+                        <EditorAnchor href={program.link}>
+                            {getTitle(program)}
+                        </EditorAnchor>
+                    </li>
+                    );
+                })}
+            </ul>
+        </div>
+    </EditorWrapper>
     );
 }

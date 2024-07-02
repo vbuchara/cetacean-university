@@ -11,6 +11,7 @@ import { faHeart as faEmptyHeart } from "@fortawesome/free-regular-svg-icons/faH
 import type { LikeCheckGet, LikeCountGet, ProgramPost } from "wordpress-types";
 
 import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 import defaultAvatarSrc from "@images/default-user-portrait.png";
 import { getTitle } from "@utils/getTitle";
 
@@ -94,7 +95,7 @@ export function EditComponent(props: ProfessorContentEditComponentProps){
     } = professor;
 
     return (
-    <>
+    <EditorWrapper>
         <ProfessorContentInspectorControls
             professorInfoPreview={professorInfoPreview}
             setProfessorInfoPreview={setProfessorInfoPreview}
@@ -160,6 +161,6 @@ export function EditComponent(props: ProfessorContentEditComponentProps){
             </>
             )}
         </div>
-    </>
+    </EditorWrapper>
     );
 }

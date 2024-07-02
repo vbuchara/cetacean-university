@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "cetacean-university-theme/all-programs",
+    "title": "All Programs",
+    "category": "cetacean-university",
+    "attributes": {},
+    "editorScript": "file:./all-programs.tsx",
+    "render": "file:./render.php"
+}   

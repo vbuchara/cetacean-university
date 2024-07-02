@@ -11,11 +11,13 @@ export type SearchFormAttributeType = {
     formActionLink: string;
 };
 
-registerBlockType<SearchFormAttributeType>(CetaceanUniversityBlocks.SearchForm, {
-    title: "Search Form",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<SearchFormAttributeType>;
+
+registerBlockType<SearchFormAttributeType>(block.name, {
+    ...block,
     icon: () => <FontAwesomeIcon icon={faMagnifyingGlass} />,
     attributes: {
+        ...block.attributes,
         formActionLink: {
             type: "string",
             default: CetaceanUniversitySearchFormData.search_form_action_link,

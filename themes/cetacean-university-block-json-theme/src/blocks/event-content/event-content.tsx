@@ -2,8 +2,6 @@
 import { registerBlockType } from "@wordpress/blocks";
 import type { Content, Guid } from "wordpress-types";
 
-import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
-
 import { EditComponent } from "./edit";
 
 export type EventContentAttributeType = {};
@@ -18,10 +16,10 @@ export type EventContentInfo = {
     }[]
 };
 
-registerBlockType<EventContentAttributeType>(CetaceanUniversityBlocks.EventContent, {
-    title: "Event Content",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<EventContentAttributeType>;
+
+registerBlockType<EventContentAttributeType>(block.name, {
+    ...block,
     icon: "calendar",
-    attributes: {},
     edit: EditComponent
 });

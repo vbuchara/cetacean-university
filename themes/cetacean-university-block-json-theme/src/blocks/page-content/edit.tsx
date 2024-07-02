@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import { type BlockEditProps } from "@wordpress/blocks";
 import { RawHTML } from "@wordpress/element";
 
-import { EditorAnchor } from "@src/components/editor-anchor";
+import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 
 import { PageContentInspectorControls } from "./components/controls";
 
@@ -77,7 +78,7 @@ export function EditComponent(_: PageContentEditComponentProps){
     ]);
     
     return (
-   <> 
+   <EditorWrapper> 
         <PageContentInspectorControls
             pageInfoPreview={pageInfoPreview}
             setPageInfoPreview={setPageInfoPreview}
@@ -90,6 +91,6 @@ export function EditComponent(_: PageContentEditComponentProps){
                 </RawHTML>
             </div>
         </div>
-    </>
+    </EditorWrapper>
     );
 }

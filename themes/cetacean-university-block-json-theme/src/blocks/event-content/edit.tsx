@@ -7,6 +7,7 @@ import { RawHTML } from "@wordpress/element";
 import type { WP_Post } from "wordpress-types";
 
 import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 import { getTitle } from "@utils/getTitle";
 
 import { EventContentInspectorControls } from "./components/controls";
@@ -58,7 +59,7 @@ export function EditComponent(props: EventContentEditComponentProps){
     } = event;
 
     return (
-    <>
+    <EditorWrapper>
         <EventContentInspectorControls
             eventInfoPreview={eventInfoPreview}
             setEventInfoPreview={setEventInfoPreview}
@@ -87,6 +88,6 @@ export function EditComponent(props: EventContentEditComponentProps){
             </>
             )}
         </div>
-    </>
+    </EditorWrapper>
     );
 }

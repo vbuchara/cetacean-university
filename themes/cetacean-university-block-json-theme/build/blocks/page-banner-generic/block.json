@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "cetacean-university-theme/page-banner-generic",
+  "title": "Page Banner Generic",
+  "category": "cetacean-university",
+  "attributes": {
+    "bannerImageId": {
+      "type": "number",
+      "default": 0
+    },
+    "enableMetabox": {
+      "type": "boolean",
+      "default": false
+    },
+    "metaboxInfo": {
+      "type": "object",
+      "default": {
+        "homeLinkText": "Home Link",
+        "mainText": "Main Metabox",
+        "showConditionalVariables": []
+      }
+    }
+  },
+  "editorScript": "file:./page-banner-generic.js",
+  "render": "file:./render.php"
+}

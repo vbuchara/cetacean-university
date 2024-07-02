@@ -11,19 +11,11 @@ export type HeadingAttributesType = {
     size: HeadingSize,
 };
 
-registerBlockType<HeadingAttributesType>(CetaceanUniversityBlocks.Heading, {
-    title: "Heading",
+const block = (await import("./block.json")).default as BlockJson<HeadingAttributesType>;
+
+registerBlockType<HeadingAttributesType>(block.name, {
+    ...block,
     icon: "heading",
-    category: CetaceanUniversityBlocks.BlockCategory,
-    attributes: {
-        text: {
-            type: "string",
-        },
-        size: {
-            type: "string",
-            default: "large",
-        },
-    },
     edit: EditComponent,
     save: SaveComponent
 });

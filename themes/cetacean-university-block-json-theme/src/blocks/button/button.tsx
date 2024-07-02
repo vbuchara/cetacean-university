@@ -4,7 +4,6 @@ import { type WPLinkControlValue } from "@wordpress/block-editor";
 import { EditComponent } from "./edit";
 import { SaveComponent } from "./save";
 
-import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 import { WordpressColorsPresets } from "@classes/WordpressColorsPresets";
 
 export type ButtonSize = "large" | "medium" |"small";
@@ -24,18 +23,13 @@ export type ButtonAttributesType = {
     linkObject?: WPLinkControlValue
 };
 
-registerBlockType<ButtonAttributesType>(CetaceanUniversityBlocks.Button, {
-    title: "Button",
+const block = (await import("./block.json")).default as BlockJson<ButtonAttributesType>;
+
+registerBlockType<ButtonAttributesType>(block.name, {
+    ...block,
     icon: "button",
-    category: CetaceanUniversityBlocks.BlockCategory,
     attributes: {
-        text: {
-            type: "string",
-        },
-        size: {
-            type: "string",
-            default: "large",
-        },
+        ...block.attributes,
         backgroundColor: {
             type: "string",
             default: `var(${WordpressColorsPresets.Primary})`,
@@ -44,14 +38,6 @@ registerBlockType<ButtonAttributesType>(CetaceanUniversityBlocks.Button, {
             type: "string",
             default: `var(${WordpressColorsPresets.White})`,
         },
-        animations: {
-            type: "object",
-            default: {}
-        },
-        linkObject: {
-            type: "object",
-            default: {}
-        }
     },
     edit: EditComponent,
     save: SaveComponent

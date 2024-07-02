@@ -10,7 +10,7 @@ import { WordpressColorsPresets } from "@classes/WordpressColorsPresets";
 import { BlogPost } from "./blog-post";
 
 export type RecentPostsProps = {
-    blogLink: string;
+    blogLink?: string;
     onLoadFinish?: () => void;
     onLayoutChange?: () => void;
     isOnEditor?: boolean;
@@ -65,7 +65,7 @@ export function RecentPosts({
                         color: `var(${WordpressColorsPresets.White})`,
                         text: "View All Blog Posts",
                         linkObject: {
-                            url: !isOnEditor ? blogLink : ""
+                            url: !isOnEditor && blogLink ? blogLink : ""
                         }
                     }}
                 />

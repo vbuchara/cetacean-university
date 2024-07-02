@@ -7,6 +7,8 @@ import { ToolbarGroup, ToolbarButton } from "@wordpress/components";
 import { RichText, BlockControls } from "@wordpress/block-editor";
 import { type BlockEditProps } from "@wordpress/blocks";
 
+import { EditorWrapper } from "@components/editor-wrapper";
+
 import type { HeadingSize, HeadingAttributesType } from "./heading";
 
 export type HeadingEditComponentProps = BlockEditProps<HeadingAttributesType>;
@@ -57,7 +59,7 @@ export function EditComponent(props: HeadingEditComponentProps){
     }, [attributes.size]);
 
     return (
-    <>
+    <EditorWrapper>
         <BlockControls>
             <ToolbarGroup>
                 <ToolbarButton
@@ -87,6 +89,6 @@ export function EditComponent(props: HeadingEditComponentProps){
             value={attributes.text}
             onChange={(value) => setAttributes({ text: value })}
         />
-    </>
+    </EditorWrapper>
     );
 }

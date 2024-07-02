@@ -1,0 +1,10 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "cetacean-university-theme/post-content",
+  "title": "Post Content",
+  "category": "cetacean-university",
+  "attributes": {},
+  "editorScript": "file:./post-content.js",
+  "render": "file:./render.php"
+}

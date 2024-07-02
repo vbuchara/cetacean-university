@@ -1,13 +1,13 @@
 import { registerBlockType } from "@wordpress/blocks";
 
-import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
-
 import { EditComponent } from "./edit";
 
-registerBlockType(CetaceanUniversityBlocks.EventsAndPosts, {
-    title: "Events and Posts",
+export type EventsAndPostsAttributesType = {};
+
+const block = (await import("./block.json")).default as BlockJson<EventsAndPostsAttributesType>;
+
+registerBlockType(block.name, {
+    ...block,
     icon: "calendar-alt",
-    category: CetaceanUniversityBlocks.BlockCategory,
-    attributes: {},
     edit: EditComponent
 });

@@ -7,7 +7,7 @@ export type PageBannerSubtitleSaveComponentProps = BlockSaveProps<PageBannerSubt
 
 export function SaveComponent(props: PageBannerSubtitleSaveComponentProps){
     return (
-    <div className="page-banner__intro">
+    <div className={"page-banner__intro"}>
         <RichText.Content
             tagName="p"
             value={props.attributes.text}

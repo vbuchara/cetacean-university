@@ -12,6 +12,7 @@ import { useDispatch, useSelect } from "@wordpress/data";
 import type { EditorVariablesGet, WpFeaturedmedia } from "wordpress-types";
 
 import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
+import { EditorWrapper } from "@components/editor-wrapper";
 
 import { PageBannerGenericBlockControls, PageBannerGenericInspectorControls } from "./components/control";
 import { Metabox } from "./components/metabox";
@@ -156,7 +157,7 @@ export function EditComponent(props: PageBannerGenericEditComponentProps){
     }, [innerBlocksDependency, pageBannerTitleBlocksCount, pageBannerSubtitleBlocksCount]);
 
     return (
-    <>
+    <EditorWrapper>
         <PageBannerGenericInspectorControls
             attributes={attributes}
             setAttributes={setAttributes}
@@ -201,6 +202,6 @@ export function EditComponent(props: PageBannerGenericEditComponentProps){
             />
             )}
         </div>
-    </>
+    </EditorWrapper>
     );
 }

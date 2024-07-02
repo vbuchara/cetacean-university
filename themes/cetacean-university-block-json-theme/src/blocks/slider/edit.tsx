@@ -9,6 +9,7 @@ import {
     store as editorStore
 } from "@wordpress/editor"
 
+import { EditorWrapper } from "@components/editor-wrapper";
 import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type SliderEditComponentProps = BlockEditProps<{}>;
@@ -65,22 +66,24 @@ export function EditComponent(props: SliderEditComponentProps){
     }, [innerBlocksCount, innerBlocks]);
 
     return (
-    <div className="hero-slider hero-slider--editor">
-        <h2 className="hero-slider__notice">
-            Slider Parent
-        </h2>
-        <div data-glide-el="track" className="glide__track">
-            <div className="glide__slides glide__slides--editor">
-                <InnerBlocks
-                    allowedBlocks={[CetaceanUniversityBlocks.Slide]}
-                    renderAppender={RenderAppender}
-                />
+    <EditorWrapper>
+        <div className="hero-slider hero-slider--editor">
+            <h2 className="hero-slider__notice">
+                Slider Parent
+            </h2>
+            <div data-glide-el="track" className="glide__track">
+                <div className="glide__slides glide__slides--editor">
+                    <InnerBlocks
+                        allowedBlocks={[CetaceanUniversityBlocks.Slide]}
+                        renderAppender={RenderAppender}
+                    />
+                </div>
+                <div className="slider__bullets glide__bullets" data-glide-el="controls[nav]"></div>
             </div>
-            <div className="slider__bullets glide__bullets" data-glide-el="controls[nav]"></div>
+            <h2 className="hero-slider__notice">
+                Slider Parent
+            </h2>
         </div>
-        <h2 className="hero-slider__notice">
-            Slider Parent
-        </h2>
-    </div>
+    </EditorWrapper>
     );
 }

@@ -2,6 +2,7 @@ import { type BlockEditProps } from "@wordpress/blocks";
 import { RichText, useBlockProps } from "@wordpress/block-editor";
 
 import { EditorAnchor } from "@src/components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 
 import { ExploreMenu } from "./components/explore-menu";
 import { LearnMenu } from "./components/learn-menu";
@@ -31,7 +32,7 @@ export function EditComponent({
     const blockProps = useBlockProps();
 
     return (
-    <div {...blockProps}>
+    <EditorWrapper>
         <FooterInspectorControls
             attributes={attributes}
             setAttributes={setAttributes}
@@ -84,6 +85,6 @@ export function EditComponent({
                 </div>
             </div>
         </footer>
-    </div>
+    </EditorWrapper>
     );
 }

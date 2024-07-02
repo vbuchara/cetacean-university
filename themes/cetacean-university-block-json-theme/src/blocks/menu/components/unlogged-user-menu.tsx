@@ -8,19 +8,16 @@ export function UnloggedUserMenu(){
     <>
         <EditorAnchor
             className="btn btn--small btn--secondary float-left push-right btn--slide-from-left"
-            href={CetaceanUniversityMenuData.login_link}
         >
             Login
         </EditorAnchor>
         <EditorAnchor
             className="btn btn--small btn--secondary float-left btn--slide-from-left"
-            href={CetaceanUniversityMenuData.register_link}
         >
             Sign Up
         </EditorAnchor>
         <EditorAnchor 
             className="search-trigger js-search-trigger"
-            href={CetaceanUniversityMenuData.search_link}
         >
             <FontAwesomeIcon 
                 icon={faMagnifyingGlass}

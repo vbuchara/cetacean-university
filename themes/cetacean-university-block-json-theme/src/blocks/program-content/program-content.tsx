@@ -27,10 +27,10 @@ export interface ProgramContentInfo {
     }[]
 }
 
-registerBlockType<ProgramContentAttributeType>(CetaceanUniversityBlocks.ProgramContent, {
-    title: "Program Content",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<ProgramContentAttributeType>;
+
+registerBlockType<ProgramContentAttributeType>(block.name, {
+    ...block,
     icon: "welcome-learn-more",
-    attributes: {},
     edit: EditComponent,
 });

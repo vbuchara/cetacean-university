@@ -14,7 +14,7 @@ import { Event } from "@src/components/event";
 import { Placeholders } from "@classes/Placeholders";
 
 export type UpcomingEventsProps = {
-    eventsArchiveLink: string;
+    eventsArchiveLink?: string;
     onLoadFinish?: () => void;
     onLayoutChange?: () => void;
     isOnEditor?: boolean;
@@ -76,7 +76,7 @@ export function UpcomingEvents({
                         color: `var(${WordpressColorsPresets.White})`,
                         text: "View All Events",
                         linkObject: {
-                            url: !isOnEditor ? eventsArchiveLink : "" 
+                            url: !isOnEditor && eventsArchiveLink ? eventsArchiveLink : "" 
                         }
                     }}
                 />

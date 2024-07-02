@@ -5,16 +5,25 @@ import {
 } from '@wordpress/block-editor';
 
 import { CetaceanUniversityBlocks } from '@classes/CetaceanUniversityBlocks';
+import { EditorWrapper } from "@components/editor-wrapper";
+
+import { BannerInspectorControls } from './components/controls';
 
 import type { BannerAttributesType } from './banner';
-import { BannerInspectorControls } from './components/controls';
 
 export type BannerEditComponentProps = BlockEditProps<BannerAttributesType>;
 
 export function EditComponent(props: BannerEditComponentProps){
+    const {
+        attributes
+    } = props;
+
+    const bannerImageUrl = attributes.bannerImageUrl 
+        ? attributes.bannerImageUrl 
+        : CetaceanUniversityBannerData.theme_path + "/images/library-hero.jpg";
 
     return (
-    <>
+    <EditorWrapper>
         <BannerInspectorControls
             {...props}
         />
@@ -22,7 +31,7 @@ export function EditComponent(props: BannerEditComponentProps){
             <div 
                 className="page-banner__bg-image" 
                 style={{
-                    "--bg-image": `url(${props.attributes.bannerImageUrl})`
+                    "--bg-image": `url(${bannerImageUrl})`
                 }}
             ></div>
             <div className="page-banner__content container t-center c-white">
@@ -31,6 +40,6 @@ export function EditComponent(props: BannerEditComponentProps){
                 />
             </div>
         </div>
-    </>
+    </EditorWrapper>
     );
 }

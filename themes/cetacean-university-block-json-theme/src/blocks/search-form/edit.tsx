@@ -1,6 +1,8 @@
 
 import { type BlockEditProps } from "@wordpress/blocks";
 
+import { EditorWrapper } from "@components/editor-wrapper";
+
 import { SearchFormBlock } from "./components/block";
 import { SearchFormInspectorControls } from "./components/controls";
 
@@ -12,7 +14,7 @@ export function EditComponent(props: SearchFormEditComponentProps){
     const { attributes, setAttributes } = props;
 
     return (
-    <>
+    <EditorWrapper>
         <SearchFormInspectorControls
             attributes={attributes}
             setAttributes={setAttributes}
@@ -20,6 +22,6 @@ export function EditComponent(props: SearchFormEditComponentProps){
         <SearchFormBlock
             searchAction={attributes.formActionLink}
         />
-    </>
+    </EditorWrapper>
     );
 }

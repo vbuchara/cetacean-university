@@ -6,6 +6,7 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons/faPencil";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons/faTrashCan";
 import type { WP_Post } from "wordpress-types";
 
+import { EditorWrapper } from "@components/editor-wrapper";
 import { getContent } from "@utils/getContent";
 import { getTitle } from "@utils/getTitle";
 
@@ -32,70 +33,72 @@ export function EditComponent(props: NoteManagerEditComponentProps){
     }, []);
 
     return (
-    <div className="container container--narrow page-section">
-        <div className="create-note">
-            <h2 className="headline headline--medium">
-                Create New Note
-            </h2>
-            <input 
-                className="new-note-title" 
-                type="text" 
-                placeholder="Title"
-                name="note-title"
-                readOnly
-            />
-            <textarea 
-                className="new-note-body"
-                placeholder="Content of your note here"
-                readOnly
-            />
-            <button className="submit-note btn btn--primary btn--slide-from-top">
-                Create Note
-            </button>
-            <span className="note-error-message"></span>
-        </div>
-
-        <ul
-            id="my-notes-list" 
-            className="min-list link-list"
-        >
-            {!userNotes || userNotes.length === 0 ? "" : userNotes.map(note => (
-            <li 
-                key={note.id}
-                className="note-item" 
-                data-note-id={note.id} 
-            >
+    <EditorWrapper>
+        <div className="container container--narrow page-section">
+            <div className="create-note">
+                <h2 className="headline headline--medium">
+                    Create New Note
+                </h2>
                 <input 
-                    className="note-title-field"
-                    value={getTitle(note)} 
+                    className="new-note-title" 
+                    type="text" 
+                    placeholder="Title"
+                    name="note-title"
                     readOnly
                 />
-                <div className="note-actions">
-                    <button className="btn btn--edit-note btn--slide-from-top">
-                        <FontAwesomeIcon
-                            icon={faPencil}
-                            height="0.9rem"
-                            width="0.9rem"
-                        />
-                        Edit
-                    </button>
-                    <button className="btn btn--delete-note btn--slide-from-top">
-                        <FontAwesomeIcon
-                            icon={faTrashCan}
-                            height="0.9rem"
-                            width="0.9rem"
-                        />
-                        Delete
-                    </button>
-                </div>
-                <textarea
-                    className="note-body-field"
-                    value={getContent(note)}
+                <textarea 
+                    className="new-note-body"
+                    placeholder="Content of your note here"
                     readOnly
                 />
-            </li>
-            ))}
-        </ul>
-    </div>
+                <button className="submit-note btn btn--primary btn--slide-from-top">
+                    Create Note
+                </button>
+                <span className="note-error-message"></span>
+            </div>
+
+            <ul
+                id="my-notes-list" 
+                className="min-list link-list"
+            >
+                {!userNotes || userNotes.length === 0 ? "" : userNotes.map(note => (
+                <li 
+                    key={note.id}
+                    className="note-item" 
+                    data-note-id={note.id} 
+                >
+                    <input 
+                        className="note-title-field"
+                        value={getTitle(note)} 
+                        readOnly
+                    />
+                    <div className="note-actions">
+                        <button className="btn btn--edit-note btn--slide-from-top">
+                            <FontAwesomeIcon
+                                icon={faPencil}
+                                height="0.9rem"
+                                width="0.9rem"
+                            />
+                            Edit
+                        </button>
+                        <button className="btn btn--delete-note btn--slide-from-top">
+                            <FontAwesomeIcon
+                                icon={faTrashCan}
+                                height="0.9rem"
+                                width="0.9rem"
+                            />
+                            Delete
+                        </button>
+                    </div>
+                    <textarea
+                        className="note-body-field"
+                        value={getContent(note)}
+                        readOnly
+                    />
+                </li>
+                ))}
+            </ul>
+        </div>
+    </EditorWrapper>
     );
 }

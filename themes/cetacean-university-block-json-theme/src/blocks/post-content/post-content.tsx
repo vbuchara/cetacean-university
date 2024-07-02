@@ -10,10 +10,10 @@ export type PostContentInfo = {
 
 export type PostContentAttributeType = {};
 
-registerBlockType<PostContentAttributeType>(CetaceanUniversityBlocks.PostContent, {
-    title: "Post Content",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<PostContentAttributeType>;
+
+registerBlockType<PostContentAttributeType>(block.name, {
+    ...block,
     icon: "admin-post",
-    attributes: {},
     edit: EditComponent,
 });

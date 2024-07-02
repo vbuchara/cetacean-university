@@ -1,14 +1,12 @@
 import { registerBlockType } from "@wordpress/blocks";
 import { EditComponent } from "./edit";
 
-import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks";
-
 export type NoteManagerAttributeType = {};
 
-registerBlockType<NoteManagerAttributeType>(CetaceanUniversityBlocks.NoteManager, {
-    title: "Note Manager",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<NoteManagerAttributeType>;
+
+registerBlockType<NoteManagerAttributeType>(block.name, {
+    ...block,
     icon: "format-aside",
-    attributes: {},
     edit: EditComponent,
 });

@@ -1,11 +1,12 @@
 import { type BlockEditProps } from "@wordpress/blocks";
-
 import { EditorAnchor } from "@components/editor-anchor";
-import { Event } from "@components/event";
 import { type GetRecordsHttpQuery, store as coreStore } from "@wordpress/core-data";
 import { useSelect } from "@wordpress/data";
 import { format } from "date-fns";
 import type { EventPost } from "wordpress-types";
+
+import { Event } from "@components/event";
+import { EditorWrapper } from "@components/editor-wrapper";
 
 export type PastEventsEditComponentProps = BlockEditProps<{}>;
 
@@ -31,22 +32,22 @@ export function EditComponent(props: PastEventsEditComponentProps){
     }, []);
 
     return (
-    <div className="container container--narrow page-section">
-        {!pastEvents ? "" : pastEvents.map(event => (
-        <Event
-            key={event.id}
-            event={event}
-            isOnEditor={true}
-        />
-        ))}
-        <hr className="section-break"/>
-        <p>
-            <EditorAnchor
-                href={CetaceanUniversityPastEventsData.events_archive_link}
-            >
-                See Upcoming Events
-            </EditorAnchor>
-        </p>
-    </div>
+    <EditorWrapper>
+        <div className="container container--narrow page-section">
+            {!pastEvents ? "" : pastEvents.map(event => (
+            <Event
+                key={event.id}
+                event={event}
+                isOnEditor={true}
+            />
+            ))}
+            <hr className="section-break"/>
+            <p>
+                <EditorAnchor>
+                    See Upcoming Events
+                </EditorAnchor>
+            </p>
+        </div>
+    </EditorWrapper>
     );
 }

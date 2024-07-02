@@ -19,10 +19,10 @@ export interface ProfessorContentInfo {
     }[]
 }
 
-registerBlockType<ProfessorContentAttributeType>(CetaceanUniversityBlocks.ProfessorContent, {
-    title: "Professor Content",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<ProfessorContentAttributeType>;
+
+registerBlockType<ProfessorContentAttributeType>(block.name, {
+    ...block,
     icon: "businessman",
-    attributes: {},
     edit: EditComponent,
 });

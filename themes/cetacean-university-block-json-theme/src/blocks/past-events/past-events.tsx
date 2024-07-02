@@ -6,10 +6,10 @@ import { CetaceanUniversityBlocks } from "@src/classes/CetaceanUniversityBlocks"
 
 export type PastEventsAttributeType = {};
 
-registerBlockType<PastEventsAttributeType>(CetaceanUniversityBlocks.PastEvents, {
-    title: "Past Events",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<PastEventsAttributeType>;
+
+registerBlockType<PastEventsAttributeType>(block.name, {
+    ...block,
     icon: "calendar",
-    attributes: {},
     edit: EditComponent,
 });

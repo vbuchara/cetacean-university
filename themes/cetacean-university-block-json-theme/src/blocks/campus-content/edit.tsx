@@ -12,6 +12,8 @@ import { RawHTML } from "@wordpress/element";
 import type { EventPost, WP_Post } from "wordpress-types";
 import { format } from "date-fns";
 
+import { EditorAnchor } from "@components/editor-anchor";
+import { EditorWrapper } from "@components/editor-wrapper";
 import { Event } from "@components/event";
 import { getTitle } from "@utils/getTitle";
 
@@ -20,7 +22,6 @@ import { CampusMap } from "../campuses-map/components/campus-map";
 import { CampusContentInspectorControls } from "./components/controls";
 
 import { CampusContentInfo } from "./campus-content";
-import { EditorAnchor } from "@src/components/editor-anchor";
 
 export type CampusContentEditComponentProps = BlockEditProps<{}>;
 
@@ -144,53 +145,55 @@ export function EditComponent(props: CampusContentEditComponentProps){
         apiKey={process.env.GOOGLE_MAPS_API_KEY}
         onLoad={() => console.log("Google Maps API Loaded")}
     >
-        <CampusContentInspectorControls
-            campusInfoPreview={campusInfoPreview}
-            setCampusInfoPreview={setCampusInfoPreview}
-        />
-        <div className="container container--narrow page-section">
-            <RawHTML className="generic-content">
-                {campus.content}
-            </RawHTML>
-            <CampusMap
-                campuses={[campus]}
-                isSingle={true}
+        <EditorWrapper>
+            <CampusContentInspectorControls
+                campusInfoPreview={campusInfoPreview}
+                setCampusInfoPreview={setCampusInfoPreview}
             />
-            {!campusRelatedPrograms || campusRelatedPrograms.length === 0 ? "" : (
-            <>
-                <hr className="section-break" />
-                <h2 className="headline headline--medium">
-                    Offered Programs 
-                </h2>
-                <ul className="link-list min-list" >
-                    {campusRelatedPrograms.map(program => (
-                    <li
-                        key={program.id}
-                    >
-                        <EditorAnchor href={program.link}>
-                            {getTitle(program)}
-                        </EditorAnchor>
-                    </li>
-                    ))}
-                </ul>
-            </>
-            )}
-            {!campusRelatedEvents || campusRelatedEvents.length === 0 ? "" : (
-            <>
-                <hr className="section-break" />
-                <h2 className="headline headline--medium">
-                    Upcoming Events on the Campus
-                </h2>
-                {campusRelatedEvents.map(event => (
-                <Event
-                    key={event.id}
-                    event={event}
-                    isOnEditor={true}
+            <div className="container container--narrow page-section">
+                <RawHTML className="generic-content">
+                    {campus.content}
+                </RawHTML>
+                <CampusMap
+                    campuses={[campus]}
+                    isSingle={true}
                 />
-                ))}
-            </>
-            )}
-        </div>
+                {!campusRelatedPrograms || campusRelatedPrograms.length === 0 ? "" : (
+                <>
+                    <hr className="section-break" />
+                    <h2 className="headline headline--medium">
+                        Offered Programs 
+                    </h2>
+                    <ul className="link-list min-list" >
+                        {campusRelatedPrograms.map(program => (
+                        <li
+                            key={program.id}
+                        >
+                            <EditorAnchor href={program.link}>
+                                {getTitle(program)}
+                            </EditorAnchor>
+                        </li>
+                        ))}
+                    </ul>
+                </>
+                )}
+                {!campusRelatedEvents || campusRelatedEvents.length === 0 ? "" : (
+                <>
+                    <hr className="section-break" />
+                    <h2 className="headline headline--medium">
+                        Upcoming Events on the Campus
+                    </h2>
+                    {campusRelatedEvents.map(event => (
+                    <Event
+                        key={event.id}
+                        event={event}
+                        isOnEditor={true}
+                    />
+                    ))}
+                </>
+                )}
+            </div>
+        </EditorWrapper>
     </APIProvider>
     );
 }

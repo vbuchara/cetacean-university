@@ -2,7 +2,6 @@ import { registerBlockType } from "@wordpress/blocks";
 import { EditComponent } from "./edit";
 import type { Guid } from "wordpress-types";
 
-import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 import type { EventInfo } from "@components/event";
 
 import type { CampusMapInfo } from "../campuses-map/components/campus-map";
@@ -19,10 +18,10 @@ export interface CampusContentInfo extends CampusMapInfo{
     relatedEvents?: (EventInfo & { id: number })[];
 };
 
-registerBlockType<CampusContentAttributeType>(CetaceanUniversityBlocks.CampusContent, {
-    title: "Campus Content",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<CampusContentAttributeType>;
+
+registerBlockType<CampusContentAttributeType>(block.name, {
+    ...block,
     icon: "location",
-    attributes: {},
     edit: EditComponent,
 });

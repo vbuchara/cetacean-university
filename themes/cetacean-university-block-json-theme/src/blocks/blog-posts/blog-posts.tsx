@@ -5,10 +5,10 @@ import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type BlogPostsAttributeType = {};
 
-registerBlockType<BlogPostsAttributeType>(CetaceanUniversityBlocks.BlogPosts, {
-    title: "Blog Posts",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<BlogPostsAttributeType>;
+
+registerBlockType<BlogPostsAttributeType>(block.name, {
+    ...block,
     icon: "admin-post",
-    attributes: {},
     edit: EditComponent,
 });

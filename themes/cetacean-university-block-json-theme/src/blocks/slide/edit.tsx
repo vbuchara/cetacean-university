@@ -3,6 +3,7 @@ import { InnerBlocks } from "@wordpress/block-editor";
 import { type BlockEditProps } from "@wordpress/blocks";
 
 import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
+import { EditorWrapper } from "@components/editor-wrapper";
 
 import { SlideInspectorControls } from "./components/controls";
 
@@ -17,7 +18,7 @@ export function EditComponent(props: SlideEditComponentProps){
         : CetaceanUniversitySlideData.theme_path + attributes.imageDefault;
 
     return (
-    <>
+    <EditorWrapper>
         <SlideInspectorControls
             attributes={attributes}
             setAttributes={setAttributes}
@@ -40,6 +41,6 @@ export function EditComponent(props: SlideEditComponentProps){
                 </div>
             </div>
         </div>
-    </>
+    </EditorWrapper>
     );
 }

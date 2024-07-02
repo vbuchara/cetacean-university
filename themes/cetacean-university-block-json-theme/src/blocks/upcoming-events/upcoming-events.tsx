@@ -2,21 +2,14 @@
 import { registerBlockType } from "@wordpress/blocks";
 import { EditComponent } from "./edit";
 
-import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
-
 export type UpcomingEventsAttributeType = {
     enablePastEventsLink: boolean
 };
 
-registerBlockType<UpcomingEventsAttributeType>(CetaceanUniversityBlocks.UpcomingEvents, {
-    title: "Upcoming Events",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<UpcomingEventsAttributeType>;
+
+registerBlockType<UpcomingEventsAttributeType>(block.name, {
+    ...block,
     icon: "calendar",
-    attributes: {
-        enablePastEventsLink: {
-            type: "boolean",
-            default: true,
-        },
-    },
     edit: EditComponent,
 });

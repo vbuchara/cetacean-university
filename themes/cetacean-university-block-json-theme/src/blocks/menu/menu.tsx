@@ -9,11 +9,11 @@ import { CetaceanUniversityBlocks } from "@classes/CetaceanUniversityBlocks";
 
 export type MenuAttributeType = {};
 
-registerBlockType<MenuAttributeType>(CetaceanUniversityBlocks.Menu, {
-    title: "Menu",
-    category: CetaceanUniversityBlocks.BlockCategory,
+const block = (await import("./block.json")).default as BlockJson<MenuAttributeType>;
+
+registerBlockType<MenuAttributeType>(block.name, {
+    ...block,
     icon: menu,
     ancestor: [CetaceanUniversityBlocks.Header], 
-    attributes: {},
     edit: EditComponent,
 });

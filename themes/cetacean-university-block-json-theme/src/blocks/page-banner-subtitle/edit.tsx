@@ -5,6 +5,8 @@ import type { BlockEditProps } from "@wordpress/blocks";
 import { RichText } from "@wordpress/block-editor";
 import type { EditorVariablesGet } from "wordpress-types";
 
+import { EditorWrapper } from "@components/editor-wrapper";
+
 import { PageBannerSubtitleBlockControls, PageBannerSubtitleInspectorControls } from "./components/controls";
 
 import type { PageBannerSubtitleAttributeType } from "./page-banner-subtitle";
@@ -35,7 +37,7 @@ export function EditComponent(props: PageBannerSubtitleEditComponentProps){
     }
 
     return (
-    <>
+    <EditorWrapper>
         <PageBannerSubtitleInspectorControls
             attributes={attributes}
             setAttributes={setAttributes}
@@ -58,6 +60,6 @@ export function EditComponent(props: PageBannerSubtitleEditComponentProps){
                 onSelect={onSelectText as unknown as React.ReactEventHandler<"p">}
             />
         </div>
-    </>
+    </EditorWrapper>
     );
 }
