@@ -1,0 +1,82 @@
+@use 'sass:color';
+@use '@styles/abstract/variables' as *;
+@use '@styles/abstract/breakpoints' as *;
+
+@use '@styles/base/animations';
+
+.interactive-quiz-edit-block {
+    --background-color: #{$dolphin};
+    --border-color: #{color.scale($dolphin, $lightness: -25%)};
+
+    padding-inline: 10px;
+    padding-block: 20px;
+
+    color: $black;
+    background-color: var(--background-color);
+    
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--border-color);
+    
+    &__input .components-base-control__field {
+        margin-bottom: 0;
+    }
+
+    &__group-title, &__question label {
+        font-size: 0.8rem;
+        font-weight: 500;
+        line-height: 1.4;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 8px;
+        padding: 0px;
+
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    }
+
+    &__answer {
+        margin-bottom: 20px;
+    }
+
+    &__button:is(.is-primary, #priority) {
+        &:disabled {
+            background-color: $gray;
+            color: $white;
+            cursor: not-allowed;
+        }
+    }
+
+    &__icon-button{
+        color: $black;
+
+        transition: color 0.5s ease-out;
+
+        &:is(:hover, :active, :visited) {
+            color: $whales-tale;
+
+            span {
+                scale: 1.25;
+            }
+            
+        }
+
+        &:disabled, &:disabled:hover {
+            background-color: $gray;
+            color: $white;
+            opacity: 1;
+            cursor: not-allowed;
+
+            span {
+                scale: 1;
+            }
+        }
+
+        span {
+            transition: scale 0.5s ease;
+        }
+    }
+
+    &__delete:is(:hover, :active, :visited) {
+        color: $red;
+    }
+}

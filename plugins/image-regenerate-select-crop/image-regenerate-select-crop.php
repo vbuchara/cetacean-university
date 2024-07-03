@@ -5,7 +5,7 @@
  * Description: Regenerate and crop images, details and actions for image sizes registered and image sizes generated, clean up, placeholders, custom rules, register new image sizes, crop medium settings, WP-CLI commands, optimize images.
  * Text Domain: sirsc
  * Domain Path: /langs
- * Version:     8.0.0
+ * Version:     8.0.2
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -29,7 +29,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-define( 'SIRSC_VER', 8.0 );
+define( 'SIRSC_VER', 8.02 );
 define( 'SIRSC_FILE', __FILE__ );
 define( 'SIRSC_DIR', \plugin_dir_path( __FILE__ ) );
 define( 'SIRSC_URL', \plugin_dir_url( __FILE__ ) );
@@ -273,7 +273,7 @@ class SIRSC_Image_Regenerate_Select_Crop {
 		add_action( 'after_setup_theme', [ $called, 'maybe_register_custom_image_sizes' ] );
 		add_filter( 'image_size_names_choose', [ $called, 'one_time_custom_image_size_names_choose' ], 60 );
 		add_filter( 'wp_php_error_message', [ $called, 'assess_background_errors' ], 60, 2 );
-		add_filter( 'wp_unique_filename', [ $called, 'upload_name_prefilter' ], 10, 6 );
+		add_filter( 'wp_unique_filename', [ $called, 'upload_name_prefilter' ], 60, 6 );
 
 		// Attempt to run only one time the action.
 		add_action( 'sirsc/image_size_names_choose', [ $called, 'custom_image_size_names_choose' ] );
@@ -2540,7 +2540,7 @@ class SIRSC_Image_Regenerate_Select_Crop {
 				$name   = pathinfo( $file, PATHINFO_FILENAME );
 				$path   = pathinfo( $file, PATHINFO_DIRNAME );
 				$gene[] = $file;
-				$extra  = glob( $path . '/' . $name . '-*x*.' . $ext, GLOB_BRACE );
+				$extra  = glob( $path . '/' . $name . '-*x*.' . $ext );
 				if ( ! empty( $extra ) ) {
 					foreach ( $extra as $kglob => $tmp ) {
 						$test = explode( $name, $tmp );
@@ -2948,21 +2948,64 @@ class SIRSC_Image_Regenerate_Select_Crop {
 	}
 
 	/**
-	 * Prefilter and fix the file name on upload.
+	 * Prefilter and fix the file name on upload, following the best practice
+	 * for SEO and accessibility when it comes to the filenames.
 	 *
-	 * @param string        $filename        Unique file name.
-	 * @param string        $ext             File extension. Example: ".png".
-	 * @param string        $dir             Directory path.
-	 * @param callable|null $unique_callback Callback function that generates the unique file name.
-	 * @param string[]      $alt             Array of alternate file names that were checked for collisions.
-	 * @param int|string    $number          The highest number used or an empty string if unused.
+	 * @param  string        $filename Unique file name.
+	 * @param  string        $ext      File extension. Example: ".png".
+	 * @param  string        $dir      Directory path.
+	 * @param  callable|null $callback Callback function that generates the unique file name.
+	 * @param  array         $alt      Array of alternate file names that were checked for collisions.
+	 * @param  int|string    $number   The highest number used or an empty string if unused.
 	 * @return string
 	 */
-	public static function upload_name_prefilter( $filename = '', $ext = '', $dir = '', $unique_callback = null, $alt = '', $number = '' ) {
+	public static function upload_name_prefilter( $filename = '', $ext = '', $dir = '', $callback = null, $alt = [], $number = '' ) {
+
 		$ext = strtolower( $ext );
 		if ( ! empty( $filename ) && in_array( $ext, [ '.gif', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.avif' ], true ) ) {
-			$name     = substr( $filename, 0, -1 * strlen( $ext ) );
-			$filename = str_replace( '.', '-', $name ) . $ext;
+			if ( empty( $number ) ) {
+				$name = substr( $filename, 0, -1 * strlen( $ext ) );
+			} else {
+				$name = substr( $filename, 0, -1 * ( strlen( $ext ) + strlen( (string) $number ) + 1 ) );
+			}
+
+			$count = 0;
+			$name  = strtolower( str_replace( '.', '-', $name ) );
+			$name  = str_replace( '_', '-', $name );
+
+			// Scaled is a reserved word.
+			if ( '-scaled' === substr( $name, -7 ) ) {
+				$name = substr( $name, 0, -7 );
+			}
+
+			// Use scandir, just like core does.
+			$files = @scandir( $dir ); // phpcs:ignore
+			if ( ! empty( $files ) ) {
+				foreach ( $files as $file ) {
+					if ( ! substr_count( $file, $name ) ) {
+						continue;
+					}
+
+					$fname = explode( '.', $file );
+					$fext  = '.' . end( $fname );
+					if ( $ext !== $fext ) {
+						continue;
+					}
+
+					$test = explode( $name, $file );
+					if ( ! empty( $test[1] ) && substr_count( $test[1], 'x' ) ) {
+						continue;
+					}
+
+					++$count;
+				}
+			}
+
+			if ( $count > 0 ) {
+				$filename = strtolower( $name . '-' . $count . $ext );
+			} else {
+				$filename = strtolower( $name . $ext );
+			}
 		}
 
 		return $filename;

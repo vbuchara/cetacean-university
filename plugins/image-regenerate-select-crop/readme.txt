@@ -3,8 +3,8 @@ Contributors: Iulia Cazan
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
 Tags: image optimization, crop, regenerate, cleanup, bulk regenerate
 Requires at least: 4.9.2
-Tested up to: 6.5.3
-Stable tag: 8.0.0
+Tested up to: 6.6
+Stable tag: 8.0.2
 Requires PHP: 7.3.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,6 +14,7 @@ Advanced management for images, register new sub-sizes, sub-sizes details, regen
 == Description ==
 Image Regenerate & Select Crop plugin provides enhanced control over image settings and files regeneration, allowing you to override native medium and large crop options, and register new sub-sizes. The plugin appends additional buttons to regenerate and crop images (providing detailed information about the registered image sub-sizes and their status within the application) and enables configuration of the plugin for global or specific post-type attached images.
 For the latest updates and detailed feature descriptions, visit [https://iuliacazan.ro/image-regenerate-select-crop/](https://iuliacazan.ro/image-regenerate-select-crop/).
+
 
 = Key Features =
 * Details button: opens a lightbox displaying detailed information on any missing sub-size files and options for manual generation if applicable. For crop-type images, the plugin offers the one-click re-crop option, using specific portions of the original image with an instant preview feature.
@@ -35,6 +36,13 @@ For the latest updates and detailed feature descriptions, visit [https://iuliaca
 
 
 == Changelog ==
+= 8.0.2 =
+* Removed the GLOB_BRACE from the code, as that is not available on some non GNU systems
+
+= 8.0.1 =
+* Tested up to 6.6
+* Refined the filter for fixing the file name on upload, following the best practice for SEO and accessibility
+
 = 8.0.0 =
 * This is a major update, please keep a backup of your files before updating
 * Tested up to 6.5.3

@@ -124,7 +124,7 @@ const newModuleConfig = {
     resolve: {
         ...moduleConfig?.resolve,
         alias: {
-            ...scriptConfig.resolve?.alias,
+            ...moduleConfig?.resolve?.alias,
             "@images": path.resolve(__dirname, "images/"),
             "@src": path.resolve(__dirname, "src/"),
             "@blocks": path.resolve(__dirname, "src/blocks/"),

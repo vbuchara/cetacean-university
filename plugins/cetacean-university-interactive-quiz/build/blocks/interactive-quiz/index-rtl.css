@@ -1,0 +1,99 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/interactive-quiz/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************************************/
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+@keyframes pulse-outline {
+  0% {
+    outline-offset: 0;
+  }
+  25% {
+    outline-offset: 4px;
+  }
+  50% {
+    outline-offset: 0;
+  }
+  75% {
+    outline-offset: 4px;
+  }
+  100% {
+    outline-offset: 0;
+  }
+}
+@keyframes loading-dots {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+.interactive-quiz-edit-block {
+  --background-color: #86c4da;
+  --border-color: #43a3c5;
+  padding-inline: 10px;
+  padding-block: 20px;
+  color: #0F0D0D;
+  background-color: var(--background-color);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-color);
+}
+.interactive-quiz-edit-block__input .components-base-control__field {
+  margin-bottom: 0;
+}
+.interactive-quiz-edit-block__group-title, .interactive-quiz-edit-block__question label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 0px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+.interactive-quiz-edit-block__answer {
+  margin-bottom: 20px;
+}
+.interactive-quiz-edit-block__button:is(.is-primary, #priority):disabled {
+  background-color: #BDBDBD;
+  color: #F4F4F4;
+  cursor: not-allowed;
+}
+.interactive-quiz-edit-block__icon-button {
+  color: #0F0D0D;
+  transition: color 0.5s ease-out;
+}
+.interactive-quiz-edit-block__icon-button:is(:hover, :active, :visited) {
+  color: #115a82;
+}
+.interactive-quiz-edit-block__icon-button:is(:hover, :active, :visited) span {
+  scale: 1.25;
+}
+.interactive-quiz-edit-block__icon-button:disabled, .interactive-quiz-edit-block__icon-button:disabled:hover {
+  background-color: #BDBDBD;
+  color: #F4F4F4;
+  opacity: 1;
+  cursor: not-allowed;
+}
+.interactive-quiz-edit-block__icon-button:disabled span, .interactive-quiz-edit-block__icon-button:disabled:hover span {
+  scale: 1;
+}
+.interactive-quiz-edit-block__icon-button span {
+  transition: scale 0.5s ease;
+}
+.interactive-quiz-edit-block__delete:is(:hover, :active, :visited) {
+  color: #F44336;
+}

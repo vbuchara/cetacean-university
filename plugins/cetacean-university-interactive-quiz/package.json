@@ -1,0 +1,45 @@
+{
+	"name": "cetacean-university-interactive-quiz",
+	"version": "0.1.0",
+	"description": "An interactive block with the Interactivity API",
+	"author": "The WordPress Contributors",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --experimental-modules",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --experimental-modules"
+	},
+	"files": [
+		"[^.]*"
+	],
+	"dependencies": {
+		"@wordpress/interactivity": "^6.2.0",
+		"@wordpress/components": "^28.1.0",
+		"@wordpress/core-data": "^7.0.0",
+		"@wordpress/data": "^10.0.0",
+		"@wordpress/editor": "^14.0.0",
+		"dotenv-webpack": "^8.1.0",
+		"fp-ts": "^2.16.6",
+		"polished": "^4.3.1",
+		"react-use": "^17.5.0",
+    	"rooks": "^7.14.1",
+		"string-strip-html": "^13.4.8"
+	},
+	"devDependencies": {
+		"@types/dotenv-webpack": "^7.0.7",
+		"@types/react": "^18.3.3",
+		"@types/react-dom": "^18.3.0",
+		"@types/wordpress__block-editor": "^11.5.14",
+		"@types/wordpress__blocks": "^12.5.14",
+		"@types/wordpress__editor": "^13.6.8",
+		"@types/uuid": "^9.0.8",
+		"@types/voca": "^1.4.5",
+		"@wordpress/scripts": "^27.9.0",
+		"type-fest": "^4.20.1"
+	}
+}

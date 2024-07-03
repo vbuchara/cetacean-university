@@ -1,4 +1,11 @@
 == Changelog ==
+= 8.0.2 =
+* Removed the GLOB_BRACE from the code, as that is not available on some non GNU systems
+
+= 8.0.1 =
+* Tested up to 6.6
+* Refined the filter for fixing the file name on upload, following the best practice for SEO and accessibility
+
 = 8.0.0 =
 * This is a major update, please keep a backup of your files before updating
 * Tested up to 6.5.3
