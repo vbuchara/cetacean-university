@@ -1,12 +1,12 @@
 import {
+    InspectorControls 
+} from "@wordpress/block-editor";
+import {
     PanelBody,
     PanelRow,
     ColorPicker
 } from "@wordpress/components";
-
-import {
-    InspectorControls 
-} from "@wordpress/block-editor";
+import { lighten } from "polished";
 
 import type { 
     InteractiveQuizEditProps 
@@ -37,7 +37,8 @@ export function QuizInspectorControls({
                     onChange={(color) => setAttributes({
                         styles: {
                             ...attributes.styles,
-                            backgroundColor: color
+                            backgroundColor: color,
+                            borderColor: lighten(-0.25)(color)
                         }
                     })}
                 />

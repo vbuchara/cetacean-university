@@ -2,25 +2,27 @@ import './style.scss';
 import './editor.scss';
 
 import { registerBlockType } from '@wordpress/blocks';
+import { dispatch } from '@wordpress/data';
 import { v4 as uuid } from 'uuid';
 
 import { ReactComponent as QuestionMarkIcon } from '@assets/question-mark.svg';
-import { WordpressColorsPresets } from '@classes/WordpressColorsPresets';
+import quizStore from '@src/store/quiz';
 
 import { EditComponent } from './edit';
 
 export type InteractiveQuizAnswer = {
-    id: string,
-    answer: string,
-    isCorrect: boolean
+    readonly id: string,
+    readonly answer: string,
+    readonly isCorrect: boolean
 }
 
 export type InteractiveQuizAttributesType = {
     question: string,
     answers: InteractiveQuizAnswer[],
     styles: {
-        backgroundColor: string,
-        alignment?: string
+        backgroundColor?: string,
+        borderColor?: string,
+        alignment?: string,
     }
 };
 
@@ -45,9 +47,10 @@ registerBlockType<InteractiveQuizAttributesType>(metadata.name, {
         styles: {
             type: "object",
             default: {
-                backgroundColor: WordpressColorsPresets.Secondary,
                 alignment: "center"
             } satisfies InteractiveQuizAttributesType["styles"]
         }
 	}
 } );
+
+dispatch(quizStore).clearRegisteredAnswersIds();

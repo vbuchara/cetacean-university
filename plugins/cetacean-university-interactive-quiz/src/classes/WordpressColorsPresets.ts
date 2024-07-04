@@ -39,12 +39,23 @@ export class WordpressColorsPresets {
         this.Secondary,
     ]);
 
+    public static readonly CssVariableRegex = /var\(([a-z-0-9,\s]+)\)/m;
+
     public static getColorFromVar(name: WordpressColorsPresets.PresetVariables): string {
         return getComputedStyle(document.body).getPropertyValue(name);
     }
 
     public static isPresetVariable(value: any): value is WordpressColorsPresets.PresetVariables {
         return this.PresetVariablesSet.has(value);
+    }
+
+    public static getVariableNameFromVar(value: string){
+        if(!this.CssVariableRegex.test(value)) return "";
+
+        const match = this.CssVariableRegex.exec(value);
+        const varName = Array.from(match || [])[1];
+        
+        return varName ? varName : "";
     }
 
     public static getColorsList(){

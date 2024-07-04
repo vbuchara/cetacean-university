@@ -10,9 +10,11 @@ import {
     Button,
     Icon
 } from '@wordpress/components';
+import { useDispatch } from '@wordpress/data';
 
 import type { InteractiveQuizAnswer } from "@blocks/interactive-quiz";
 import type { InteractiveQuizEditProps } from "@blocks/interactive-quiz/edit";
+import quizStore from '@src/store/quiz';
 
 export type QuizEditAnswerProps = Pick<
     InteractiveQuizEditProps,
@@ -26,6 +28,8 @@ function QuizEditAnswerComponent({
     attributes,
     setAttributes
 }: QuizEditAnswerProps, ref: React.LegacyRef<HTMLInputElement>){
+
+    const { removeRegisteredAnswerId } = useDispatch(quizStore);
 
     function toggleIsCorrect(){
         setAttributes({
@@ -44,6 +48,7 @@ function QuizEditAnswerComponent({
         setAttributes({
             answers: attributes.answers.filter(({ id: order }) => order !== answer.id)
         });
+        removeRegisteredAnswerId(answer.id);
     }
 
     return (

@@ -1,14 +1,194 @@
 /*!***************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/blocks/interactive-quiz/style.scss ***!
   \***************************************************************************************************************************************************************************************************************************************************************/
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
-.wp-block-create-block-cetacean-university-interactive-quiz {
-  font-size: 1em;
-  background: rgba(255, 255, 0, 0.1019607843);
-  padding: 1em;
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+@keyframes pulse-outline {
+  0% {
+    outline-offset: 0;
+  }
+  25% {
+    outline-offset: 4px;
+  }
+  50% {
+    outline-offset: 0;
+  }
+  75% {
+    outline-offset: 4px;
+  }
+  100% {
+    outline-offset: 0;
+  }
+}
+@keyframes loading-dots {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+.interactive-quiz-save-block {
+  --grid-columns: 1;
+  --background-color: #86c4da;
+  --border-color: #43a3c5;
+  --text-align: center;
+  padding-inline: 10px;
+  padding-block: 20px;
+  margin-block: 15px;
+  color: #0F0D0D;
+  background-color: var(--background-color);
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border-color);
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: 0.8rem;
+}
+@media (min-width: 768px) {
+  .interactive-quiz-save-block {
+    --grid-columns: 2;
+  }
+}
+.interactive-quiz-save-block pre {
+  display: none;
+  visibility: hidden;
+}
+.interactive-quiz-save-block__question, .interactive-quiz-save-block__question:is(h2, #priority) {
+  grid-column: span var(--grid-columns);
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: var(--text-align);
+}
+.interactive-quiz-save-block__answer {
+  --answer-color: #115a82;
+  --answer-border-color: #114562;
+  --quiz-answer-text-column: span 2;
+  --quiz-answer-icon-size: 1.6em;
+  --quiz-answer-icon-padding: 0.8em;
+  --quiz-answer-icon-grid-column-size:
+      calc((var(--quiz-answer-icon-padding) * 2) + var(--quiz-answer-icon-size));
+  display: grid;
+  grid-template-columns: var(--quiz-answer-icon-grid-column-size) 1fr;
+  position: relative;
+  background-color: var(--answer-color);
+  border-color: var(--answer-border-color);
+  border-radius: 5px;
+  color: #F4F4F4;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-color 0.25s ease-in;
+  outline-color: var(--answer-color);
+}
+.interactive-quiz-save-block__answer-icon {
+  --color: var(--answer-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: var(--quiz-answer-icon-padding);
+  background-color: #F4F4F4;
+}
+.interactive-quiz-save-block__answer-icon svg {
+  width: var(--quiz-answer-icon-size);
+  height: var(--quiz-answer-icon-size);
+  color: var(--color);
+}
+.interactive-quiz-save-block__answer-text {
+  grid-column: var(--quiz-answer-text-column);
+  margin-block: 0.8em;
+  margin-inline: 0.8em;
+}
+.interactive-quiz-save-block__answer--checked, .interactive-quiz-save-block__answer--correct, .interactive-quiz-save-block__answer--wrong {
+  --quiz-answer-text-column: span 1;
+  --quiz-answer-animation-duration: 0.25s;
+}
+.interactive-quiz-save-block__answer--checked .interactive-quiz-save-block__answer-icon, .interactive-quiz-save-block__answer--correct .interactive-quiz-save-block__answer-icon, .interactive-quiz-save-block__answer--wrong .interactive-quiz-save-block__answer-icon {
+  animation: slide-in var(--quiz-answer-animation-duration) ease-in;
+}
+.interactive-quiz-save-block__answer--checked .interactive-quiz-save-block__answer-text, .interactive-quiz-save-block__answer--correct .interactive-quiz-save-block__answer-text, .interactive-quiz-save-block__answer--wrong .interactive-quiz-save-block__answer-text {
+  animation: answer-text-slide-in var(--quiz-answer-animation-duration) ease-in;
+}
+@keyframes answer-text-slide-in {
+  from {
+    translate: calc(var(--quiz-answer-icon-size) * -1) 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+.interactive-quiz-save-block__answer:hover:not(.interactive-quiz-save-block__answer--correct, .interactive-quiz-save-block__answer--wrong, .interactive-quiz-save-block__answer--checked) {
+  outline-width: 3px;
+  outline-offset: 3px;
+  outline-style: solid;
+  animation: pulse-outline 2s ease-out infinite;
+}
+.interactive-quiz-save-block__answer--checked {
+  outline-width: 3px;
+  outline-offset: 3px;
+  outline-style: solid;
+  animation: none;
+}
+.interactive-quiz-save-block__answer--correct {
+  --answer-color: #4CAF50;
+  --answer-border-color: #4c834e;
+}
+.interactive-quiz-save-block__answer--wrong {
+  --answer-color: #F44336;
+  --answer-border-color: #b73f36;
+}
+.interactive-quiz-save-block__answer--disabled {
+  cursor: default;
+}
+.interactive-quiz-save-block__answer input[type=checkbox] {
+  display: none;
+  visibility: hidden;
+}
+.interactive-quiz-save-block__submit {
+  grid-column: span var(--grid-columns);
+  justify-self: end;
+  padding-block: 0.8rem;
+  padding-inline: 1.1rem;
+  margin-top: 1rem;
+  background-color: #115a82;
+  border-color: #115a82;
+  border-style: solid;
+  border-radius: 5px;
+  color: #F4F4F4;
+  cursor: pointer;
+  transition: color 0.25s ease-in-out, 0.25s ease-in-out;
+}
+.interactive-quiz-save-block__submit:hover:not(:disabled) {
+  background-color: #F4F4F4;
+  color: #115a82;
+}
+.interactive-quiz-save-block__submit:disabled {
+  cursor: not-allowed;
+  background-color: #BDBDBD;
+  border-color: #BDBDBD;
+}
+.interactive-quiz-save-block__result {
+  grid-column: span var(--grid-columns);
+  justify-self: center;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+.interactive-quiz-save-block__result--success {
+  color: #4CAF50;
+}
+.interactive-quiz-save-block__result--failure {
+  color: #F44336;
 }

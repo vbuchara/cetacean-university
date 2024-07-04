@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useUpdateEffect } from 'react-use';
+import { useEffect, useState } from 'react';
+import { useEffectOnce, useUpdateEffect } from 'react-use';
 import { __ } from '@wordpress/i18n';
 import type { BlockEditProps } from '@wordpress/blocks';
 import { 
@@ -8,10 +8,12 @@ import {
 	AlignmentToolbar 
 } from '@wordpress/block-editor';
 import { Button, TextControl } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { lighten } from 'polished';
 import { v4 as uuid } from 'uuid';
 
 import { WordpressColorsPresets } from '@classes/WordpressColorsPresets';
+import quizStore from '@src/store/quiz';
 
 import { QuizInspectorControls } from './components/quiz-inspector-controls';
 import { QuizEditAnswer } from './components/quiz-edit-answer';
@@ -26,13 +28,22 @@ export function EditComponent({ attributes, setAttributes }: InteractiveQuizEdit
 	} = attributes;
 	const blockProps = useBlockProps();
 
-	const backgroundColor = WordpressColorsPresets.isPresetVariable(styles.backgroundColor)
-		? WordpressColorsPresets.getColorFromVar(styles.backgroundColor)
-		: styles.backgroundColor;
-
 	const answersRefMap = new Map<string, HTMLInputElement | null>();
 
+	const defaultBackgroundColor = WordpressColorsPresets.getColorFromVar(WordpressColorsPresets.Secondary);
+	const backgroundColor = styles.backgroundColor ? styles.backgroundColor : defaultBackgroundColor;
+	const borderColor = styles.borderColor ? styles.borderColor : lighten(-0.25, defaultBackgroundColor);
+
+	const answersIdDependency = attributes.answers.reduce((result, { id }) => result + id, "");
+
 	const [answerIdToFocus, setAnswerIdToFocus] = useState<string | undefined>();
+
+	const { getRegisteredAnswersIds } = useSelect((select) => select(quizStore), [answersIdDependency]);
+	const { 
+		addRegisteredAnswerId, 
+		registerAnswersIdsSet,
+		removeRegisteredAnswerId
+	} = useDispatch(quizStore);
 
 	function addAnswer(){
 		if(attributes.answers.length >= 4) return;
@@ -48,7 +59,50 @@ export function EditComponent({ attributes, setAttributes }: InteractiveQuizEdit
 		});
 
 		setAnswerIdToFocus(newAnswerId);
+
+		addRegisteredAnswerId(newAnswerId);
 	}
+
+	useEffect(() => {
+		if(attributes.styles.backgroundColor) return;
+
+		setAttributes({ 
+			styles: {
+                ...styles,
+                backgroundColor: defaultBackgroundColor,
+                borderColor: lighten(-0.25, defaultBackgroundColor)
+            }
+		});
+	}, [attributes.styles.backgroundColor, attributes.styles.borderColor]);
+
+	useEffectOnce(() => {
+		const registeredAnswersIds = getRegisteredAnswersIds();
+		
+		const newAnswers = attributes.answers.map((answer) => {
+			if(!registeredAnswersIds.has(answer.id)){
+				registeredAnswersIds.add(answer.id);
+				return answer;
+			};
+
+			const newId = uuid();
+			registeredAnswersIds.add(newId);
+
+			return {
+				...answer,
+				id: newId
+			}
+		});
+
+		setAttributes({
+			answers: newAnswers
+		});
+		
+		registerAnswersIdsSet(registeredAnswersIds);
+
+		return () => {
+			newAnswers.forEach(({ id })=> removeRegisteredAnswerId(id))
+		}
+	});
 
 	useUpdateEffect(() => {
 		if(!answerIdToFocus) return;
@@ -75,7 +129,7 @@ export function EditComponent({ attributes, setAttributes }: InteractiveQuizEdit
 			className="interactive-quiz-edit-block"
 			style={{
 				"--background-color": backgroundColor,
-				"--border-color": lighten(-0.25)(backgroundColor)
+				"--border-color": borderColor
 			}}
 		>
 			<TextControl 

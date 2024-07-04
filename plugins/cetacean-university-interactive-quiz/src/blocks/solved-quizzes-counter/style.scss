@@ -1,0 +1,36 @@
+@use 'sass:color';
+@use '@styles/abstract/variables' as *;
+@use '@styles/abstract/breakpoints' as *;
+@use '@styles/abstract/mixins' as *;
+
+@use '@styles/base/animations';
+
+.solved-quizzes-counter {
+    --background-color: #{$dolphin};
+    --border-color: #{color.scale($dolphin, $lightness: -25%)};
+
+    padding-inline: 10px;
+    padding-block: 20px;
+    margin-block: 15px;
+
+    color: $black;
+    background-color: var(--background-color);
+    
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--border-color);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+
+    &__counter {
+        @include withPriority(){
+            margin-bottom: 0;
+
+            span {
+                font-weight: bold;
+            }
+        }
+    }
+}

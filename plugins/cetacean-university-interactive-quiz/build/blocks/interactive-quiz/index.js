@@ -50,6 +50,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _src_store_quiz__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @src/store/quiz */ "./src/store/quiz.ts");
+
+
 
 
 
@@ -58,6 +63,9 @@ function QuizEditAnswerComponent({
   attributes,
   setAttributes
 }, ref) {
+  const {
+    removeRegisteredAnswerId
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)(_src_store_quiz__WEBPACK_IMPORTED_MODULE_3__["default"]);
   function toggleIsCorrect() {
     setAttributes({
       answers: attributes.answers.map(({
@@ -81,6 +89,7 @@ function QuizEditAnswerComponent({
         id: order
       }) => order !== answer.id)
     });
+    removeRegisteredAnswerId(answer.id);
   }
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Flex, {
     className: "interactive-quiz-edit-block__answer",
@@ -135,10 +144,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var polished__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! polished */ "./node_modules/polished/dist/polished.esm.js");
+
 
 
 
@@ -147,15 +158,16 @@ function QuizInspectorControls({
   setAttributes,
   backgroundColor
 }) {
-  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelBody, {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     title: "Background Color",
     initialOpen: true
-  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ColorPicker, {
+  }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ColorPicker, {
     color: backgroundColor,
     onChange: color => setAttributes({
       styles: {
         ...attributes.styles,
-        backgroundColor: color
+        backgroundColor: color,
+        borderColor: (0,polished__WEBPACK_IMPORTED_MODULE_3__.lighten)(-0.25)(color)
       }
     })
   }))));
@@ -175,16 +187,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_use__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-use */ "./node_modules/react-use/esm/useUpdateEffect.js");
+/* harmony import */ var react_use__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-use */ "./node_modules/react-use/esm/useEffectOnce.js");
+/* harmony import */ var react_use__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-use */ "./node_modules/react-use/esm/useUpdateEffect.js");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var polished__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! polished */ "./node_modules/polished/dist/polished.esm.js");
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
-/* harmony import */ var _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
-/* harmony import */ var _components_quiz_inspector_controls__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/quiz-inspector-controls */ "./src/blocks/interactive-quiz/components/quiz-inspector-controls.tsx");
-/* harmony import */ var _components_quiz_edit_answer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/quiz-edit-answer */ "./src/blocks/interactive-quiz/components/quiz-edit-answer.tsx");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
+/* harmony import */ var _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
+/* harmony import */ var _src_store_quiz__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @src/store/quiz */ "./src/store/quiz.ts");
+/* harmony import */ var _components_quiz_inspector_controls__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/quiz-inspector-controls */ "./src/blocks/interactive-quiz/components/quiz-inspector-controls.tsx");
+/* harmony import */ var _components_quiz_edit_answer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/quiz-edit-answer */ "./src/blocks/interactive-quiz/components/quiz-edit-answer.tsx");
+
+
 
 
 
@@ -203,12 +221,25 @@ function EditComponent({
     styles
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)();
-  const backgroundColor = _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_3__.WordpressColorsPresets.isPresetVariable(styles.backgroundColor) ? _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_3__.WordpressColorsPresets.getColorFromVar(styles.backgroundColor) : styles.backgroundColor;
   const answersRefMap = new Map();
+  const defaultBackgroundColor = _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__.WordpressColorsPresets.getColorFromVar(_classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_4__.WordpressColorsPresets.Secondary);
+  const backgroundColor = styles.backgroundColor ? styles.backgroundColor : defaultBackgroundColor;
+  const borderColor = styles.borderColor ? styles.borderColor : (0,polished__WEBPACK_IMPORTED_MODULE_8__.lighten)(-0.25, defaultBackgroundColor);
+  const answersIdDependency = attributes.answers.reduce((result, {
+    id
+  }) => result + id, "");
   const [answerIdToFocus, setAnswerIdToFocus] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+  const {
+    getRegisteredAnswersIds
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => select(_src_store_quiz__WEBPACK_IMPORTED_MODULE_5__["default"]), [answersIdDependency]);
+  const {
+    addRegisteredAnswerId,
+    registerAnswersIdsSet,
+    removeRegisteredAnswerId
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useDispatch)(_src_store_quiz__WEBPACK_IMPORTED_MODULE_5__["default"]);
   function addAnswer() {
     if (attributes.answers.length >= 4) return;
-    const newAnswerId = (0,uuid__WEBPACK_IMPORTED_MODULE_6__["default"])();
+    const newAnswerId = (0,uuid__WEBPACK_IMPORTED_MODULE_9__["default"])();
     setAttributes({
       answers: [...attributes.answers, {
         answer: `Answer ${attributes.answers.length + 1}`,
@@ -217,8 +248,44 @@ function EditComponent({
       }]
     });
     setAnswerIdToFocus(newAnswerId);
+    addRegisteredAnswerId(newAnswerId);
   }
-  (0,react_use__WEBPACK_IMPORTED_MODULE_7__["default"])(() => {
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (attributes.styles.backgroundColor) return;
+    setAttributes({
+      styles: {
+        ...styles,
+        backgroundColor: defaultBackgroundColor,
+        borderColor: (0,polished__WEBPACK_IMPORTED_MODULE_8__.lighten)(-0.25, defaultBackgroundColor)
+      }
+    });
+  }, [attributes.styles.backgroundColor, attributes.styles.borderColor]);
+  (0,react_use__WEBPACK_IMPORTED_MODULE_10__["default"])(() => {
+    const registeredAnswersIds = getRegisteredAnswersIds();
+    const newAnswers = attributes.answers.map(answer => {
+      if (!registeredAnswersIds.has(answer.id)) {
+        registeredAnswersIds.add(answer.id);
+        return answer;
+      }
+      ;
+      const newId = (0,uuid__WEBPACK_IMPORTED_MODULE_9__["default"])();
+      registeredAnswersIds.add(newId);
+      return {
+        ...answer,
+        id: newId
+      };
+    });
+    setAttributes({
+      answers: newAnswers
+    });
+    registerAnswersIdsSet(registeredAnswersIds);
+    return () => {
+      newAnswers.forEach(({
+        id
+      }) => removeRegisteredAnswerId(id));
+    };
+  });
+  (0,react_use__WEBPACK_IMPORTED_MODULE_11__["default"])(() => {
     if (!answerIdToFocus) return;
     answersRefMap.get(answerIdToFocus)?.focus();
   }, [answerIdToFocus]);
@@ -232,7 +299,7 @@ function EditComponent({
         alignment: value
       }
     })
-  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_quiz_inspector_controls__WEBPACK_IMPORTED_MODULE_4__.QuizInspectorControls, {
+  })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_quiz_inspector_controls__WEBPACK_IMPORTED_MODULE_6__.QuizInspectorControls, {
     attributes: attributes,
     setAttributes: setAttributes,
     backgroundColor: backgroundColor
@@ -240,7 +307,7 @@ function EditComponent({
     className: "interactive-quiz-edit-block",
     style: {
       "--background-color": backgroundColor,
-      "--border-color": (0,polished__WEBPACK_IMPORTED_MODULE_8__.lighten)(-0.25)(backgroundColor)
+      "--border-color": borderColor
     }
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextControl, {
     label: "Question:",
@@ -253,7 +320,7 @@ function EditComponent({
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     className: "interactive-quiz-edit-block__group-title"
   }, "Answers:"), attributes.answers.map(answer => {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_quiz_edit_answer__WEBPACK_IMPORTED_MODULE_5__.QuizEditAnswer, {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_components_quiz_edit_answer__WEBPACK_IMPORTED_MODULE_7__.QuizEditAnswer, {
       ref: ref => answersRefMap.set(answer.id, ref),
       key: answer.id,
       answer: answer,
@@ -284,10 +351,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./editor.scss */ "./src/blocks/interactive-quiz/editor.scss");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
-/* harmony import */ var _assets_question_mark_svg__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @assets/question-mark.svg */ "./assets/question-mark.svg");
-/* harmony import */ var _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @classes/WordpressColorsPresets */ "./src/classes/WordpressColorsPresets.ts");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./edit */ "./src/blocks/interactive-quiz/edit.tsx");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
+/* harmony import */ var _assets_question_mark_svg__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @assets/question-mark.svg */ "./assets/question-mark.svg");
+/* harmony import */ var _src_store_quiz__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @src/store/quiz */ "./src/store/quiz.ts");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./edit */ "./src/blocks/interactive-quiz/edit.tsx");
+
 
 
 
@@ -301,8 +371,8 @@ const {
 } = await __webpack_require__.e(/*! import() */ "src_blocks_interactive-quiz_block_json").then(__webpack_require__.t.bind(__webpack_require__, /*! ./block.json */ "./src/blocks/interactive-quiz/block.json", 19));
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_3__.registerBlockType)(metadata.name, {
   ...metadata,
-  edit: _edit__WEBPACK_IMPORTED_MODULE_6__.EditComponent,
-  icon: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_question_mark_svg__WEBPACK_IMPORTED_MODULE_4__.ReactComponent, {
+  edit: _edit__WEBPACK_IMPORTED_MODULE_7__.EditComponent,
+  icon: () => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_assets_question_mark_svg__WEBPACK_IMPORTED_MODULE_5__.ReactComponent, {
     width: 24,
     height: 24
   }),
@@ -313,7 +383,7 @@ const {
     answers: {
       type: "array",
       default: [{
-        id: (0,uuid__WEBPACK_IMPORTED_MODULE_7__["default"])(),
+        id: (0,uuid__WEBPACK_IMPORTED_MODULE_8__["default"])(),
         answer: "Answer 1",
         isCorrect: false
       }]
@@ -321,12 +391,12 @@ const {
     styles: {
       type: "object",
       default: {
-        backgroundColor: _classes_WordpressColorsPresets__WEBPACK_IMPORTED_MODULE_5__.WordpressColorsPresets.Secondary,
         alignment: "center"
       }
     }
   }
 });
+(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.dispatch)(_src_store_quiz__WEBPACK_IMPORTED_MODULE_6__["default"]).clearRegisteredAnswersIds();
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } }, 1);
 
@@ -363,11 +433,18 @@ class WordpressColorsPresets {
   static Primary = `${this.PresetPrefix}--primary`;
   static Secondary = `${this.PresetPrefix}--secondary`;
   static PresetVariablesSet = new Set([this.Black, this.White, this.CyanBluishGray, this.PalePink, this.VividRed, this.LuminousVividOrange, this.LuminousVividAmber, this.LightGreenCyan, this.VividGreenCyan, this.PaleCyanBlue, this.VividCyanBlue, this.VividPurple, this.Primary, this.Secondary]);
+  static CssVariableRegex = /var\(([a-z-0-9,\s]+)\)/m;
   static getColorFromVar(name) {
     return getComputedStyle(document.body).getPropertyValue(name);
   }
   static isPresetVariable(value) {
     return this.PresetVariablesSet.has(value);
+  }
+  static getVariableNameFromVar(value) {
+    if (!this.CssVariableRegex.test(value)) return "";
+    const match = this.CssVariableRegex.exec(value);
+    const varName = Array.from(match || [])[1];
+    return varName ? varName : "";
   }
   static getColorsList() {
     return [{
@@ -416,6 +493,98 @@ class WordpressColorsPresets {
   }
 }
 ;
+
+/***/ }),
+
+/***/ "./src/store/quiz.ts":
+/*!***************************!*\
+  !*** ./src/store/quiz.ts ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_0__);
+
+const defaultState = {
+  answersIds: []
+};
+const actions = {
+  addRegisteredAnswerId: answerId => {
+    return {
+      type: "ADD_ANSWER_ID",
+      answerId
+    };
+  },
+  registerAnswersIdsSet: answersIdsSet => {
+    return {
+      type: "REGISTER_ANSWERS_IDS_SET",
+      answersIdsSet
+    };
+  },
+  removeRegisteredAnswerId: answerId => {
+    return {
+      type: "REMOVE_ANSWER_ID",
+      answerId
+    };
+  },
+  clearRegisteredAnswersIds: () => {
+    return {
+      type: "CLEAR_REGISTERED_ANSWERS_IDS"
+    };
+  }
+};
+const selectors = {
+  getRegisteredAnswersIds: state => {
+    return new Set(state.answersIds);
+  }
+};
+const quizStore = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.createReduxStore)("cetacean-university/quiz-store", {
+  reducer: (state = defaultState, action) => {
+    switch (action.type) {
+      case "ADD_ANSWER_ID":
+        {
+          const answerIdsSet = new Set(state.answersIds);
+          answerIdsSet.add(action.answerId);
+          return {
+            answersIds: Array.from(answerIdsSet)
+          };
+        }
+      case "REGISTER_ANSWERS_IDS_SET":
+        {
+          return {
+            answersIds: Array.from(action.answersIdsSet)
+          };
+        }
+      case "REMOVE_ANSWER_ID":
+        {
+          const answerIdsSet = new Set(state.answersIds);
+          answerIdsSet.delete(action.answerId);
+          return {
+            answersIds: Array.from(answerIdsSet)
+          };
+        }
+      case "CLEAR_REGISTERED_ANSWERS_IDS":
+        {
+          return {
+            answersIds: []
+          };
+        }
+      default:
+        {
+          return state;
+        }
+    }
+  },
+  actions: actions,
+  selectors: selectors,
+  initialState: defaultState
+});
+(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_0__.register)(quizStore);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (quizStore);
 
 /***/ }),
 
@@ -4488,6 +4657,27 @@ function transitions() {
 
 /***/ }),
 
+/***/ "./node_modules/react-use/esm/useEffectOnce.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/react-use/esm/useEffectOnce.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var useEffectOnce = function (effect) {
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(effect, []);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useEffectOnce);
+
+
+/***/ }),
+
 /***/ "./node_modules/react-use/esm/useFirstMountState.js":
 /*!**********************************************************!*\
   !*** ./node_modules/react-use/esm/useFirstMountState.js ***!
@@ -4754,6 +4944,16 @@ module.exports = window["wp"]["blocks"];
 /***/ ((module) => {
 
 module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["data"];
 
 /***/ }),
 
