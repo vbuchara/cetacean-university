@@ -1,5 +1,7 @@
 yarn-error.log
 
+build/*.map
+
 frontend-rtl.css
 frontend.asset.php
 frontend.css
