@@ -7,7 +7,7 @@ class Cetacean_University_Word_Filter {
     function __construct() {
         add_action('admin_menu', [$this, 'plugin_admin_menu']);
         add_action('admin_init', [$this, 'plugin_settings_init']);
-        add_action('the_content', [$this, 'plugin_filter_content']);
+        add_filter('the_content', [$this, 'plugin_filter_content']);
     }
 
     function plugin_admin_menu() {
@@ -67,7 +67,7 @@ class Cetacean_University_Word_Filter {
         $wordsToFilter = get_option('cup_word_filter_words');
         $wordFilterReplacementWord = get_option('cup_word_filter_replacement_word', '****');
 
-        if(empty($wordsToFilter)) return;
+        if(empty($wordsToFilter)) return $content;
 
         $wordsToFilterArray = array_map('trim', explode(',', $wordsToFilter));
         return str_ireplace(
