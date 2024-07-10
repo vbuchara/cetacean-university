@@ -41,8 +41,12 @@ export class WordpressColorsPresets {
 
     public static readonly CssVariableRegex = /var\(([a-z-0-9,\s]+)\)/m;
 
-    public static getColorFromVar(name: WordpressColorsPresets.PresetVariables): string {
-        return getComputedStyle(document.body).getPropertyValue(name);
+    public static getColorFromVar(
+        name: WordpressColorsPresets.PresetVariables,
+        defaultValue?: string
+    ): string {
+        const value = getComputedStyle(document.body).getPropertyValue(name);
+        return value || defaultValue || "#86c4da";
     }
 
     public static isPresetVariable(value: any): value is WordpressColorsPresets.PresetVariables {

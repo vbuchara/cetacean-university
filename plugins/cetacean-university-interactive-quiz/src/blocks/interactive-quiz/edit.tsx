@@ -30,7 +30,7 @@ export function EditComponent({ attributes, setAttributes }: InteractiveQuizEdit
 
 	const answersRefMap = new Map<string, HTMLInputElement | null>();
 
-	const defaultBackgroundColor = WordpressColorsPresets.getColorFromVar(WordpressColorsPresets.Secondary);
+	const defaultBackgroundColor = WordpressColorsPresets.getColorFromVar(WordpressColorsPresets.Secondary, "#86c4da");
 	const backgroundColor = styles.backgroundColor ? styles.backgroundColor : defaultBackgroundColor;
 	const borderColor = styles.borderColor ? styles.borderColor : lighten(-0.25, defaultBackgroundColor);
 
